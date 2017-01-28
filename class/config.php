@@ -5,9 +5,9 @@
         $hostdb="localhost";
         $userdb="USERNAME"; 
         $passdb="PASSWORD";
-        $database="DATABASE";        
+        $database="DATABASE";       
          
-        $connection = new PDO("mysql:host=$hostdb;dbname=$database;charset=utf8mb4", "$userdb", "$passdb")or die ("Couldn't connect to db.");
+        $connection = new PDO("mysql:host=$hostdb;dbname=$database;charset=utf8mb4", "$userdb", "$passdb", array(PDO::ATTR_PERSISTENT=>true))or die ("Couldn't connect to db.");
         
         return $connection;
     }
@@ -16,3 +16,4 @@
         $connection=null; 
         return $connection;
     }
+?>

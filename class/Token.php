@@ -23,7 +23,6 @@ class Token {
             $sql = "DELETE FROM `user_login_tokens` WHERE `user_login_tokens`.`token` = :token";
             $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             $sth->execute(array(':token' => $token));
-            $connection = closeConnection();
             return 1;
         } else {
             return 0;
@@ -37,7 +36,6 @@ class Token {
         $sql = "DELETE FROM `user_login_tokens` WHERE `expireDate`< CURRENT_TIME AND `user_id` = (SELECT `id` FROM `user` WHERE name=:user)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':user' => $user));
-        $connection = closeConnection();
     }
 
     private function insertTokenIntoDB($user, $token) {
@@ -46,7 +44,6 @@ class Token {
         $sql = "INSERT INTO `user_login_tokens`(`user_id`, `token`, `expireDate`) VALUES ((SELECT `id` FROM `user` WHERE name=:user),:token,DATE_ADD(CURRENT_TIME,INTERVAL 30 DAY))";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':user' => $user, ':token' => $token));
-        $connection = closeConnection();
     }
 
     private function exist($token) {
@@ -57,7 +54,6 @@ class Token {
         if ($stmt->execute([':token' => $token])) {
             $tokendb = $stmt->fetch();
         }
-        $connection = closeConnection();
         if (sizeof($tokendb) > 1) {
             return True;
         } else {

@@ -15,7 +15,6 @@ class User {
             if ($stmt->execute(array(':name' => $username))) {
                 $user = $stmt->fetch();
             }
-            $connection = closeConnection();
             if (password_verify($password, $user['password'])) {
                 $token = new Token;
                 return $token->createToken($username);
@@ -57,7 +56,6 @@ class User {
         $sql = "INSERT INTO `user`(`name`, `password`, `email`) VALUES (:name, :password, :email)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':name' => $username, ':password' => $password, ':email' => $email));
-        $connection = closeConnection();
         return 1;
     }
 
@@ -78,7 +76,6 @@ class User {
         if ($stmt->execute(array(':name' => $username))) {
             $user = $stmt->fetch();
         }
-        $connection = closeConnection();
         if (sizeof($user) > 1) {
             return True;
         } else {
