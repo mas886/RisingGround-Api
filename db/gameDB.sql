@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 27, 2017 at 05:46 PM
+-- Generation Time: Jan 30, 2017 at 11:35 AM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.13-0ubuntu0.16.10.1
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `gameDB`
+-- Database: `jocDB`
 --
 
 -- --------------------------------------------------------
@@ -178,7 +178,7 @@ CREATE TABLE `shop_gold` (
 CREATE TABLE `user` (
   `id` int(9) NOT NULL,
   `name` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `password` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8_spanish_ci NOT NULL,
   `email` varchar(60) COLLATE utf8_spanish_ci NOT NULL,
   `gold` int(9) NOT NULL DEFAULT '500',
   `gems` int(9) NOT NULL DEFAULT '1',
@@ -404,7 +404,7 @@ ALTER TABLE `shop_gold`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `user_character`
 --
