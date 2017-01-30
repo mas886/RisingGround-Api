@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2017 mas886/redrednose/arnau
+ * Copyright (C) 2017 mas886/redrednose/arnau and judit09/tinez09/judit
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
