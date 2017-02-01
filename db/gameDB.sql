@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 30, 2017 at 11:35 AM
+-- Generation Time: Feb 01, 2017 at 01:29 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.13-0ubuntu0.16.10.1
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `jocDB`
+-- Database: `gameDB`
 --
 
 -- --------------------------------------------------------
@@ -32,6 +32,20 @@ CREATE TABLE `battle_status` (
   `inBattle` tinyint(1) NOT NULL DEFAULT '0',
   `reward` text COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Control user rest times and battle rewards.';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `character_build`
+--
+
+CREATE TABLE `character_build` (
+  `id` int(20) NOT NULL,
+  `characterId` int(12) NOT NULL,
+  `monster1` int(18) NOT NULL,
+  `monster2` int(18) NOT NULL,
+  `monster3` int(18) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -81,7 +95,7 @@ CREATE TABLE `dungeon` (
 CREATE TABLE `dungeon_character_status` (
   `dungeonId` int(5) NOT NULL,
   `characterId` int(12) NOT NULL,
-  `stage` int(11) NOT NULL
+  `levelId` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Know which stage of the dungeon the character is.';
 
 -- --------------------------------------------------------
@@ -196,8 +210,9 @@ CREATE TABLE `user_character` (
   `name` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `level` int(3) NOT NULL,
   `build_slots` int(4) NOT NULL DEFAULT '3',
-  `amulet` int(5) NOT NULL,
-  `userId` int(9) NOT NULL
+  `amulet` int(5) DEFAULT NULL,
+  `userId` int(9) NOT NULL,
+  `selectedBuildId` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Contais all characters owned by users.';
 
 -- --------------------------------------------------------
@@ -250,6 +265,16 @@ ALTER TABLE `battle_status`
   ADD KEY `characterId` (`characterId`);
 
 --
+-- Indexes for table `character_build`
+--
+ALTER TABLE `character_build`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `characterId` (`characterId`),
+  ADD KEY `monster1` (`monster1`),
+  ADD KEY `monster2` (`monster2`),
+  ADD KEY `monster3` (`monster3`);
+
+--
 -- Indexes for table `character_items`
 --
 ALTER TABLE `character_items`
@@ -278,7 +303,8 @@ ALTER TABLE `dungeon`
 ALTER TABLE `dungeon_character_status`
   ADD PRIMARY KEY (`dungeonId`,`characterId`),
   ADD KEY `dungeonId` (`dungeonId`),
-  ADD KEY `characterId` (`characterId`);
+  ADD KEY `characterId` (`characterId`),
+  ADD KEY `level` (`levelId`);
 
 --
 -- Indexes for table `dungeon_level`
@@ -332,7 +358,9 @@ ALTER TABLE `user`
 --
 ALTER TABLE `user_character`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `userId` (`userId`);
+  ADD KEY `userId` (`userId`),
+  ADD KEY `amulet` (`amulet`),
+  ADD KEY `selectedBuildId` (`selectedBuildId`);
 
 --
 -- Indexes for table `user_game_inbox`
@@ -360,6 +388,11 @@ ALTER TABLE `user_login_tokens`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `character_build`
+--
+ALTER TABLE `character_build`
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `character_monsters`
 --
@@ -431,6 +464,15 @@ ALTER TABLE `battle_status`
   ADD CONSTRAINT `battle_status_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`);
 
 --
+-- Constraints for table `character_build`
+--
+ALTER TABLE `character_build`
+  ADD CONSTRAINT `character_build_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
+  ADD CONSTRAINT `character_build_ibfk_2` FOREIGN KEY (`monster1`) REFERENCES `character_monsters` (`id`),
+  ADD CONSTRAINT `character_build_ibfk_3` FOREIGN KEY (`monster2`) REFERENCES `character_monsters` (`id`),
+  ADD CONSTRAINT `character_build_ibfk_4` FOREIGN KEY (`monster3`) REFERENCES `character_monsters` (`id`);
+
+--
 -- Constraints for table `character_items`
 --
 ALTER TABLE `character_items`
@@ -449,7 +491,8 @@ ALTER TABLE `character_monsters`
 --
 ALTER TABLE `dungeon_character_status`
   ADD CONSTRAINT `dungeon_character_status_ibfk_1` FOREIGN KEY (`dungeonId`) REFERENCES `dungeon` (`id`),
-  ADD CONSTRAINT `dungeon_character_status_ibfk_2` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`);
+  ADD CONSTRAINT `dungeon_character_status_ibfk_2` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
+  ADD CONSTRAINT `dungeon_character_status_ibfk_3` FOREIGN KEY (`levelId`) REFERENCES `dungeon_level` (`id`);
 
 --
 -- Constraints for table `dungeon_level`
@@ -479,7 +522,9 @@ ALTER TABLE `shop_gold`
 -- Constraints for table `user_character`
 --
 ALTER TABLE `user_character`
-  ADD CONSTRAINT `user_character_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `user_character_ibfk_1` FOREIGN KEY (`amulet`) REFERENCES `character_items` (`itemId`),
+  ADD CONSTRAINT `user_character_ibfk_2` FOREIGN KEY (`selectedBuildId`) REFERENCES `character_build` (`id`),
+  ADD CONSTRAINT `user_character_ibfk_3` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `user_game_inbox`
