@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 01, 2017 at 01:29 PM
+-- Generation Time: Feb 02, 2017 at 12:28 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.13-0ubuntu0.16.10.1
 
@@ -196,7 +196,8 @@ CREATE TABLE `user` (
   `email` varchar(60) COLLATE utf8_spanish_ci NOT NULL,
   `gold` int(9) NOT NULL DEFAULT '500',
   `gems` int(9) NOT NULL DEFAULT '1',
-  `description` text COLLATE utf8_spanish_ci NOT NULL
+  `description` text COLLATE utf8_spanish_ci NOT NULL,
+  `characterSlots` int(3) NOT NULL DEFAULT '5'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Contains the users.';
 
 -- --------------------------------------------------------
@@ -208,11 +209,11 @@ CREATE TABLE `user` (
 CREATE TABLE `user_character` (
   `id` int(12) NOT NULL,
   `name` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `level` int(3) NOT NULL,
+  `experience` int(30) NOT NULL DEFAULT '0',
   `build_slots` int(4) NOT NULL DEFAULT '3',
   `amulet` int(5) DEFAULT NULL,
   `userId` int(9) NOT NULL,
-  `selectedBuildId` int(20) NOT NULL
+  `selectedBuildId` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Contais all characters owned by users.';
 
 -- --------------------------------------------------------
@@ -248,7 +249,7 @@ CREATE TABLE `user_inbox` (
 --
 
 CREATE TABLE `user_login_tokens` (
-  `user_id` int(9) NOT NULL,
+  `userId` int(9) NOT NULL,
   `token` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `expireDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Contains user login tokens.';
@@ -382,7 +383,7 @@ ALTER TABLE `user_inbox`
 --
 ALTER TABLE `user_login_tokens`
   ADD PRIMARY KEY (`token`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`userId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -543,7 +544,7 @@ ALTER TABLE `user_inbox`
 -- Constraints for table `user_login_tokens`
 --
 ALTER TABLE `user_login_tokens`
-  ADD CONSTRAINT `user_login_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `user_login_tokens_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
