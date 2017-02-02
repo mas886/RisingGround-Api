@@ -7,7 +7,7 @@ class Token {
     function createToken($user) {
         //This prevents generating duplicate tokens
         do {
-            $token = bin2hex(random_bytes(30));
+            $token = bin2hex(random_bytes(15));
         } while ($this->exist($token));
         //Clean old tokens from the user
         $this->cleanTokens($user);
