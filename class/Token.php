@@ -38,7 +38,7 @@ class Token {
     }
     
     private function cleanTokensById($userId) {
-        //This will clean expired user tokens by Username
+        //This will clean expired user tokens by userId
         $connection = connect();
         $sql = "DELETE FROM `user_login_tokens` WHERE `expireDate`< CURRENT_TIME AND `userId` = :userId";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
