@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 02, 2017 at 12:28 PM
+-- Generation Time: Feb 02, 2017 at 08:45 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.13-0ubuntu0.16.10.1
 
@@ -210,7 +210,7 @@ CREATE TABLE `user_character` (
   `id` int(12) NOT NULL,
   `name` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `experience` int(30) NOT NULL DEFAULT '0',
-  `build_slots` int(4) NOT NULL DEFAULT '3',
+  `buildSlots` int(4) NOT NULL DEFAULT '3',
   `amulet` int(5) DEFAULT NULL,
   `userId` int(9) NOT NULL,
   `selectedBuildId` int(20) DEFAULT NULL
@@ -237,7 +237,7 @@ CREATE TABLE `user_game_inbox` (
 
 CREATE TABLE `user_inbox` (
   `userSendId` int(9) NOT NULL,
-  `userRecieveId` int(9) NOT NULL,
+  `userReceiveId` int(9) NOT NULL,
   `id` int(20) NOT NULL,
   `content` text COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Contains the messages sent between users (User <--> User).';
@@ -376,7 +376,7 @@ ALTER TABLE `user_game_inbox`
 ALTER TABLE `user_inbox`
   ADD PRIMARY KEY (`id`),
   ADD KEY `userSendId` (`userSendId`),
-  ADD KEY `userRecieveId` (`userRecieveId`);
+  ADD KEY `userRecieveId` (`userReceiveId`);
 
 --
 -- Indexes for table `user_login_tokens`
@@ -453,7 +453,7 @@ ALTER TABLE `user_game_inbox`
 -- AUTO_INCREMENT for table `user_inbox`
 --
 ALTER TABLE `user_inbox`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Constraints for dumped tables
 --
@@ -538,7 +538,7 @@ ALTER TABLE `user_game_inbox`
 --
 ALTER TABLE `user_inbox`
   ADD CONSTRAINT `user_inbox_ibfk_1` FOREIGN KEY (`userSendId`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `user_inbox_ibfk_2` FOREIGN KEY (`userRecieveId`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `user_inbox_ibfk_2` FOREIGN KEY (`userReceiveId`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `user_login_tokens`
