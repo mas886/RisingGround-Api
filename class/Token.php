@@ -69,6 +69,7 @@ class Token {
     }
     
     function getUserIdByToken($token){
+        //Will return userID when the token is correct, if not will return 0 (When the token doesn'texist) or "Expired" if the token expired (old token)
         $connection = connect();
         $sql = "SELECT `userId`,`expireDate` FROM `user_login_tokens` WHERE `token`=:token";
         $tokendb = [];
