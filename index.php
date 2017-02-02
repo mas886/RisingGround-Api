@@ -24,6 +24,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require './vendor/autoload.php';
 include_once("./class/User.php");
 include_once("./class/Message.php");
+include_once("./class/Character.php");
 
 $app = new \Slim\App;
 
@@ -67,5 +68,18 @@ $app->post('/message/send', function (Request $request, Response $response, $arg
     $response->getBody()->write(json_encode(array('Message' => $message->sendMessage($token, $receiver, $text))));
     return $response;
 });
+
+//Character system functions
+
+$app->post('/character/addcharacter', function (Request $request, Response $response, $args = []) {
+    $token = $request->getParam('token');
+    $characterName = $request->getParam('characterName');
+    $character = new Character;
+    //Will return 1 when successfull
+    $response->getBody()->write(json_encode(array('Message' => $character->addCharacter($characterName, $token))));
+    return $response;
+});
+
+
 
 $app->run();
