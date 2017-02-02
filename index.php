@@ -24,6 +24,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require './vendor/autoload.php';
 include_once("./class/User.php");
 include_once("./class/Message.php");
+include_once("./class/Character.php");
 
 $app = new \Slim\App;
 
@@ -65,6 +66,43 @@ $app->post('/message/send', function (Request $request, Response $response, $arg
     $message = new Message;
     //Will return 1 when successfull
     $response->getBody()->write(json_encode(array('Message' => $message->sendMessage($token, $receiver, $text))));
+    return $response;
+});
+
+//Character system functions
+
+$app->post('/character/addcharacter', function (Request $request, Response $response, $args = []) {
+    $token = $request->getParam('token');
+    $characterName = $request->getParam('characterName');
+    $character = new Character;
+    //Will return 1 when successfull
+    $response->getBody()->write(json_encode(array('Message' => $character->addCharacter($characterName, $token))));
+    return $response;
+});
+
+$app->post('/character/deletecharacter', function (Request $request, Response $response, $args = []) {
+    $token = $request->getParam('token');
+    $characterId = $request->getParam('characterId');
+    $character = new Character;
+    //Will return 1 when successfull
+    $response->getBody()->write(json_encode(array('Message' => $character->deleteCharacter($characterId, $token))));
+    return $response;
+});
+
+$app->post('/character/characterlist', function (Request $request, Response $response, $args = []) {
+    $token = $request->getParam('token');
+    $userId = $request->getParam('userId');
+    $character = new Character;
+    //Will return a characterId[] when successfull
+    $response->getBody()->write(json_encode(array('Message' => $character->characterList($userId, $token))));
+    return $response;
+});
+
+$app->post('/character/getexp', function (Request $request, Response $response, $args = []) {
+    $characterId = $request->getParam('characterId');
+    $character = new Character;
+    //Will return a  when successfull
+    $response->getBody()->write(json_encode(array('Message' => $character->getExp($characterId))));
     return $response;
 });
 
