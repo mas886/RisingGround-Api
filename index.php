@@ -89,6 +89,21 @@ $app->post('/character/deletecharacter', function (Request $request, Response $r
     return $response;
 });
 
+$app->post('/character/characterlist', function (Request $request, Response $response, $args = []) {
+    $token = $request->getParam('token');
+    $userId = $request->getParam('userId');
+    $character = new Character;
+    //Will return a characterId[] when successfull
+    $response->getBody()->write(json_encode(array('Message' => $character->characterList($userId, $token))));
+    return $response;
+});
 
+$app->post('/character/getexp', function (Request $request, Response $response, $args = []) {
+    $characterId = $request->getParam('characterId');
+    $character = new Character;
+    //Will return a  when successfull
+    $response->getBody()->write(json_encode(array('Message' => $character->getExp($characterId))));
+    return $response;
+});
 
 $app->run();

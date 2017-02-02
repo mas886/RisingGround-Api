@@ -62,5 +62,16 @@ class Character {
             return 0;
         }
     }
+    function getExp($characterId) {
+        //get experiance of the character
+        $connection = connect();
+        $sql = "SELECT `experience` FROM `user_character` WHERE `id` = :id";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':id' => $characterId));
+        $characterExp = $sth->fetch();
+        return $characterExp;
+        
+    }
+
 
 }
