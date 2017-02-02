@@ -85,7 +85,7 @@ class Token {
                 return "Expired";
             }
         } else {
-            return 0;
+            return "Bad token";
         }
     }
 
