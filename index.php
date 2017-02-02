@@ -80,6 +80,15 @@ $app->post('/character/addcharacter', function (Request $request, Response $resp
     return $response;
 });
 
+$app->post('/character/deletecharacter', function (Request $request, Response $response, $args = []) {
+    $token = $request->getParam('token');
+    $characterId = $request->getParam('characterId');
+    $character = new Character;
+    //Will return 1 when successfull
+    $response->getBody()->write(json_encode(array('Message' => $character->deleteCharacter($characterId, $token))));
+    return $response;
+});
+
 
 
 $app->run();
