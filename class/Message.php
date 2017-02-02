@@ -11,12 +11,12 @@ include_once("User.php");
 class Message {
     
     function sendMessage($token,$receiver,$text){
-        if(strlen($token)!=30&& strlen($receiver)<=1&&strlen($text)<10&& strlen($text)>800){
+        if(strlen($token)!=30|| strlen($receiver)<=1|| strlen($text)<10|| strlen($text)>800){
             return 0;
         }else{
             $tkn=new Token;
             $tokenOwner=$tkn->getUserIdByToken($token);
-            if($tokenOwner=="Expired"||$tokenOwner==0){
+            if($tokenOwner=="Expired"||$tokenOwner=="Bad token"){
                 return $tokenOwner;
             }
             //If the token is correct we will continue

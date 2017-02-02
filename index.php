@@ -23,10 +23,13 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require './vendor/autoload.php';
 include_once("./class/User.php");
+include_once("./class/Message.php");
 
 $app = new \Slim\App;
 
-$app->post('/logout', function (Request $request, Response $response, $args = []) {
+//User system functions
+
+$app->post('/user/logout', function (Request $request, Response $response, $args = []) {
     $token = $request->getParam('token');
     $user = new User();
     //Will return 1 if successfull 0 if fail
@@ -34,7 +37,7 @@ $app->post('/logout', function (Request $request, Response $response, $args = []
     return $response;
 });
 
-$app->post('/login', function (Request $request, Response $response, $args = []) {
+$app->post('/user/login', function (Request $request, Response $response, $args = []) {
     $username = $request->getParam('username');
     $password = $request->getParam('password');
     $user = new User();
@@ -43,13 +46,25 @@ $app->post('/login', function (Request $request, Response $response, $args = [])
     return $response;
 });
 
-$app->post('/signup', function (Request $request, Response $response, $args = []) {
+$app->post('/user/signup', function (Request $request, Response $response, $args = []) {
     $username = $request->getParam('username');
     $password = $request->getParam('password');
     $email = $request->getParam('email');
     $user = new User();
     //Will return 1 when successfull
     $response->getBody()->write(json_encode(array('Message' => $user->signUp($username, $password, $email))));
+    return $response;
+});
+
+//Messaging system functions
+
+$app->post('/message/send', function (Request $request, Response $response, $args = []) {
+    $token = $request->getParam('token');
+    $receiver = $request->getParam('receiver');
+    $text = $request->getParam('text');
+    $message = new Message;
+    //Will return 1 when successfull
+    $response->getBody()->write(json_encode(array('Message' => $message->sendMessage($token, $receiver, $text))));
     return $response;
 });
 
