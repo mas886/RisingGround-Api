@@ -4,15 +4,15 @@ include_once("config.php");
 
 class Token {
 
-    function createToken($user) {
+    function createToken($userName) {
         //This prevents generating duplicate tokens
         do {
             $token = bin2hex(random_bytes(15));
         } while ($this->exist($token));
         //Clean old tokens from the user
-        $this->cleanTokens($user);
+        $this->cleanTokens($userName);
         //Insert new token
-        $this->insertTokenIntoDB($user, $token);
+        $this->insertTokenIntoDB($userName, $token);
         return $token;
     }
 
@@ -29,12 +29,12 @@ class Token {
         }
     }
     
-    private function cleanTokens($user) {
+    private function cleanTokens($userName) {
         //This will clean expired user tokens by Username
         $connection = connect();
         $sql = "DELETE FROM `user_login_tokens` WHERE `expireDate`< CURRENT_TIME AND `userId` = (SELECT `id` FROM `user` WHERE name=:user)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':user' => $user));
+        $sth->execute(array(':user' => $userName));
     }
     
     private function cleanTokensById($userId) {
@@ -45,12 +45,12 @@ class Token {
         $sth->execute(array(':userId' => $userId));
     }
 
-    private function insertTokenIntoDB($user, $token) {
+    private function insertTokenIntoDB($userName, $token) {
         //Inserts the token into the db with an expire date of +30 days
         $connection = connect();
         $sql = "INSERT INTO `user_login_tokens`(`userId`, `token`, `expireDate`) VALUES ((SELECT `id` FROM `user` WHERE name=:user),:token,DATE_ADD(CURRENT_TIME,INTERVAL 30 DAY))";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':user' => $user, ':token' => $token));
+        $sth->execute(array(':user' => $userName, ':token' => $token));
     }
 
     private function exist($token) {
