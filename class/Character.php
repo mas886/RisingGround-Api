@@ -48,5 +48,19 @@ class Character {
         $sth->execute(array(':id' => $characterId));
         return 1;
     }
+    
+    function characterList($userId) {
+        // returns a list with all the characters's ID of de user
+        if ($userId > 0) {
+            $connection = connect();
+            $sql = "SELECT `id` FROM `user_character` WHERE `userId` = :id";
+            $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+            $sth->execute(array(':id' => $userId));
+            $charactersId = $sth->fetchAll();
+            return $charactersId;
+        } else{
+            return 0;
+        }
+    }
 
 }
