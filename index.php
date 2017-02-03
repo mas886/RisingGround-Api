@@ -80,38 +80,31 @@ $app->post('/message/getmessages', function (Request $request, Response $respons
 //Character system functions
 
 $app->post('/character/addcharacter', function (Request $request, Response $response, $args = []) {
-    $token = $request->getParam('token');
     $characterName = $request->getParam('characterName');
+    $token = $request->getParam('token');
     $character = new Character;
     //Will return 1 when successfull
     $response->getBody()->write(json_encode(array('Message' => $character->addCharacter($characterName, $token))));
     return $response;
 });
 
-$app->post('/character/deletecharacter', function (Request $request, Response $response, $args = []) {
-    $token = $request->getParam('token');
-    $characterId = $request->getParam('characterId');
-    $character = new Character;
-    //Will return 1 when successfull
-    $response->getBody()->write(json_encode(array('Message' => $character->deleteCharacter($characterId, $token))));
-    return $response;
-});
-
 $app->post('/character/characterlist', function (Request $request, Response $response, $args = []) {
     $token = $request->getParam('token');
-    $userId = $request->getParam('userId');
     $character = new Character;
     //Will return a characterId[] when successfull
-    $response->getBody()->write(json_encode(array('Message' => $character->characterList($userId, $token))));
+    $response->getBody()->write(json_encode(array('Message' => $character->characterList($token))));
     return $response;
 });
 
 $app->post('/character/getexp', function (Request $request, Response $response, $args = []) {
-    $characterId = $request->getParam('characterId');
+    $characterName = $request->getParam('characterName');
+    $token = $request->getParam('token');
     $character = new Character;
-    //Will return a  when successfull
-    $response->getBody()->write(json_encode(array('Message' => $character->getExp($characterId))));
+    //Will return a int
+    $response->getBody()->write(json_encode(array('Message' => $character->getExp($characterName, $token))));
     return $response;
 });
+
+
 
 $app->run();
