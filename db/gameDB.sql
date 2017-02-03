@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 02, 2017 at 08:45 PM
+-- Generation Time: Feb 03, 2017 at 12:42 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.13-0ubuntu0.16.10.1
 
@@ -226,6 +226,7 @@ CREATE TABLE `user_game_inbox` (
   `userId` int(9) NOT NULL,
   `nameSender` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `id` int(30) NOT NULL,
+  `sendDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `content` text COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Contains the messages sentby the internal messaging system (System to player).';
 
@@ -239,6 +240,7 @@ CREATE TABLE `user_inbox` (
   `userSendId` int(9) NOT NULL,
   `userReceiveId` int(9) NOT NULL,
   `id` int(20) NOT NULL,
+  `sendDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `content` text COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Contains the messages sent between users (User <--> User).';
 
@@ -443,7 +445,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_character`
 --
 ALTER TABLE `user_character`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `user_game_inbox`
 --
@@ -453,7 +455,7 @@ ALTER TABLE `user_game_inbox`
 -- AUTO_INCREMENT for table `user_inbox`
 --
 ALTER TABLE `user_inbox`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- Constraints for dumped tables
 --
