@@ -9,6 +9,9 @@ class Character {
     function addCharacter($characterName, $token) {
         //Add character to db given token
         if (strlen($characterName) > 1 && strlen($token) == 30) {
+            if($this->exist($characterName)){
+                return "Name exist";
+            }
             $tkn = new Token;
             $userId = $tkn->getUserIdByToken($token);
             if ($userId == "Expired" || $userId == "Bad token") {
@@ -29,10 +32,8 @@ class Character {
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':name' => $characterName, ':userId' => $userId));
         //Select to prove character inexistence
-        $result = [];
-        $sql = "SELECT 'id' FROM `user_character` WHERE `id` = :id";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        if ($sth->execute(array(':id' => $characterName))) {
+        
+        if ($this->searchCharacter($characterName)) {
             $result = $sth->fetch();
         }
         if (sizeof($result) > 0) { //character has been added
@@ -40,23 +41,7 @@ class Character {
         }
         return 0;
     }
-
-    private function characterBelongs($characterName, $userId) {
-        //Check if a character belongs to a user
-        $connection = connect();
-        $sql = "SELECT `id` FROM `user_character` WHERE `userId` = :userId AND `name` = :characterName";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $character = [];
-        if ($sth->execute(array(':userId' => $userId, ':characterName' => $characterName))) {
-            $character = $sth->fetch();
-        }
-        if (sizeof($character) > 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+ 
     //LIST character
     function characterList($token) {
         //Returns a list with all the characters's ID of the user given token
@@ -73,7 +58,6 @@ class Character {
         $sql = "SELECT `name`, `experience` FROM `user_character` WHERE `userId` = :id";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':id' => $userId));
-        $characters = [];
         $characters = $sth->fetchAll(PDO::FETCH_ASSOC);
         return $characters;
     }
@@ -101,5 +85,37 @@ class Character {
         $characterExp = $sth->fetch();
         return $characterExp['experience'];
     }
+    
+       //VALIDATE general functions
+    private function characterBelongs($characterName, $userId) {
+        //Check if a character belongs to a user
+        $connection = connect();
+        $sql = "SELECT `id` FROM `user_character` WHERE `userId` = :userId AND `name` = :characterName";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $character = [];
+        if ($sth->execute(array(':userId' => $userId, ':characterName' => $characterName))) {
+            $character = $sth->fetch();
+        }
+        if (sizeof($character) > 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private function exist($characterName){
+        //Check name existence on user_character
+        $connection = connect();
+        $sql = "SELECT `name` FROM `user_character` WHERE `name` = :name";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':name' => $characterName));
+        $result = [];
+        $result = $sth->fetch();
+        if(sizeof($result)){
+            return true;
+        }
+        return false;
+    }
+    
+
 
 }
