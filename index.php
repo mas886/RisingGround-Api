@@ -77,6 +77,15 @@ $app->post('/message/getmessages', function (Request $request, Response $respons
     return $response;
 });
 
+$app->post('/message/deletemessage', function (Request $request, Response $response, $args = []) {
+    $token = $request->getParam('token');
+    $messageId = $request->getParam('messageId');
+    $message = new Message;
+    //Will return an array with the messages / empty if successfull
+    $response->getBody()->write(json_encode(array('Message' => $message->deleteMessage($token, $messageId))));
+    return $response;
+});
+
 //Character system functions
 
 $app->post('/character/addcharacter', function (Request $request, Response $response, $args = []) {
