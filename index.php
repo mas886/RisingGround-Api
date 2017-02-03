@@ -69,6 +69,14 @@ $app->post('/message/send', function (Request $request, Response $response, $arg
     return $response;
 });
 
+$app->post('/message/getmessages', function (Request $request, Response $response, $args = []) {
+    $token = $request->getParam('token');
+    $message = new Message;
+    //Will return an array with the messages / empty if successfull
+    $response->getBody()->write(json_encode(array('Message' => $message->getMessages($token))));
+    return $response;
+});
+
 //Character system functions
 
 $app->post('/character/addcharacter', function (Request $request, Response $response, $args = []) {
