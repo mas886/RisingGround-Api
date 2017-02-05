@@ -109,7 +109,7 @@ $app->post('/character/getexp', function (Request $request, Response $response, 
     $characterName = $request->getParam('characterName');
     $token = $request->getParam('token');
     $character = new Character;
-    //Will return a int
+    //Will return a int (experience) when succesfull
     $response->getBody()->write(json_encode(array('Message' => $character->getExp($characterName, $token))));
     return $response;
 });
