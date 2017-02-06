@@ -33,7 +33,7 @@ class Character {
         $sth->execute(array(':name' => $characterName, ':userId' => $userId));
         //Select to prove character inexistence
 
-        if ($this->checkName($characterName)) {
+        if ($sth->rowCount()!= 0) {
             return 1;
         }
 
@@ -43,7 +43,7 @@ class Character {
     //LIST character
     function characterList($token) {
         //Returns a list with all the characters's ID of the user given token
-        if($token != 30){
+        if ($token != 30) {
             return 0;
         }
         $tkn = new Token;
@@ -66,7 +66,7 @@ class Character {
     //GET EXPERIENCE
     function getExp($characterName, $token) {
         //Returns the character's experience given token
-        if($token != 30){
+        if ($token != 30) {
             return 0;
         }
         $tkn = new Token;
@@ -94,7 +94,7 @@ class Character {
     //ADD EXPERIENCE
 
     function addExp($battleExp, $characterName, $token) {
-        if($token != 30){
+        if ($token != 30) {
             return 0;
         }
         $tkn = new Token;
@@ -110,19 +110,60 @@ class Character {
     }
 
     private function updateExp($battleExp, $characterName) {
-        //Select for actual character's experience
-        $characterExp = $this->selectExp($characterName);
         //Increase actual experience with battle experience
-        $totalExp = $characterExp + $battleExp;
         $connection = connect();
-        $sql = "UPDATE `user_character` SET `experience` = :exp WHERE `name` = :name";
+        $sql = "UPDATE `user_character` SET `experience` = ((SELECT experience FROM `user_character` WHERE `name` = :name) + :battleExp) WHERE `name` = :name";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':exp' => $totalExp, ':name' => $characterName));
+        $sth->execute(array(':battleExp' => $battleExp, ':name' => $characterName));
         //Check update
-        if ($this->checkExp($totalExp, $characterName)) {
+        if ($sth->rowCount() != 0) {
             return 1;
         }
         return 0;
+    }
+
+    //SELECT BUILD
+    function selectBuild($buildId, $characterId, $token) {
+        //select the build for battle of the character
+        if ($token != 30) {
+            return 0;
+        }
+        $tkn = new Token;
+        $userId = $tkn->getUserIdByToken($token);
+        if ($userId == "Expired" || $userId == "Bad token") {
+            return $userId;
+        }
+        //check if build belongs to character and character to userID of token
+        if ($this->buildBelongs($buildId, $characterId && $this->characterBelongs($userId, $characterId))) {
+            
+        }
+    }
+
+    private function updateBuild($buildId, $characterId) {
+        $connection = connect();
+        $sql = "UPDATE 'user_character' SET 'selectedBuildId' = :selectedBuildId WHERE 'id' = :id";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':selectedBuildId' => $buildId, ':id' => $characterId));
+        return 1;
+    }
+
+    function getSelectedBuild($characterId, $token) {
+        //return selected build's id
+        $connection = connect();
+        $tkn = new Token;
+        $userId = $tkn->getUserIdByToken($token);
+        if ($userId == "Expired" || $userId == "Bad token") {
+            return $userId;
+        } else {
+            if ($this->characterBelongs($userId, $characterId)) {
+                $sql = "SELECT 'selectedBuildId' FROM 'user_character' WHERE 'id' = :id";
+                $sth = $connection->prepare($sql);
+                $sth->execute(array(':id' => $characterId));
+                $selectedBuild = $sth->fetch();
+                return $selectedBuild;
+            }
+            return 0;
+        }
     }
 
     //VALIDATE general functions
@@ -152,17 +193,5 @@ class Character {
         return false;
     }
 
-    private function checkExp($experience, $characterName) {
-        //Check name existence on user_character
-        $connection = connect();
-        $sql = "SELECT experience FROM `user_character` WHERE `experience` = :exp AND `name` = :name";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':exp' => $experience, ':name' => $characterName));
-        $result = $sth->fetch();
-        if (sizeof($result) > 1) {
-            return true;
-        }
-        return false;
-    }
 
 }
