@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 07, 2017 at 07:27 PM
+-- Generation Time: Feb 07, 2017 at 07:53 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.13-0ubuntu0.16.10.1
 
@@ -43,8 +43,8 @@ CREATE TABLE `character_build` (
   `id` int(20) NOT NULL,
   `characterId` int(12) NOT NULL,
   `monster1` int(18) NOT NULL,
-  `monster2` int(18) NOT NULL,
-  `monster3` int(18) NOT NULL
+  `monster2` int(18) DEFAULT NULL,
+  `monster3` int(18) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -450,7 +450,7 @@ ALTER TABLE `user_character`
 -- AUTO_INCREMENT for table `user_game_inbox`
 --
 ALTER TABLE `user_game_inbox`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `user_inbox`
 --
