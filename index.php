@@ -24,6 +24,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require './vendor/autoload.php';
 include_once("./class/User.php");
 include_once("./class/Message.php");
+include_once("./class/GameMessage.php");
 include_once("./class/Character.php");
 
 $app = new \Slim\App;
@@ -57,7 +58,7 @@ $app->post('/user/signup', function (Request $request, Response $response, $args
     return $response;
 });
 
-//Messaging system functions
+//User to user messaging system functions
 
 $app->post('/message/send', function (Request $request, Response $response, $args = []) {
     $token = $request->getParam('token');
@@ -83,6 +84,16 @@ $app->post('/message/deletemessage', function (Request $request, Response $respo
     $message = new Message;
     //Will return an array with the messages / empty if successfull
     $response->getBody()->write(json_encode(array('Message' => $message->deleteMessage($token, $messageId))));
+    return $response;
+});
+
+//Game to user messaging system functions
+
+$app->post('/gamemessage/getmessages', function (Request $request, Response $response, $args = []) {
+    $token = $request->getParam('token');
+    $gamemessage = new GameMessage;
+    //Will return an array with the messages / empty if successfull
+    $response->getBody()->write(json_encode(array('Message' => $gamemessage->getMessages($token))));
     return $response;
 });
 

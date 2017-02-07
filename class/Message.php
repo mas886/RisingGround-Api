@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class to control the mail system between user ~ user and game ~ user
+ * Class to control the mail system between user ~ user
  * @author mas886/redrednose/arnau
  */
 

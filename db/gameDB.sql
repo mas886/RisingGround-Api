@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 03, 2017 at 12:42 PM
+-- Generation Time: Feb 07, 2017 at 07:53 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.13-0ubuntu0.16.10.1
 
@@ -43,8 +43,8 @@ CREATE TABLE `character_build` (
   `id` int(20) NOT NULL,
   `characterId` int(12) NOT NULL,
   `monster1` int(18) NOT NULL,
-  `monster2` int(18) NOT NULL,
-  `monster3` int(18) NOT NULL
+  `monster2` int(18) DEFAULT NULL,
+  `monster3` int(18) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -83,7 +83,7 @@ CREATE TABLE `dungeon` (
   `id` int(5) NOT NULL,
   `name` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
   `description` text COLLATE utf8_spanish_ci NOT NULL,
-  `min_level` int(3) NOT NULL
+  `minLevel` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Dungeon list.';
 
 -- --------------------------------------------------------
@@ -213,7 +213,7 @@ CREATE TABLE `user_character` (
   `buildSlots` int(4) NOT NULL DEFAULT '3',
   `amulet` int(5) DEFAULT NULL,
   `userId` int(9) NOT NULL,
-  `selectedBuildId` int(20) DEFAULT NULL
+  `buildId` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Contais all characters owned by users.';
 
 -- --------------------------------------------------------
@@ -363,7 +363,7 @@ ALTER TABLE `user_character`
   ADD PRIMARY KEY (`id`),
   ADD KEY `userId` (`userId`),
   ADD KEY `amulet` (`amulet`),
-  ADD KEY `selectedBuildId` (`selectedBuildId`);
+  ADD KEY `selectedBuildId` (`buildId`);
 
 --
 -- Indexes for table `user_game_inbox`
@@ -450,7 +450,7 @@ ALTER TABLE `user_character`
 -- AUTO_INCREMENT for table `user_game_inbox`
 --
 ALTER TABLE `user_game_inbox`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `user_inbox`
 --
@@ -526,7 +526,7 @@ ALTER TABLE `shop_gold`
 --
 ALTER TABLE `user_character`
   ADD CONSTRAINT `user_character_ibfk_1` FOREIGN KEY (`amulet`) REFERENCES `character_items` (`itemId`),
-  ADD CONSTRAINT `user_character_ibfk_2` FOREIGN KEY (`selectedBuildId`) REFERENCES `character_build` (`id`),
+  ADD CONSTRAINT `user_character_ibfk_2` FOREIGN KEY (`buildId`) REFERENCES `character_build` (`id`),
   ADD CONSTRAINT `user_character_ibfk_3` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
 
 --
