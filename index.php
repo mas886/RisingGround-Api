@@ -57,7 +57,7 @@ $app->post('/user/signup', function (Request $request, Response $response, $args
     return $response;
 });
 
-//Messaging system functions
+//User to user messaging system functions
 
 $app->post('/message/send', function (Request $request, Response $response, $args = []) {
     $token = $request->getParam('token');
