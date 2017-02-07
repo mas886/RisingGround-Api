@@ -8,21 +8,19 @@ class Character {
     //ADD character
     function addCharacter($characterName, $token) {
         //Add character to db given token
-        if (strlen($characterName) > 1 && strlen($token) == 30) {
-            if ($this->exist($characterName)) {
-                return "Name exist";
-            }
-            $tkn = new Token;
-            $userId = $tkn->getUserIdByToken($token);
-            if ($userId == "Expired" || $userId == "Bad token") {
-                return $userId;
-            } else {
-                //Return 1 if is succesfull, 0 if character is not added
-                return $this->insertCharacterIntoDb($characterName, $userId);
-            }
-        } else {
+        if (strlen($characterName) > 20 && strlen($characterName) < 1 && strlen($token) != 30) {
             return 0;
         }
+        $tkn = new Token;
+        $userId = $tkn->getUserIdByToken($token);
+        if ($userId == "Expired" || $userId == "Bad token") {
+            return $userId;
+        }
+        if ($this->exist($characterName)) {
+            return "Name exist";
+        }
+        //Return 1 if is succesfull, 0 if character is not added
+        return $this->insertCharacterIntoDb($characterName, $userId);
     }
 
     private function insertCharacterIntoDb($characterName, $userId) {
@@ -33,7 +31,7 @@ class Character {
         $sth->execute(array(':name' => $characterName, ':userId' => $userId));
         //Select to prove character inexistence
 
-        if ($this->exist($characterName)) {
+        if ($sth->rowCount() != 0) {
             return 1;
         }
 
@@ -43,6 +41,9 @@ class Character {
     //LIST character
     function characterList($token) {
         //Returns a list with all the characters's ID of the user given token
+        if (strlen($token) != 30) {
+            return 0;
+        }
         $tkn = new Token;
         $userId = $tkn->getUserIdByToken($token);
         if ($userId == "Expired" || $userId == "Bad token") {
@@ -63,6 +64,9 @@ class Character {
     //GET EXPERIENCE
     function getExp($characterName, $token) {
         //Returns the character's experience given token
+        if (strlen($characterName) > 20 && strlen($characterName) < 1 && $token != 30) {
+            return 0;
+        }
         $tkn = new Token;
         $userId = $tkn->getUserIdByToken($token);
         if ($userId == "Expired" || $userId == "Bad token") {
@@ -71,9 +75,7 @@ class Character {
         if (!$this->exist($characterName)) {
             return 0;
         }
-        if ($this->characterBelongs($userId, $characterName)) {
-            return 0;
-        }
+
         return $this->selectExp($characterName);
     }
 
@@ -87,26 +89,64 @@ class Character {
         return $characterExp['experience'];
     }
 
-    //VALIDATE general functions
-    private function characterBelongs($characterName, $userId) {
-        //Check if a character belongs to a user
-        $connection = connect();
-        $sql = "SELECT `id` FROM `user_character` WHERE `userId` = :userId AND `name` = :characterName";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $character = [];
-        if ($sth->execute(array(':userId' => $userId, ':characterName' => $characterName))) {
-            $character = $sth->fetch();
+    //ADD EXPERIENCE
+
+    function addExp($battleExp, $characterName, $token) {
+        if ($token != 30 && !ctype_digit($battleExp) && strlen($characterName) > 12 && strlen($characterName) < 1) {
+            return 0;
         }
-        if (sizeof($character) > 1) {
-            return true;
+        $tkn = new Token;
+        $userId = $tkn->getUserIdByToken($token);
+        if ($userId == "Expired" || $userId == "Bad token") {
+            return $userId;
         }
-        return false;
+        return $this->updateExp($battleExp, $characterName, $userId);
     }
 
-    private function exist($characterName) {
+    private function updateExp($battleExp, $characterName, $userId) {
+        //Increase actual experience with battle experience
+        $connection = connect();
+        $sql = "UPDATE `user_character` SET `experience` = ((SELECT experience FROM `user_character` WHERE `name` = :name) + :battleExp) WHERE `name` = :name AND `userId` = :userId";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':battleExp' => $battleExp, ':name' => $characterName, `:userId` => $userId));
+        //Check update
+        if ($sth->rowCount() != 0) {
+            return 1;
+        }
+        return 0;
+    }
+
+    //SELECT BUILD
+    function selectBuild($buildId, $characterName, $token) {
+        //select the build for battle of the character
+        if (strlen($characterName) > 20 && strlen($characterName) < 1 && strlen($token) != 30 && !ctype_digit($buildId)) {
+            return 0;
+        }
+        $tkn = new Token;
+        $userId = $tkn->getUserIdByToken($token);
+        if ($userId == "Expired" || $userId == "Bad token") {
+            return $userId;
+        }
+        return $this->updateBuild($buildId, $characterName);
+    }
+
+    private function updateBuild($buildId, $characterName) {
+        $connection = connect();
+        $sql = "UPDATE `user_character` SET `selectedBuildId` = :selectedBuildId WHERE `name` = :name";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':selectedBuildId' => $buildId, ':name' => $characterName));
+        if ($sth->rowCount() != 0) {
+            return 1;
+        }
+        return 0;
+    }
+
+    //VALIDATE general function
+
+    function exist($characterName) {
         //Check name existence on user_character
         $connection = connect();
-        $sql = "SELECT `name` FROM `user_character` WHERE `name` = :name";
+        $sql = "SELECT name FROM `user_character` WHERE `name` = :name";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':name' => $characterName));
         $result = $sth->fetch();
