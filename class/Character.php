@@ -8,7 +8,7 @@ class Character {
     //ADD character
     function addCharacter($characterName, $token) {
         //Add character to db given token
-        if (strlen($characterName) < 20 && strlen($characterName) > 1 && strlen($token) == 30) {
+        if (strlen($characterName) > 20 && strlen($characterName) < 1 && strlen($token) != 30) {
             return 0;
         }
         $tkn = new Token;
@@ -41,7 +41,7 @@ class Character {
     //LIST character
     function characterList($token) {
         //Returns a list with all the characters's ID of the user given token
-        if ($token != 30) {
+        if (strlen($token) != 30) {
             return 0;
         }
         $tkn = new Token;
@@ -64,7 +64,7 @@ class Character {
     //GET EXPERIENCE
     function getExp($characterName, $token) {
         //Returns the character's experience given token
-        if (strlen($characterName) < 20 && strlen($characterName) > 1 && $token != 30) {
+        if (strlen($characterName) > 20 && strlen($characterName) < 1 && $token != 30) {
             return 0;
         }
         $tkn = new Token;
@@ -92,7 +92,7 @@ class Character {
     //ADD EXPERIENCE
 
     function addExp($battleExp, $characterName, $token) {
-        if ($token != 30 && ctype_digit($battleExp) && strlen($characterName) < 12 && strlen($characterName) > 1) {
+        if ($token != 30 && !ctype_digit($battleExp) && strlen($characterName) > 12 && strlen($characterName) < 1) {
             return 0;
         }
         $tkn = new Token;
@@ -119,7 +119,7 @@ class Character {
     //SELECT BUILD
     function selectBuild($buildId, $characterName, $token) {
         //select the build for battle of the character
-        if (strlen($characterName) < 20 && strlen($characterName) > 1 && $token != 30) {
+        if (strlen($characterName) > 20 && strlen($characterName) < 1 && strlen($token) != 30 && !ctype_digit($buildId)) {
             return 0;
         }
         $tkn = new Token;
@@ -132,7 +132,7 @@ class Character {
 
     private function updateBuild($buildId, $characterName) {
         $connection = connect();
-        $sql = "UPDATE 'user_character' SET 'selectedBuildId' = :selectedBuildId WHERE `name` = :name";
+        $sql = "UPDATE `user_character` SET `selectedBuildId` = :selectedBuildId WHERE `name` = :name";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':selectedBuildId' => $buildId, ':name' => $characterName));
         if ($sth->rowCount() != 0) {
@@ -141,28 +141,9 @@ class Character {
         return 0;
     }
 
-    function getSelectedBuild($characterId, $token) {
-        //return selected build's id
-        $connection = connect();
-        $tkn = new Token;
-        $userId = $tkn->getUserIdByToken($token);
-        if ($userId == "Expired" || $userId == "Bad token") {
-            return $userId;
-        } else {
-            if ($this->characterBelongs($userId, $characterId)) {
-                $sql = "SELECT 'selectedBuildId' FROM 'user_character' WHERE 'id' = :id";
-                $sth = $connection->prepare($sql);
-                $sth->execute(array(':id' => $characterId));
-                $selectedBuild = $sth->fetch();
-                return $selectedBuild;
-            }
-            return 0;
-        }
-    }
-
     //VALIDATE general function
 
-    private function exist($characterName) {
+    function exist($characterName) {
         //Check name existence on user_character
         $connection = connect();
         $sql = "SELECT name FROM `user_character` WHERE `name` = :name";

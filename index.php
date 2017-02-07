@@ -113,6 +113,15 @@ $app->post('/character/getexp', function (Request $request, Response $response, 
     $response->getBody()->write(json_encode(array('Message' => $character->getExp($characterName, $token))));
     return $response;
 });
+$app->post('/character/selectbuild', function (Request $request, Response $response, $args = []) {
+    $buildId = $request->getParam('buildId');
+    $characterName = $request->getParam('characterName');
+    $token = $request->getParam('token');
+    $character = new Character;
+    //Will return a 1 when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $character->selectBuild($buildId, $characterName, $token))));
+    return $response;
+});
 
 
 
