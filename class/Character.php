@@ -9,7 +9,7 @@ class Character {
     function addCharacter($characterName, $token) {
         //Add character to db given token
         if (strlen($characterName) > 1 && strlen($token) == 30) {
-            if($this->exist($characterName)){
+            if ($this->exist($characterName)) {
                 return "Name exist";
             }
             $tkn = new Token;
@@ -32,16 +32,14 @@ class Character {
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':name' => $characterName, ':userId' => $userId));
         //Select to prove character inexistence
-        
-        if ($this->searchCharacter($characterName)) {
-            $result = $sth->fetch();
-        }
-        if (sizeof($result) > 0) { //character has been added
+
+        if ($this->exist($characterName)) {
             return 1;
         }
+
         return 0;
     }
- 
+
     //LIST character
     function characterList($token) {
         //Returns a list with all the characters's ID of the user given token
@@ -70,6 +68,9 @@ class Character {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
+        if (!$this->exist($characterName)) {
+            return 0;
+        }
         if ($this->characterBelongs($userId, $characterName)) {
             return 0;
         }
@@ -85,8 +86,8 @@ class Character {
         $characterExp = $sth->fetch();
         return $characterExp['experience'];
     }
-    
-       //VALIDATE general functions
+
+    //VALIDATE general functions
     private function characterBelongs($characterName, $userId) {
         //Check if a character belongs to a user
         $connection = connect();
@@ -98,24 +99,21 @@ class Character {
         }
         if (sizeof($character) > 1) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
-    private function exist($characterName){
+
+    private function exist($characterName) {
         //Check name existence on user_character
         $connection = connect();
         $sql = "SELECT `name` FROM `user_character` WHERE `name` = :name";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':name' => $characterName));
-        $result = [];
         $result = $sth->fetch();
-        if(sizeof($result)){
+        if (sizeof($result) > 1) {
             return true;
         }
         return false;
     }
-    
-
 
 }
