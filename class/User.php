@@ -8,13 +8,7 @@ class User {
     function login($username, $password) {
         //Check if we have something
         if (strlen($username) > 1 && strlen($password) > 1) {
-            $connection = connect();
-            $sql = "SELECT password FROM `user` WHERE name=:name";
-            $user = [];
-            $stmt = $connection->prepare($sql);
-            if ($stmt->execute(array(':name' => $username))) {
-                $user = $stmt->fetch();
-            }
+            $user= $this->getPassword($username);
             if (password_verify($password, $user['password'])) {
                 $token = new Token;
                 return $token->createToken($username);
@@ -25,13 +19,24 @@ class User {
             return 0;
         }
     }
-    
-    function logout($token){
+
+    private function getPassword($username) {
+        $connection = connect();
+        $sql = "SELECT password FROM `user` WHERE name=:name";
+        $user = [];
+        $stmt = $connection->prepare($sql);
+        if ($stmt->execute(array(':name' => $username))) {
+            $user = $stmt->fetch();
+        }
+        return $user;
+    }
+
+    function logout($token) {
         //Checks if the lenght is correct (tokens are 30 lengh long)
-        if (strlen($token)==30){
+        if (strlen($token) == 30) {
             $tkn = new Token;
             return $tkn->deleteToken($token);
-        }else{
+        } else {
             return 0;
         }
     }
