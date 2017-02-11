@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of UserDAO
+ * Queries to interact with user table
  *
  * @author redrednose
  */
