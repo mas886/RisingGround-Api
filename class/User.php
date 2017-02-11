@@ -1,6 +1,6 @@
 <?php
 
-include_once("config.php");
+include_once("./db/UserDAO.php");
 include_once("Token.php");
 
 class User {
@@ -8,7 +8,8 @@ class User {
     function login($username, $password) {
         //Check if we have something
         if (strlen($username) > 1 && strlen($password) > 1) {
-            $user= $this->getPassword($username);
+            $dao=new UserDAO;
+            $user= $dao->getPassword($username);
             if (password_verify($password, $user['password'])) {
                 $token = new Token;
                 return $token->createToken($username);
@@ -18,17 +19,6 @@ class User {
         } else {
             return 0;
         }
-    }
-
-    private function getPassword($username) {
-        $connection = connect();
-        $sql = "SELECT password FROM `user` WHERE name=:name";
-        $user = [];
-        $stmt = $connection->prepare($sql);
-        if ($stmt->execute(array(':name' => $username))) {
-            $user = $stmt->fetch();
-        }
-        return $user;
     }
 
     function logout($token) {
@@ -47,21 +37,12 @@ class User {
             return "Some field is incorrect.";
         }
         //Check if the username is already in the db
+        $dao=new UserDAO;
         if ($this->exist($username)) {
             return "The user already exists.";
         } else {
-            return $this->addUser($username, $password, $email);
+            return $dao->addUser($username, $password, $email);
         }
-    }
-
-    private function addUser($username, $password, $email) {
-        $connection = connect();
-        //Hashing passwords will prevent future security problems
-        $password = password_hash($password, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO `user`(`name`, `password`, `email`) VALUES (:name, :password, :email)";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':name' => $username, ':password' => $password, ':email' => $email));
-        return 1;
     }
 
     private function correctCredentials($username, $password, $email) {
@@ -74,18 +55,8 @@ class User {
     }
 
     function exist($username) {
-        $connection = connect();
-        $sql = "SELECT name FROM `user` WHERE name=:name";
-        $user = [];
-        $stmt = $connection->prepare($sql);
-        if ($stmt->execute(array(':name' => $username))) {
-            $user = $stmt->fetch();
-        }
-        if (sizeof($user) > 1) {
-            return True;
-        } else {
-            return false;
-        }
+        $dao=new UserDAO;
+        return $dao->exist($username);
     }
 
 }
