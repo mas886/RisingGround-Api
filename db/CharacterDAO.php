@@ -22,7 +22,7 @@ include_once("./class/config.php");
 
 class CharacterDAO {
 
-    function insertCharacterIntoDb($characterName, $userId) {
+    function insertCharacter($characterName, $userId) {
         //Insert
         $connection = connect();
         $sql = "INSERT INTO `user_character` (`name`, `userId`) VALUES (:name, :userId)";
@@ -36,7 +36,7 @@ class CharacterDAO {
             return 0;
         }
     }
-
+    
     function selectCharacterList($userId) {
         $connection = connect();
         $sql = "SELECT `name`, `experience` FROM `user_character` WHERE `userId` = :id";
@@ -81,6 +81,19 @@ class CharacterDAO {
             return 0;
         }
     }
+    
+        
+    function selectCharacterSlots($userId){
+        //Select character slots from user
+        $connection = connect();
+        $sql = "SELECT characterSlots FROM `user` WHERE id = :id";
+        $sth = $connection->prepare($sql);
+        $sth->execute(array(':id' => $userId));
+        $avaliableSlots = $sth->fetch();
+        return $avaliableSlots['characterSlots'];        
+    }
+    
+  
 
     function exist($characterName) {
         //Check name existence on user_character

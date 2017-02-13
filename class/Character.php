@@ -1,6 +1,6 @@
 <?php
 
-include_once("../db/CharacterDAO.php");
+include_once("./db/CharacterDAO.php");
 include_once("Token.php");
 
 class Character {
@@ -8,7 +8,7 @@ class Character {
     //ADD character
     function addCharacter($characterName, $token) {
         //Add character to db given token
-        if (strlen($characterName) > 20 && strlen($characterName) < 1 && strlen($token) != 30) {
+        if (strlen($characterName) > 20 && strlen($characterName) < 5 && strlen($token) != 30) {
             return 0;
         }
         $tkn = new Token;
@@ -16,12 +16,19 @@ class Character {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        if ($this->exist($characterName)) {
+        //Now we'll check if user has enough character slots for new one
+        $dao = new CharacterDAO;
+        $slotsUsed = sizeof($dao->selectCharacterList($userId));
+        $slots = $dao->selectCharacterSlots($userId);
+        if($slots <= $slotsUsed){
+            return "Character Slots Full";
+        }
+        
+        if ($dao->exist($characterName)) {
             return "Name exist";
         }
         //Return 1 if is succesfull, 0 if character is not added
-        $dao = new CharacterDAO;
-        return $dao->insertCharacterIntoDb($characterName, $userId);
+        return $dao->insertCharacter($characterName, $userId);
     }
 
     //LIST character
@@ -50,10 +57,10 @@ class Character {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        if (!$this->exist($characterName)) {
+        $dao = new CharacterDAO;
+        if (!$dao->exist($characterName)) {
             return 0;
         }
-        $dao = new CharacterDAO;
         return $dao->selectExp($characterName);
     }
 
