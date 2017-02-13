@@ -29,7 +29,11 @@ class UserDAO {
         $sql = "INSERT INTO `user`(`name`, `password`, `email`) VALUES (:name, :password, :email)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':name' => $username, ':password' => $password, ':email' => $email));
-        return 1;
+        if ($sth->rowCount() != 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
     
     function exist($username) {
