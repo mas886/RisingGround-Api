@@ -1,6 +1,6 @@
 <?php
 
-include_once("config.php");
+include_once("../db/CharacterDAO.php");
 include_once("Token.php");
 
 class Character {
@@ -20,22 +20,8 @@ class Character {
             return "Name exist";
         }
         //Return 1 if is succesfull, 0 if character is not added
-        return $this->insertCharacterIntoDb($characterName, $userId);
-    }
-
-    private function insertCharacterIntoDb($characterName, $userId) {
-        //Insert
-        $connection = connect();
-        $sql = "INSERT INTO `user_character` (`name`, `userId`) VALUES (:name, :userId)";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':name' => $characterName, ':userId' => $userId));
-        //Select to prove character inexistence
-
-        if ($sth->rowCount() != 0) {
-            return 1;
-        }
-
-        return 0;
+        $dao = new CharacterDAO;
+        return $dao->insertCharacterIntoDb($characterName, $userId);
     }
 
     //LIST character
@@ -49,16 +35,8 @@ class Character {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        return $this->selectCharacterList($userId);
-    }
-
-    private function selectCharacterList($userId) {
-        $connection = connect();
-        $sql = "SELECT `name`, `experience` FROM `user_character` WHERE `userId` = :id";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':id' => $userId));
-        $characters = $sth->fetchAll(PDO::FETCH_ASSOC);
-        return $characters;
+        $dao = new CharacterDAO;
+        return $dao->selectCharacterList($userId);
     }
 
     //GET EXPERIENCE
@@ -75,18 +53,8 @@ class Character {
         if (!$this->exist($characterName)) {
             return 0;
         }
-
-        return $this->selectExp($characterName);
-    }
-
-    private function selectExp($characterName) {
-        //Get experiance of the character
-        $connection = connect();
-        $sql = "SELECT `experience` FROM `user_character` WHERE `name` = :name";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':name' => $characterName));
-        $characterExp = $sth->fetch();
-        return $characterExp['experience'];
+        $dao = new CharacterDAO;
+        return $dao->selectExp($characterName);
     }
 
     //ADD EXPERIENCE
@@ -100,20 +68,8 @@ class Character {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        return $this->updateExp($battleExp, $characterName, $userId);
-    }
-
-    private function updateExp($battleExp, $characterName, $userId) {
-        //Increase actual experience with battle experience
-        $connection = connect();
-        $sql = "UPDATE `user_character` SET `experience` = ((SELECT experience FROM `user_character` WHERE `name` = :name) + :battleExp) WHERE `name` = :name AND `userId` = :userId";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':battleExp' => $battleExp, ':name' => $characterName, `:userId` => $userId));
-        //Check update
-        if ($sth->rowCount() != 0) {
-            return 1;
-        }
-        return 0;
+        $dao = new CharacterDAO;
+        return $dao->updateExp($battleExp, $characterName, $userId);
     }
 
     //SELECT BUILD
@@ -127,33 +83,16 @@ class Character {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        return $this->updateBuild($buildId, $characterName);
-    }
-
-    private function updateBuild($buildId, $characterName) {
-        $connection = connect();
-        $sql = "UPDATE `user_character` SET `selectedBuildId` = :selectedBuildId WHERE `name` = :name";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':selectedBuildId' => $buildId, ':name' => $characterName));
-        if ($sth->rowCount() != 0) {
-            return 1;
-        }
-        return 0;
+        $dao = new CharacterDAO;
+        return $dao->updateBuild($buildId, $characterName);
     }
 
     //VALIDATE general function
 
     function exist($characterName) {
         //Check name existence on user_character
-        $connection = connect();
-        $sql = "SELECT name FROM `user_character` WHERE `name` = :name";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':name' => $characterName));
-        $result = $sth->fetch();
-        if (sizeof($result) > 1) {
-            return true;
-        }
-        return false;
+        $dao = new CharacterDAO;
+        return $dao->exist($characterName);
     }
 
 }
