@@ -1,1 +1,8 @@
 /vendor/
+class/config\.php
+
+nbproject/private/config\.properties
+
+nbproject/private/private\.properties
+
+nbproject/private/private\.xml
