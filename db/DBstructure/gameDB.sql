@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 07, 2017 at 07:53 PM
+-- Generation Time: Feb 13, 2017 at 10:36 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.13-0ubuntu0.16.10.1
 
@@ -152,6 +152,20 @@ CREATE TABLE `monsters` (
   `baseStats` text COLLATE utf8_spanish_ci NOT NULL,
   `sprite` varchar(90) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Monster table.';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `monster_stats`
+--
+
+CREATE TABLE `monster_stats` (
+  `monsterId` int(5) NOT NULL,
+  `accuracy` int(8) NOT NULL,
+  `speed` int(8) NOT NULL,
+  `strength` int(8) NOT NULL,
+  `vitality` int(8) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Monster base stats';
 
 -- --------------------------------------------------------
 
@@ -336,6 +350,12 @@ ALTER TABLE `monsters`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `monster_stats`
+--
+ALTER TABLE `monster_stats`
+  ADD PRIMARY KEY (`monsterId`);
+
+--
 -- Indexes for table `shop_gems`
 --
 ALTER TABLE `shop_gems`
@@ -440,7 +460,7 @@ ALTER TABLE `shop_gold`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `user_character`
 --
@@ -450,12 +470,12 @@ ALTER TABLE `user_character`
 -- AUTO_INCREMENT for table `user_game_inbox`
 --
 ALTER TABLE `user_game_inbox`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `user_inbox`
 --
 ALTER TABLE `user_inbox`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- Constraints for dumped tables
 --
@@ -508,6 +528,12 @@ ALTER TABLE `dungeon_level`
 --
 ALTER TABLE `dungeon_level_stages`
   ADD CONSTRAINT `dungeon_level_stages_ibfk_1` FOREIGN KEY (`dungeonLevelId`) REFERENCES `dungeon_level` (`id`);
+
+--
+-- Constraints for table `monster_stats`
+--
+ALTER TABLE `monster_stats`
+  ADD CONSTRAINT `monster_stats_ibfk_1` FOREIGN KEY (`monsterId`) REFERENCES `monsters` (`id`);
 
 --
 -- Constraints for table `shop_gems`
