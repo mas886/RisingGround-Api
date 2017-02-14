@@ -36,7 +36,7 @@ class CharacterDAO {
         $sql = "SELECT `experience` FROM `user_character` WHERE `name` = :name";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':name' => $characterName));
-        $characterExp = $sth->fetch();
+        $characterExp = $sth->fetch(PDO::FETCH_ASSOC);
         return $characterExp['experience'];
     }
 
@@ -74,7 +74,7 @@ class CharacterDAO {
         $sql = "SELECT characterSlots FROM `user` WHERE id = :id";
         $sth = $connection->prepare($sql);
         $sth->execute(array(':id' => $userId));
-        $avaliableSlots = $sth->fetch();
+        $avaliableSlots = $sth->fetch(PDO::FETCH_ASSOC);
         return $avaliableSlots['characterSlots'];        
     }
     
@@ -86,7 +86,7 @@ class CharacterDAO {
         $sql = "SELECT name FROM `user_character` WHERE `name` = :name";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':name' => $characterName));
-        $result = $sth->fetch();
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
         if (sizeof($result) > 1) {
             return 1;
         } else {
