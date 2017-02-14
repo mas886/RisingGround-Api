@@ -44,7 +44,7 @@ class TokenDAO {
         $tokendb = [];
         $stmt = $connection->prepare($sql);
         if ($stmt->execute([':token' => $token])) {
-            $tokendb = $stmt->fetch();
+            $tokendb = $stmt->fetch(PDO::FETCH_ASSOC);
         }
         if (sizeof($tokendb) > 1) {
             if (date('Y/m/d h:i:s', strtotime($tokendb['expireDate']))>date('Y/m/d h:i:s', time())){
@@ -72,7 +72,7 @@ class TokenDAO {
         $tokendb = [];
         $stmt = $connection->prepare($sql);
         if ($stmt->execute([':token' => $token])) {
-            $tokendb = $stmt->fetch();
+            $tokendb = $stmt->fetch(PDO::FETCH_ASSOC);
         }
         if (sizeof($tokendb) > 1) {
             return True;

@@ -16,7 +16,7 @@ class UserDAO {
         $user = [];
         $stmt = $connection->prepare($sql);
         if ($stmt->execute(array(':name' => $username))) {
-            $user = $stmt->fetch();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
         }
         return $user;
     }
@@ -42,7 +42,7 @@ class UserDAO {
         $user = [];
         $stmt = $connection->prepare($sql);
         if ($stmt->execute(array(':name' => $username))) {
-            $user = $stmt->fetch();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
         }
         if (sizeof($user) > 1) {
             return True;
