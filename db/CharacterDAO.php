@@ -1,35 +1,18 @@
 <?php
-
-/*
- * Copyright (C) 2017 PATATA
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+/**
+ * Class to connect with user_character table
+ * @autor tinez09
  */
-
 include_once("./class/config.php");
 
 class CharacterDAO {
 
     function insertCharacter($characterName, $userId) {
-        //Insert
+        //Add character
         $connection = connect();
         $sql = "INSERT INTO `user_character` (`name`, `userId`) VALUES (:name, :userId)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':name' => $characterName, ':userId' => $userId));
-        //Select to prove character inexistence
-
         if ($sth->rowCount() != 0) {
             return 1;
         } else {
@@ -38,6 +21,7 @@ class CharacterDAO {
     }
     
     function selectCharacterList($userId) {
+        //Return a list of user's characters
         $connection = connect();
         $sql = "SELECT `name`, `experience` FROM `user_character` WHERE `userId` = :id";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
@@ -71,6 +55,7 @@ class CharacterDAO {
     }
 
     function updateBuild($buildId, $characterName) {
+        //Select build ID to battle
         $connection = connect();
         $sql = "UPDATE `user_character` SET `selectedBuildId` = :selectedBuildId WHERE `name` = :name";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
