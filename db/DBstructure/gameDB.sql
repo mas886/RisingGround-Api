@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 13, 2017 at 10:43 PM
+-- Generation Time: Feb 14, 2017 at 08:44 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.13-0ubuntu0.16.10.1
 
@@ -69,7 +69,7 @@ CREATE TABLE `character_monsters` (
   `characterId` int(12) NOT NULL,
   `monsterId` int(5) NOT NULL,
   `id` int(18) NOT NULL,
-  `level` int(11) NOT NULL,
+  `experience` int(11) NOT NULL,
   `statsModifier` text COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='This contains the monsters owned by characters.';
 
@@ -151,6 +151,14 @@ CREATE TABLE `monsters` (
   `description` text COLLATE utf8_spanish_ci NOT NULL,
   `sprite` varchar(90) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Monster table.';
+
+--
+-- Dumping data for table `monsters`
+--
+
+INSERT INTO `monsters` (`id`, `name`, `description`, `sprite`) VALUES
+(1, 'Lucio', 'This is a sample monster, say hi to him, he\'s willing to cooperate with the development.', '/anywhere.png'),
+(2, 'Udong', 'The second test subject, he wants to be as helpfull as the first.', '/nothingv2.jpg');
 
 -- --------------------------------------------------------
 
@@ -444,7 +452,7 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `monsters`
 --
 ALTER TABLE `monsters`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `shop_gems`
 --
