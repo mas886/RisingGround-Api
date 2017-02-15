@@ -30,10 +30,10 @@ class CharacterDAO {
         return $characters;
     }
 
-    function selectExp($characterName) {
-        //Get experiance of the character
+    function selectCharacter($characterName) {
+        //Get information of the character
         $connection = connect();
-        $sql = "SELECT `experience` FROM `user_character` WHERE `name` = :name";
+        $sql = "SELECT `userId`, `experience`, `buildSlots`, `buildId`, `amulet` FROM `user_character` WHERE `name` = :name";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':name' => $characterName));
         $characterExp = $sth->fetch(PDO::FETCH_ASSOC);

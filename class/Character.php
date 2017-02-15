@@ -47,8 +47,8 @@ class Character {
         return $dao->selectCharacterList($userId);
     }
 
-    function getExp($characterName, $token) {
-        //Returns the character's experience given token
+    function getCharacter($characterName, $token) {
+        //Returns the character's information () given token
         if (strlen($characterName) > 20 && strlen($characterName) < 1 && $token != 30) {
             return 0;
         }
@@ -61,7 +61,7 @@ class Character {
         if (!$dao->exist($characterName)) {
             return 0;
         }
-        return $dao->selectExp($characterName);
+        return $dao->selectCharacter($characterName);
     }
 
     function addExp($battleExp, $characterName, $token) {
