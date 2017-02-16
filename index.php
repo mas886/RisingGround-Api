@@ -26,6 +26,7 @@ include_once("./class/User.php");
 include_once("./class/Message.php");
 include_once("./class/GameMessage.php");
 include_once("./class/Character.php");
+include_once("./class/CharacterMonster.php");
 
 $app = new \Slim\App;
 
@@ -125,12 +126,12 @@ $app->post('/character/characterlist', function (Request $request, Response $res
     return $response;
 });
 
-$app->post('/character/getexp', function (Request $request, Response $response, $args = []) {
+$app->post('/character/getcharacter', function (Request $request, Response $response, $args = []) {
     $characterName = $request->getParam('characterName');
     $token = $request->getParam('token');
     $character = new Character;
-    //Will return a int (experience) when succesfull
-    $response->getBody()->write(json_encode(array('Message' => $character->getExp($characterName, $token))));
+    //Will return array of character's information when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $character->getCharacter($characterName, $token))));
     return $response;
 });
 $app->post('/character/selectbuild', function (Request $request, Response $response, $args = []) {
@@ -143,6 +144,17 @@ $app->post('/character/selectbuild', function (Request $request, Response $respo
     return $response;
 });
 
+//character_monsters system functions
+
+$app->post('/charactermonster/addmonster', function (Request $request, Response $response, $args = []) {
+    $monsterName = $request->getParam('monsterName');
+    $characterName = $request->getParam('characterName');
+    $token = $request->getParam('token');
+    $characterMonster = new CharacterMonster;
+    //Will return a 1 when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $characterMonster->addMonster($monsterName, $characterName, $token))));
+    return $response;
+});
 
 
 $app->run();
