@@ -11,7 +11,7 @@ class CharacterMonsterDAO {
 
     public function insertCharacterMonster($monsterName, $characterName) {
         $connection = connect();
-        $sql = "INSERT INTO `character_monsters` (`characterId`, `monsterId`) VALUES ((SELECT `id` FROM `user_character` WHERE `name` = :characterName),(SELECT `id` FROM monsters WHERE `name` = :monsterName))";
+        $sql = "INSERT INTO `character_monster` (`characterId`, `monsterId`) VALUES ((SELECT `id` FROM `user_character` WHERE `name` = :characterName),(SELECT `id` FROM monster WHERE `name` = :monsterName))";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':characterName' => $characterName, ':monsterName' => $monsterName));
         if ($sth->rowCount() != 0) {
