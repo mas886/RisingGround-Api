@@ -12,7 +12,7 @@ class CharacterMonster {
 
     public function addMonster($monsterName, $characterName, $token) {
         //Add monsters to the character's collection
-        if (strlen($characterName) > 20 && strlen($characterName) < 5 && strlen($monsterName) > 20 && strlen($monsterName) < 5 && strlen($token) != 30) {
+        if (strlen($characterName) > 20 || strlen($characterName) < 5 || strlen($monsterName) > 20 || strlen($monsterName) < 5 || strlen($token) != 30) {
             return 0;
         }
         $tkn = new Token;
@@ -27,7 +27,7 @@ class CharacterMonster {
     }
 
     public function deleteMonster($characterMonsterId, $token) {
-        if(sizeof($characterMonsterId) != 18 && !ctype_digit($characterMonsterId) && sizeof($token) != 30){
+        if(sizeof($characterMonsterId) != 18 || !ctype_digit($characterMonsterId) || sizeof($token) != 30){
             return 0;
         }
          $tkn = new Token;
@@ -41,7 +41,7 @@ class CharacterMonster {
     }
 
     public function monsterList() {
-        
+       
     }
 
     public function addExp() {
