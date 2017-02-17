@@ -37,7 +37,7 @@ class CharacterDAO {
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':name' => $characterName));
         $characterExp = $sth->fetch(PDO::FETCH_ASSOC);
-        return $characterExp['experience'];
+        return $characterExp;
     }
 
     function updateExp($battleExp, $characterName, $userId) {
@@ -80,18 +80,6 @@ class CharacterDAO {
     
   
 
-    function exist($characterName) {
-        //Check name existence on user_character
-        $connection = connect();
-        $sql = "SELECT name FROM `user_character` WHERE `name` = :name";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':name' => $characterName));
-        $result = $sth->fetch(PDO::FETCH_ASSOC);
-        if (sizeof($result) > 1) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
+   
 
 }

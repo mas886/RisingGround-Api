@@ -26,7 +26,7 @@ class Character {
             return "Character Slots Full";
         }
         
-        if ($dao->exist($characterName)) {
+        if (sizeof($dao->getCharacter($characterName))>0) {
             return "Name exist";
         }
         //Return 1 if is succesfull, 0 if character is not added
