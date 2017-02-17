@@ -20,5 +20,17 @@ class CharacterMonsterDAO {
             return 0;
         }
     }
+    
+    public function deleteCharacterMonster($characterMonsterId){
+        $connection = connect();
+        $sql = "DELETE FROM `character_monster` WHERE `id` = :characterMonsterId;";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterMonsterId' => $characterMonsterId));
+        if ($sth->rowCount() != 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
 }
