@@ -26,7 +26,7 @@ class Character {
             return "Character Slots Full";
         }
         
-        if (sizeof($dao->getCharacter($characterName))>0) {
+        if (sizeof($this->getCharacter($characterName, $token))>0) {
             return "Name exist";
         }
         //Return 1 if is succesfull, 0 if character is not added
@@ -58,9 +58,7 @@ class Character {
             return $userId;
         }
         $dao = new CharacterDAO;
-        if (!$dao->exist($characterName)) {
-            return 0;
-        }
+       
         return $dao->selectCharacter($characterName);
     }
 
