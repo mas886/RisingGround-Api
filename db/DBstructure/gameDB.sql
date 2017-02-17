@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 14, 2017 at 08:44 PM
+-- Generation Time: Feb 17, 2017 at 06:27 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.13-0ubuntu0.16.10.1
 
@@ -50,10 +50,10 @@ CREATE TABLE `character_build` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `character_items`
+-- Table structure for table `character_item`
 --
 
-CREATE TABLE `character_items` (
+CREATE TABLE `character_item` (
   `characterId` int(12) NOT NULL,
   `itemId` int(5) NOT NULL,
   `amount` int(7) NOT NULL
@@ -62,10 +62,10 @@ CREATE TABLE `character_items` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `character_monsters`
+-- Table structure for table `character_monster`
 --
 
-CREATE TABLE `character_monsters` (
+CREATE TABLE `character_monster` (
   `characterId` int(12) NOT NULL,
   `monsterId` int(5) NOT NULL,
   `id` int(18) NOT NULL,
@@ -142,10 +142,10 @@ CREATE TABLE `items` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `monsters`
+-- Table structure for table `monster`
 --
 
-CREATE TABLE `monsters` (
+CREATE TABLE `monster` (
   `id` int(5) NOT NULL,
   `name` varchar(15) COLLATE utf8_spanish_ci NOT NULL,
   `description` text COLLATE utf8_spanish_ci NOT NULL,
@@ -153,10 +153,10 @@ CREATE TABLE `monsters` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Monster table.';
 
 --
--- Dumping data for table `monsters`
+-- Dumping data for table `monster`
 --
 
-INSERT INTO `monsters` (`id`, `name`, `description`, `sprite`) VALUES
+INSERT INTO `monster` (`id`, `name`, `description`, `sprite`) VALUES
 (1, 'Lucio', 'This is a sample monster, say hi to him, he\'s willing to cooperate with the development.', '/anywhere.png'),
 (2, 'Udong', 'The second test subject, he wants to be as helpfull as the first.', '/nothingv2.jpg');
 
@@ -173,6 +173,14 @@ CREATE TABLE `monster_stats` (
   `strength` int(8) NOT NULL,
   `vitality` int(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Monster base stats';
+
+--
+-- Dumping data for table `monster_stats`
+--
+
+INSERT INTO `monster_stats` (`monsterId`, `accuracy`, `speed`, `strength`, `vitality`) VALUES
+(1, 10, 10, 10, 40),
+(2, 12, 8, 11, 36);
 
 -- --------------------------------------------------------
 
@@ -299,18 +307,18 @@ ALTER TABLE `character_build`
   ADD KEY `monster3` (`monster3`);
 
 --
--- Indexes for table `character_items`
+-- Indexes for table `character_item`
 --
-ALTER TABLE `character_items`
+ALTER TABLE `character_item`
   ADD PRIMARY KEY (`characterId`,`itemId`),
   ADD KEY `characterId` (`characterId`,`itemId`),
   ADD KEY `characterId_2` (`characterId`,`itemId`),
   ADD KEY `itemId` (`itemId`);
 
 --
--- Indexes for table `character_monsters`
+-- Indexes for table `character_monster`
 --
-ALTER TABLE `character_monsters`
+ALTER TABLE `character_monster`
   ADD PRIMARY KEY (`id`),
   ADD KEY `characterId` (`characterId`),
   ADD KEY `monsterId` (`monsterId`);
@@ -351,9 +359,9 @@ ALTER TABLE `items`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `monsters`
+-- Indexes for table `monster`
 --
-ALTER TABLE `monsters`
+ALTER TABLE `monster`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -424,9 +432,9 @@ ALTER TABLE `user_login_tokens`
 ALTER TABLE `character_build`
   MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `character_monsters`
+-- AUTO_INCREMENT for table `character_monster`
 --
-ALTER TABLE `character_monsters`
+ALTER TABLE `character_monster`
   MODIFY `id` int(18) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `dungeon`
@@ -449,9 +457,9 @@ ALTER TABLE `dungeon_level_stages`
 ALTER TABLE `items`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `monsters`
+-- AUTO_INCREMENT for table `monster`
 --
-ALTER TABLE `monsters`
+ALTER TABLE `monster`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `shop_gems`
@@ -498,23 +506,23 @@ ALTER TABLE `battle_status`
 --
 ALTER TABLE `character_build`
   ADD CONSTRAINT `character_build_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
-  ADD CONSTRAINT `character_build_ibfk_2` FOREIGN KEY (`monster1`) REFERENCES `character_monsters` (`id`),
-  ADD CONSTRAINT `character_build_ibfk_3` FOREIGN KEY (`monster2`) REFERENCES `character_monsters` (`id`),
-  ADD CONSTRAINT `character_build_ibfk_4` FOREIGN KEY (`monster3`) REFERENCES `character_monsters` (`id`);
+  ADD CONSTRAINT `character_build_ibfk_2` FOREIGN KEY (`monster1`) REFERENCES `character_monster` (`id`),
+  ADD CONSTRAINT `character_build_ibfk_3` FOREIGN KEY (`monster2`) REFERENCES `character_monster` (`id`),
+  ADD CONSTRAINT `character_build_ibfk_4` FOREIGN KEY (`monster3`) REFERENCES `character_monster` (`id`);
 
 --
--- Constraints for table `character_items`
+-- Constraints for table `character_item`
 --
-ALTER TABLE `character_items`
-  ADD CONSTRAINT `character_items_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
-  ADD CONSTRAINT `character_items_ibfk_2` FOREIGN KEY (`itemId`) REFERENCES `items` (`id`);
+ALTER TABLE `character_item`
+  ADD CONSTRAINT `character_item_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
+  ADD CONSTRAINT `character_item_ibfk_2` FOREIGN KEY (`itemId`) REFERENCES `items` (`id`);
 
 --
--- Constraints for table `character_monsters`
+-- Constraints for table `character_monster`
 --
-ALTER TABLE `character_monsters`
-  ADD CONSTRAINT `character_monsters_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
-  ADD CONSTRAINT `character_monsters_ibfk_2` FOREIGN KEY (`monsterId`) REFERENCES `monsters` (`id`);
+ALTER TABLE `character_monster`
+  ADD CONSTRAINT `character_monster_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
+  ADD CONSTRAINT `character_monster_ibfk_2` FOREIGN KEY (`monsterId`) REFERENCES `monster` (`id`);
 
 --
 -- Constraints for table `dungeon_character_status`
@@ -540,7 +548,7 @@ ALTER TABLE `dungeon_level_stages`
 -- Constraints for table `monster_stats`
 --
 ALTER TABLE `monster_stats`
-  ADD CONSTRAINT `monster_stats_ibfk_1` FOREIGN KEY (`monsterId`) REFERENCES `monsters` (`id`);
+  ADD CONSTRAINT `monster_stats_ibfk_1` FOREIGN KEY (`monsterId`) REFERENCES `monster` (`id`);
 
 --
 -- Constraints for table `shop_gems`
@@ -558,7 +566,7 @@ ALTER TABLE `shop_gold`
 -- Constraints for table `user_character`
 --
 ALTER TABLE `user_character`
-  ADD CONSTRAINT `user_character_ibfk_1` FOREIGN KEY (`amulet`) REFERENCES `character_items` (`itemId`),
+  ADD CONSTRAINT `user_character_ibfk_1` FOREIGN KEY (`amulet`) REFERENCES `character_item` (`itemId`),
   ADD CONSTRAINT `user_character_ibfk_2` FOREIGN KEY (`buildId`) REFERENCES `character_build` (`id`),
   ADD CONSTRAINT `user_character_ibfk_3` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
 
