@@ -146,15 +146,6 @@ $app->post('/character/selectbuild', function (Request $request, Response $respo
 
 //character_monsters system functions
 
-$app->post('/charactermonster/addmonster', function (Request $request, Response $response, $args = []) {
-    $monsterName = $request->getParam('monsterName');
-    $characterName = $request->getParam('characterName');
-    $token = $request->getParam('token');
-    $characterMonster = new CharacterMonster;
-    //Will return a 1 when succesfull
-    $response->getBody()->write(json_encode(array('Message' => $characterMonster->addMonster($monsterName, $characterName, $token))));
-    return $response;
-});
 
 
 $app->run();
