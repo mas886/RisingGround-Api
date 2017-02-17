@@ -36,8 +36,8 @@ class CharacterDAO {
         $sql = "SELECT `userId`, `experience`, `buildSlots`, `buildId`, `amulet` FROM `user_character` WHERE `name` = :name";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':name' => $characterName));
-        $characterExp = $sth->fetch(PDO::FETCH_ASSOC);
-        return $characterExp;
+        $character = $sth->fetch(PDO::FETCH_ASSOC);
+        return $character;
     }
 
     function updateExp($battleExp, $characterName, $userId) {
