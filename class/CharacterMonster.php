@@ -26,8 +26,18 @@ class CharacterMonster {
          
     }
 
-    public function deleteMonster() {
+    public function deleteMonster($characterMonsterId, $token) {
+        if(sizeof($characterMonsterId) != 18 && !ctype_digit($characterMonsterId) && sizeof($token) != 30){
+            return 0;
+        }
+         $tkn = new Token;
+        $userId = $tkn->getUserIdByToken($token);
+        if ($userId == "Expired" || $userId == "Bad token") {
+            return $userId;
+        }
         
+        $dao = new CharacterMonsterDAO;
+        return $dao->deleteCharacterMonster($characterMonsterId);
     }
 
     public function monsterList() {
