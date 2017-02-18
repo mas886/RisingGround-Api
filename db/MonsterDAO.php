@@ -6,7 +6,7 @@
  * @author mas886/redrednose/arnau
  */
 
-include_once("../class/config.php");
+include_once("./class/config.php");
 
 class MonsterDAO {
     
