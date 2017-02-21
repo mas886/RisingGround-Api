@@ -66,4 +66,8 @@ class monsterObj {
         $this->defence = $defence;
     }
     
+    function damage($damage){
+        $this->setVitality($this->vitality-$damage);
+    }
+    
 }
