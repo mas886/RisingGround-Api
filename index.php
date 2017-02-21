@@ -146,6 +146,14 @@ $app->post('/character/selectbuild', function (Request $request, Response $respo
 
 //character_monsters system functions
 
+$app->post('/charactermonster/monsterlist', function (Request $request, Response $response, $args = []) {
+    $characterName = $request->getParam('characterName');
+    $token = $request->getParam('token');
+    $characterMonster = new CharacterMonster;
+    //Will return a 1 when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $characterMonster->monsterList($characterName, $token))));
+    return $response;
+});
 
 
 $app->run();
