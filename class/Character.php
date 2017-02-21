@@ -26,7 +26,7 @@ class Character {
             return "Character Slots Full";
         }
         
-        if (sizeof($this->getCharacter($characterName, $token))>0) {
+        if (sizeof($this->getCharacter($characterName, $token))>1) {
             return "Name exist";
         }
         //Return 1 if is succesfull, 0 if character is not added
@@ -49,7 +49,7 @@ class Character {
 
     function getCharacter($characterName, $token) {
         //Returns the character's information () given token
-        if (strlen($characterName) > 20 || strlen($characterName) < 1 || $token != 30) {
+        if (strlen($characterName) > 20 || strlen($characterName) < 5 || $token != 30) {
             return 0;
         }
         $tkn = new Token;
