@@ -19,11 +19,11 @@ class monsterObj {
     function __construct($monsterId) {
         $monster=new Monster;
         $statsArray=$monster->getMonster($monsterId);
-        $this->accuracy = (int)$statsArray['accuracy'];
-        $this->speed =  (int)$statsArray['speed'];
-        $this->strength = (int)$statsArray['strength'];
-        $this->vitality = (int)$statsArray['vitality'];
-        $this->defence = (int)$statsArray['defence'];
+        $this->accuracy = (float)$statsArray['accuracy'];
+        $this->speed =  (float)$statsArray['speed'];
+        $this->strength = (float)$statsArray['strength'];
+        $this->vitality = (float)$statsArray['vitality'];
+        $this->defence = (float)$statsArray['defence'];
     }
     
     function getAccuracy() {
