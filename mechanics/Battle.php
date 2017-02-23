@@ -10,6 +10,14 @@ class Battle {
 
     private $AccuracySpeedRange = [[-200, 100], [1, 99]];
     private $AttackDefenceRange = [[-300, 300], [0.1, 1.9]];
+    
+    private function teamSorting($monsterArray){
+        $teamSortedArray;
+        foreach($monsterArray as $monster){
+            $teamSortedArray[$monster->getTeam()][]=$monster;
+        }
+        return $teamSortedArray;
+    }
 
     private function orderMonsters($team1, $team2) {
         //This function will convert the two team arrays into one ordered by monster speed
