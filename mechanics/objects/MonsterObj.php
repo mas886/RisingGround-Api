@@ -47,6 +47,10 @@ class monsterObj {
     function getDefence() {
         return $this->defence;
     }
+    
+    function getTeam() {
+        return $this->team;
+    }
 
     function setAccuracy($accuracy) {
         $this->accuracy = $accuracy;
@@ -67,7 +71,11 @@ class monsterObj {
     function setDefence($defence) {
         $this->defence = $defence;
     }
-    
+
+    function setTeam($team) {
+        $this->team = $team;
+    }
+
     function damage($damage){
         $this->setVitality($this->vitality-$damage);
     }
