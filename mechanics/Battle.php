@@ -10,7 +10,18 @@ class Battle {
 
     private $AccuracySpeedRange = [[-200, 100], [1, 99]];
     private $AttackDefenceRange = [[-300, 300], [0.1, 1.9]];
-     
+    
+    private function removeDeadMonsters($teamSortedArray){
+        foreach($teamSortedArray as $teamIndex=>$team){
+            foreach($team as $monsterIndex=>$monster){
+                if($monster->getVitality()<=0){
+                    unset($teamSortedArray[$teamIndex][$monsterIndex]);
+                }
+            }
+        }
+        return $teamSortedArray;
+    }    
+    
     private function teamsAlive($teamSortedArray){
         $cont=0;
         foreach($teamSortedArray as $team){
