@@ -10,6 +10,8 @@ class Battle {
 
     private $AccuracySpeedRange = [[-200, 100], [1, 99]];
     private $AttackDefenceRange = [[-300, 300], [0.1, 1.9]];
+    //Amount of teams that will participate in the battle.
+    private $AmountTeams=2;
     
     private function removeDeadMonsters($teamSortedArray){
         //Returns an array cleaned of dead monsters
