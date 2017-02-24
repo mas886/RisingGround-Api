@@ -10,6 +10,16 @@ class Battle {
 
     private $AccuracySpeedRange = [[-200, 100], [1, 99]];
     private $AttackDefenceRange = [[-300, 300], [0.1, 1.9]];
+     
+    private function teamsAlive($teamSortedArray){
+        $cont=0;
+        foreach($teamSortedArray as $team){
+           if(count($team)>0){
+               $cont++;
+           }
+        }
+        return $cont;
+    }
     
     private function teamSorting($monsterArray){
         $teamSortedArray;
