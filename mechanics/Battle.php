@@ -12,6 +12,7 @@ class Battle {
     private $AttackDefenceRange = [[-300, 300], [0.1, 1.9]];
     
     private function removeDeadMonsters($teamSortedArray){
+        //Returns an array cleaned of dead monsters
         foreach($teamSortedArray as $teamIndex=>$team){
             foreach($team as $monsterIndex=>$monster){
                 if($monster->getVitality()<=0){
@@ -23,6 +24,7 @@ class Battle {
     }    
     
     private function teamsAlive($teamSortedArray){
+        //Returns the ammount of teams alive
         $cont=0;
         foreach($teamSortedArray as $team){
            if(count($team)>0){
@@ -33,6 +35,7 @@ class Battle {
     }
     
     private function teamSorting($monsterArray){
+        //Will return an array made of monster arrays, each monster array key will be acording to team name/number
         $teamSortedArray;
         foreach($monsterArray as $monster){
             $teamSortedArray[$monster->getTeam()][]=$monster;
