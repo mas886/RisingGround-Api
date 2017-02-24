@@ -26,7 +26,7 @@ class Battle {
     }    
     
     private function teamsAlive($teamSortedArray){
-        //Returns the ammount of teams alive
+        //Returns the amount of teams alive
         $cont=0;
         foreach($teamSortedArray as $team){
            if(count($team)>0){
