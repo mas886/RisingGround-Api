@@ -11,8 +11,8 @@ class Battle {
     private $AccuracySpeedRange = [[-200, 100], [1, 99]];
     private $AttackDefenceRange = [[-300, 300], [0.1, 1.9]];
     //Amount of teams that will participate in the battle.
-    private $AmountTeams=2;
-                
+    private $Teams;
+        
     private function getTeams($teamSortedArray){
         //will return an array with each team
         $teamsArray=[];
