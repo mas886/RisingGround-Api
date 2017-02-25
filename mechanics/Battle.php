@@ -12,7 +12,16 @@ class Battle {
     private $AttackDefenceRange = [[-300, 300], [0.1, 1.9]];
     //Amount of teams that will participate in the battle.
     private $AmountTeams=2;
-        
+                
+    private function getTeams($teamSortedArray){
+        //will return an array with each team
+        $teamsArray=[];
+        foreach($teamSortedArray as $key=>$team){
+            $teamsArray[]=$key;
+        }
+        return $teamsArray;
+    }
+    
     private function removeDeadMonsters($teamSortedArray){
         //Returns an array cleaned of dead monsters
         foreach($teamSortedArray as $teamIndex=>$team){
