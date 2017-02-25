@@ -12,7 +12,15 @@ class Battle {
     private $AttackDefenceRange = [[-300, 300], [0.1, 1.9]];
     //Amount of teams that will participate in the battle.
     private $Teams;
-        
+    
+    function fight($monsters) {
+        //Initialization of the battle parameters
+        $speedOrderedArray= $this->orderMonsters($monsters);
+        $teamSortedArray=$this->teamSorting($speedOrderedArray);
+        $this->Teams=$this->getTeams($teamSortedArray);
+        return 1;
+    }
+    
     private function getTeams($teamSortedArray){
         //will return an array with each team
         $teamsArray=[];
