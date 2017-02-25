@@ -12,7 +12,7 @@ class Battle {
     private $AttackDefenceRange = [[-300, 300], [0.1, 1.9]];
     //Amount of teams that will participate in the battle.
     private $AmountTeams=2;
-    
+        
     private function removeDeadMonsters($teamSortedArray){
         //Returns an array cleaned of dead monsters
         foreach($teamSortedArray as $teamIndex=>$team){
@@ -45,9 +45,12 @@ class Battle {
         return $teamSortedArray;
     }
 
-    private function orderMonsters($team1, $team2) {
+    private function orderMonsters($monsterArray) {
         //This function will convert the two team arrays into one ordered by monster speed
-        $singleArray = array_merge($team1, $team2);
+        $singleArray=[];
+        foreach($monsterArray as $team){
+            $singleArray= array_merge($singleArray, $team);
+        }
         usort($singleArray, function ($a, $b) {
             if ($a->getSpeed() == $b->getSpeed()) {
                 return 0;
