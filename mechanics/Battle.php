@@ -21,6 +21,17 @@ class Battle {
         return 1;
     }
     
+    private function getTeamPosition($team){
+        //Returns the team position in the array $this->Team
+        foreach($this->Teams as $teamPosition=>$teamName){
+            if($team==$teamName){
+                return $teamPosition;
+            }
+        }
+        //We should not get here if everything was correctly initialized
+        return -1;
+    }
+    
     private function getTeams($teamSortedArray){
         //will return an array with each team
         $teamsArray=[];
