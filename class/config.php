@@ -5,7 +5,7 @@
         $hostdb="SERVER";
         $userdb="USERNAME"; 
         $passdb="PASSWORD";
-        $database="DATANAME";       
+        $database="DATABASE";     
          
         $connection = new PDO("mysql:host=$hostdb;dbname=$database;charset=utf8mb4", "$userdb", "$passdb", array(PDO::ATTR_PERSISTENT=>true))or die ("Couldn't connect to db.");
         
