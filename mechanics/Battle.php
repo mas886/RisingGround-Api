@@ -20,15 +20,15 @@ class Battle {
         $this->Teams=$this->getTeams($teamSortedArray);
         return 1;
     }
-       
+    
     private function getWeakTeamMonster($monsterTeam){
         //Will return the weakest team monster
         //Note: By now this method is pretty simplified, the weakest "monster" is considered to be the one with lowest vitality
         if (count($monsterTeam)<=0){
             //Error.
-            return-1;
+            return -1;
         }
-        $weakMonster=$monsterTeam[0];
+        $weakMonster=reset($monsterTeam);
         foreach($monsterTeam as $monster){
             if($monster->getVitality()<$weakMonster->getVitality()){
                 $weakMonster=$monster;
