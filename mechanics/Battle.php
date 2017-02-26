@@ -31,11 +31,24 @@ class Battle {
                     $enemy= $this->getWeakTeamMonster($teamSortedArray[$teamToAttack]);
                     $this->firstAttackSecond($monster,$enemy);
                     $teamSortedArray= $this->removeDeadMonsters($teamSortedArray);
+                    //echo "<br/><br/>Monster Teams: <br/>"; $this->echoTeams($teamSortedArray);echo "<br/><br/>";
                 }
             }
         }
     }
     
+    private function echoTeams($teamSortedArray){
+        //Debugging function to see the battle progress
+        foreach($teamSortedArray as $teamName=>$team){
+            echo"<br/>Team Name: ".$teamName."</br>Members: <br/>";
+            foreach($team as $monster){
+                echo "<br/>";
+                var_dump($monster);
+            }
+            echo "</br>";
+        }
+    }
+       
     private function getWeakTeamMonster($monsterTeam){
         //Will return the weakest team monster
         //Note: By now this method is pretty simplified, the weakest "monster" is considered to be the one with lowest vitality
