@@ -18,8 +18,8 @@ class Battle {
         $speedOrderedArray= $this->orderMonsters($monsters);
         $teamSortedArray=$this->teamSorting($speedOrderedArray);
         $this->Teams=$this->getTeams($teamSortedArray);
-        $this->battleLoop($speedOrderedArray, $teamSortedArray);
-        return 1;
+        $winnerTeam=$this->battleLoop($speedOrderedArray, $teamSortedArray);
+        return $winnerTeam;
     }
     
     private function battleLoop($speedOrderedArray,$teamSortedArray){
@@ -35,6 +35,18 @@ class Battle {
                 }
             }
         }
+        return $this->getWinnerTeam($teamSortedArray);
+    }
+    
+    private function getWinnerTeam($teamSortedArray){
+        //Will return the winner team's name
+        foreach($teamSortedArray as $teamName=>$team){
+            if(count($team)>0){
+                return $teamName;
+            }
+        }
+        //Error
+        return "error";
     }
     
     private function echoTeams($teamSortedArray){
