@@ -21,6 +21,17 @@ class Battle {
         return 1;
     }
     
+    private function getNextTeam($currentTeamName){
+        //Will return te name of the next team in the array
+        //Used to define attack priority
+        $teamPos=$this->getTeamPosition($currentTeamName);
+        $nextTeam=$teamPos+1;
+        if($nextTeam>= count($this->Teams)){
+            $nextTeam=0;
+        }
+        return $this->Teams[$nextTeam];
+    }
+    
     private function getTeamPosition($team){
         //Returns the team position in the array $this->Team
         foreach($this->Teams as $teamPosition=>$teamName){
