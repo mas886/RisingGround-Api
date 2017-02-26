@@ -21,6 +21,22 @@ class Battle {
         return 1;
     }
        
+    private function getWeakTeamMonster($monsterTeam){
+        //Will return the weakest team monster
+        //Note: By now this method is pretty simplified, the weakest "monster" is considered to be the one with lowest vitality
+        if (count($monsterTeam)<=0){
+            //Error.
+            return-1;
+        }
+        $weakMonster=$monsterTeam[0];
+        foreach($monsterTeam as $monster){
+            if($monster->getVitality()<$weakMonster->getVitality()){
+                $weakMonster=$monster;
+            }
+        }
+        return $weakMonster;
+    }
+    
     private function getNextTeam($currentTeamName,$teamSortedArray){
         //Will return te name of the next team in the array
         //Used to define attack priority
