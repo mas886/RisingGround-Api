@@ -20,8 +20,8 @@ class Battle {
         $this->Teams=$this->getTeams($teamSortedArray);
         return 1;
     }
-    
-    private function getNextTeam($currentTeamName){
+       
+    private function getNextTeam($currentTeamName,$teamSortedArray){
         //Will return te name of the next team in the array
         //Used to define attack priority
         $teamPos=$this->getTeamPosition($currentTeamName);
@@ -29,6 +29,21 @@ class Battle {
         if($nextTeam>= count($this->Teams)){
             $nextTeam=0;
         }
+        //If the next team is already dead it will return this one's next
+        //In case all the teams except the current one are dead will return the current
+        while(count($teamSortedArray[$this->Teams[$nextTeam]])==0){
+            if($teamSortedArray[$this->Teams[$nextTeam]]==$currentTeamName){
+                //Error protection, we should never get here
+                //In case that all the teams are dead
+                return $currentTeamName;
+            }
+            $nextTeam++;
+            if($nextTeam>= count($this->Teams)){
+                $nextTeam=0;
+            }
+        }
+        //If the current team is returned it means all the teams are dead
+        //Returning the same team should be avoided!
         return $this->Teams[$nextTeam];
     }
     
