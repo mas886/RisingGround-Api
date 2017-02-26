@@ -18,7 +18,22 @@ class Battle {
         $speedOrderedArray= $this->orderMonsters($monsters);
         $teamSortedArray=$this->teamSorting($speedOrderedArray);
         $this->Teams=$this->getTeams($teamSortedArray);
+        $this->battleLoop($speedOrderedArray, $teamSortedArray);
         return 1;
+    }
+    
+    private function battleLoop($speedOrderedArray,$teamSortedArray){
+        //This is the main battle loop where the combat is performed
+        while($this->teamsAlive($teamSortedArray)>1){
+            foreach($speedOrderedArray as $monster){
+                if($monster->getVitality()>0){
+                    $teamToAttack= $this->getNextTeam($monster->getTeam(), $teamSortedArray);
+                    $enemy= $this->getWeakTeamMonster($teamSortedArray[$teamToAttack]);
+                    $this->firstAttackSecond($monster,$enemy);
+                    $teamSortedArray= $this->removeDeadMonsters($teamSortedArray);
+                }
+            }
+        }
     }
     
     private function getWeakTeamMonster($monsterTeam){
