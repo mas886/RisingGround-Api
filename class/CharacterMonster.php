@@ -3,7 +3,7 @@
 /**
  * Class to control monster of every character
  *
- * @author PATATA
+ * @author PATATA and mas886
  */
 
 
@@ -63,6 +63,11 @@ class CharacterMonster {
         $dao = new CharacterMonsterDAO;
         return $dao->characterMonsterList($characterName);
         
+    }
+    
+    public function getCharacterMonster($characterMonsterId){
+        $dao=new CharacterMonsterDAO;
+        return $dao->getCharacterMonster($characterMonsterId);
     }
 
 }

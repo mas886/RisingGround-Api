@@ -3,7 +3,7 @@
 /**
  * Class to connect to character_monsters table
  *
- * @author PATATA
+ * @author PATATA and mas886
  */
 include_once "./class/config.php";
 
@@ -41,6 +41,21 @@ class CharacterMonsterDAO {
         $sth->execute(array(':name' => $characterName));
         $monsters = $sth->fetchAll(PDO::FETCH_ASSOC);
         return $monsters;
+    }
+    
+    function getCharacterMonster($characterMonsterId){
+        $connection = connect();
+        $sql = "SELECT `id`, `experience`, 
+            ((SELECT `accuracy` FROM `monster_stats` WHERE `monster_stats`.`monsterId`=`character_monster`.`monsterId`)+`character_monster_stats`.`accuracy`)as `accuracy`, 
+            ((SELECT `speed` FROM `monster_stats` WHERE `monster_stats`.`monsterId`=`character_monster`.`monsterId`)+`character_monster_stats`.`speed`) as `speed`, 
+            ((SELECT `strength` FROM `monster_stats` WHERE `monster_stats`.`monsterId`=`character_monster`.`monsterId`)+`character_monster_stats`.`strength`) as `strength`,
+            ((SELECT `vitality` FROM `monster_stats` WHERE `monster_stats`.`monsterId`=`character_monster`.`monsterId`)+`character_monster_stats`.`vitality`) as `vitality`, 
+            ((SELECT `defence` FROM `monster_stats` WHERE `monster_stats`.`monsterId`=`character_monster`.`monsterId`)+`character_monster_stats`.`defence`) as `defence` 
+            FROM `character_monster` JOIN `character_monster_stats` WHERE `id`= :characterMonsterId";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterMonsterId' => $characterMonsterId));
+        $monster = $sth->fetch(PDO::FETCH_ASSOC);
+        return $monster;
     }
 
 }
