@@ -8,7 +8,7 @@
 
 include_once("./class/Monster.php");
 
-class monsterObj {
+abstract class monsterObj {
     
     protected $accuracy;
     protected $speed;
@@ -17,9 +17,7 @@ class monsterObj {
     protected $defence;
     protected $team;
     
-    function __construct($monsterId,$team) {
-        $monster=new Monster;
-        $statsArray=$monster->getMonster($monsterId);
+    function __construct($statsArray,$team) {
         $this->accuracy = (float)$statsArray['accuracy'];
         $this->speed =  (float)$statsArray['speed'];
         $this->strength = (float)$statsArray['strength'];
