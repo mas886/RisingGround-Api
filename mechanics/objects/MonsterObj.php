@@ -6,8 +6,6 @@
  * @author mas886/redrednose/arnau
  */
 
-include_once("./class/Monster.php");
-
 abstract class monsterObj {
     
     protected $accuracy;
