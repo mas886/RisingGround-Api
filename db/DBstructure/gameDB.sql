@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 27, 2017 at 10:34 PM
+-- Generation Time: Mar 01, 2017 at 10:29 AM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.15-0ubuntu0.16.10.2
 
@@ -458,7 +458,7 @@ ALTER TABLE `character_build`
 -- AUTO_INCREMENT for table `character_monster`
 --
 ALTER TABLE `character_monster`
-  MODIFY `id` int(18) NOT NULL AUTO_INCREMENT,
+  MODIFY `id` int(18) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `dungeon`
 --
@@ -498,22 +498,22 @@ ALTER TABLE `shop_gold`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT,
+  MODIFY `id` int(9) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `user_character`
 --
 ALTER TABLE `user_character`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT,
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `user_game_inbox`
 --
 ALTER TABLE `user_game_inbox`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT,
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `user_inbox`
 --
 ALTER TABLE `user_inbox`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT,
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
