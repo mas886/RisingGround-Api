@@ -16,7 +16,7 @@ class CharacterMonsterDAO {
         $sth->execute(array(':characterName' => $characterName, ':monsterName' => $monsterName));
         if ($sth->rowCount() != 0) {
             $characterMonsterId = mysqli_insert_id();
-            return $this->setBaseStats($characterMonsterId);;
+            return $this->setBaseStats($characterMonsterId, $connection);
         } else {
             return 0;
         }
@@ -101,13 +101,13 @@ class CharacterMonsterDAO {
         }
     }
 
-    private function setBaseStats($characterMonsterId) {
+    private function setBaseStats($characterMonsterId, $connection) {
         $sql = "INSERT INTO `character_monster_stats` (characterMonsterId, accuracy, speed, strength, vitality, defence) VALUES (:characterMonsterId, 0, 0, 0, 0, 0)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array('characterMonsterId' => $characterMonsterId));
-        if($sth->rowCount() != 0){
+        if ($sth->rowCount() != 0) {
             return 1;
-        }else{
+        } else {
             return "Stats error";
         }
     }
