@@ -76,6 +76,18 @@ class CharacterMonsterDAO {
         }
     }
 
+    public function getExp($characterMonsterId) {
+        $connection = connect();
+        $sql = "SELECT `experience` FROM `character_monster` WHERE `id` = :characterMonsterId";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterMonsterId' => $characterMonsterId));
+        $experience = $sth->fetch(PDO::FETCH_ASSOC);
+        return $experience;
+        
+    }
+
+    //PRIVATE FUNCTIONS
+
     private function checkMonsterOwner($characterMonsterId, $userId) {
         $connection = connect();
         $sql = "SELECT `userId` FROM `user_character` WHERE `id` = (SELECT `characterId` FROM `character_monster` WHERE `id` = :characterMonsterId)";

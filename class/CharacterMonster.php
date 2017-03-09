@@ -82,8 +82,46 @@ class CharacterMonster {
             return $userId;
         }
         
+    public function getLevel($characterMonsterId, $token) {
+        if (sizeof($characterMonsterId) != 18 || !ctype_digit($characterMonsterId) || strlen($token) != 30) {
+            return 0;
+        }
+
+        $tkn = new Token;
+        $userId = $tkn->getUserIdByToken($token);
+
+        if ($userId == "Expired" || $userId == "Bad token") {
+            return $userId;
+        }
+
         $dao = new CharacterMonsterDAO;
-        return $dao->addExp($experience, $characterMonsterId);
+        $experience = $dao->getExp($characterMonsterId);
+
+        return $this->experienceToLevel($experience[experience]);
+    }
+
+    private function experienceToLevel($experience) {
+        /*
+         * returns level array 
+         * ['level'], 
+         * ['experience'] (How much have monster to next level) and
+         * ['nextLevel'] (Experience necessary to level up)
+         */
+        $level = array('level' => 0, 'experience' => 0, 'nextLevel' => 0);
+        //Firt level is with 500 experience points
+        $levelUp = 500;
+        while ($experience > $levelUp) {
+            $level[level] = $level[level] + 1;
+            $experience = $experience - $levelUp;
+            //Experience level will be increased with 50% any level
+            $levelUp = $levelUp * 1.5;
+        }
+        //Experience to next level
+        $level[experience] = $experience;
+        //Next level 
+        $level[nextLevel] = $levelUp;
+
+        return $level;
     }
 
 }
