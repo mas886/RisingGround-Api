@@ -155,5 +155,12 @@ $app->post('/charactermonster/monsterlist', function (Request $request, Response
     return $response;
 });
 
+$app->post('/charactermonster/getcharactermonster', function (Request $request, Response $response, $args = []) {
+    $characterMonsterId = $request->getParam('characterMonsterId');
+    $characterMonster = new CharacterMonster;
+    //Will return a 1 when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $characterMonster->getCharacterMonster($characterMonsterId))));
+    return $response;
+});
 
 $app->run();
