@@ -69,5 +69,21 @@ class CharacterMonster {
         $dao=new CharacterMonsterDAO;
         return $dao->getCharacterMonster($characterMonsterId);
     }
+    
+    public function addExp($experience, $characterMonsterId, $token){
+        if(strlen($token) != 30){
+            return 0;
+        }
+        
+        $tkn = new Token;
+        $userId = $tkn->getUserIdByToken($token);
+        
+        if ($userId == "Expired" || $userId == "Bad token") {
+            return $userId;
+        }
+        
+        $dao = new CharacterMonsterDAO;
+        return $dao->addExp($experience, $characterMonsterId);
+    }
 
 }

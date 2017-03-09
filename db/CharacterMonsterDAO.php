@@ -42,8 +42,8 @@ class CharacterMonsterDAO {
         $monsters = $sth->fetchAll(PDO::FETCH_ASSOC);
         return $monsters;
     }
-    
-    function getCharacterMonster($characterMonsterId){
+
+    function getCharacterMonster($characterMonsterId) {
         $connection = connect();
         $sql = "SELECT `id`, `experience`, 
             ((SELECT `accuracy` FROM `monster_stats` WHERE `monster_stats`.`monsterId`=`character_monster`.`monsterId`)+`character_monster_stats`.`accuracy`)as `accuracy`, 
@@ -56,6 +56,18 @@ class CharacterMonsterDAO {
         $sth->execute(array(':characterMonsterId' => $characterMonsterId));
         $monster = $sth->fetch(PDO::FETCH_ASSOC);
         return $monster;
+    }
+
+    public function addExp($experience, $characterMonsterId) {
+        $connection = connect();
+        $sql = "UPDATE `character_monster` SET `experience` = `experince` + :experience WHERE `id` = :characterMonsterId";
+        $sth = $connection->prepare($sql,array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':experience' => $experience, ':characterMonsterId'=>$characterMonsterId));
+        if ($sth->rowCount() != 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
 }
