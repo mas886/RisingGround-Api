@@ -63,7 +63,7 @@ class CharacterMonsterDAO {
         $connection = connect();
         $checkOwner = $this->checkMonsterOwner($characterMonsterId, $userId);
         if ($checkOwner == 1) {
-            $sql = "UPDATE `character_monster` SET `experience` = `experince` + :experience WHERE `id` = :characterMonsterId";
+            $sql = "UPDATE `character_monster` SET `experience` = `experience` + :experience WHERE `id` = :characterMonsterId";
             $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             $sth->execute(array(':experience' => $experience, ':characterMonsterId' => $characterMonsterId));
             if ($sth->rowCount() != 0) {
@@ -82,7 +82,7 @@ class CharacterMonsterDAO {
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':characterMonsterId' => $characterMonsterId));
         $userIdValue = $sth->fetch(PDO::FETCH_ASSOC);
-        if ($userIdValue[userId] == $userId) {
+        if ($userIdValue['userId'] == $userId) {
             return 1;
         } else {
             return "Owner Error";
