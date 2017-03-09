@@ -58,15 +58,33 @@ class CharacterMonsterDAO {
         return $monster;
     }
 
-    public function addExp($experience, $characterMonsterId) {
+    public function addExp($experience, $characterMonsterId, $userId) {
         $connection = connect();
-        $sql = "UPDATE `character_monster` SET `experience` = `experince` + :experience WHERE `id` = :characterMonsterId";
-        $sth = $connection->prepare($sql,array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':experience' => $experience, ':characterMonsterId'=>$characterMonsterId));
-        if ($sth->rowCount() != 0) {
+        $checkOwner = $this->checkMonsterOwner($characterMonsterId, $userId);
+        if ($checkOwner == 1) {
+            $sql = "UPDATE `character_monster` SET `experience` = `experince` + :experience WHERE `id` = :characterMonsterId";
+            $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+            $sth->execute(array(':experience' => $experience, ':characterMonsterId' => $characterMonsterId));
+            if ($sth->rowCount() != 0) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } else {
+            return $checkOwner;
+        }
+    }
+
+    private function checkMonsterOwner($characterMonsterId, $userId) {
+        $connection = connect();
+        $sql = "SELECT `userId` FROM `user_character` WHERE `id` = (SELECT `characterId` FROM `character_monster` WHERE `id` = :characterMonsterId)";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterMonsterId' => $characterMonsterId));
+        $userIdValue = $sth->fetch(PDO::FETCH_ASSOC);
+        if ($userIdValue[userId] == $userId) {
             return 1;
         } else {
-            return 0;
+            return "Owner Error";
         }
     }
 

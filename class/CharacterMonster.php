@@ -71,7 +71,7 @@ class CharacterMonster {
     }
     
     public function addExp($experience, $characterMonsterId, $token){
-        if(strlen($token) != 30){
+        if(!ctype_digit($experience) || sizeof($characterMonsterId) != 18 || !ctype_digit($characterMonsterId) || strlen($token) != 30){
             return 0;
         }
         
