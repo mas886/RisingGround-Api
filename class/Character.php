@@ -90,10 +90,5 @@ class Character {
         return $dao->updateBuild($buildId, $characterName);
     }
 
-    function exist($characterName) {
-        //Check name existence on user_character
-        $dao = new CharacterDAO;
-        return $dao->exist($characterName);
-    }
 
 }
