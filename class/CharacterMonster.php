@@ -81,7 +81,7 @@ class CharacterMonster {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        
+    }
     public function getLevel($characterMonsterId, $token) {
         if (sizeof($characterMonsterId) != 18 || !ctype_digit($characterMonsterId) || strlen($token) != 30) {
             return 0;
