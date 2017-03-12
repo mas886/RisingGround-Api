@@ -102,7 +102,7 @@ class CharacterMonsterDAO {
     }
 
     private function setBaseStats($characterMonsterId, $connection) {
-        $sql = "INSERT INTO `character_monster_stats` (characterMonsterId, accuracy, speed, strength, vitality, defence) VALUES (:characterMonsterId, 0, 0, 0, 0, 0)";
+        $sql = "INSERT INTO `character_monster_stats` (characterMonsterId) VALUES (:characterMonsterId)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array('characterMonsterId' => $characterMonsterId));
         if ($sth->rowCount() != 0) {
