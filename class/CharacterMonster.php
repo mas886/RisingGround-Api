@@ -33,7 +33,7 @@ class CharacterMonster {
     }
 
     public function deleteMonster($characterMonsterId, $token) {
-        if (sizeof($characterMonsterId) != 18 || !ctype_digit($characterMonsterId) || sizeof($token) != 30) {
+        if (!ctype_digit($characterMonsterId) || sizeof($token) != 30) {
             return 0;
         }
 
