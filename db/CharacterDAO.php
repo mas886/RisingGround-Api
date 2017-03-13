@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class to connect with user_character table
  * @autor tinez09
@@ -7,7 +8,6 @@ include_once("./class/config.php");
 
 class CharacterDAO {
 
-    
     function selectCharacterList($userId) {
         //Return a list of user's characters
         $connection = connect();
@@ -54,21 +54,18 @@ class CharacterDAO {
             return 0;
         }
     }
+
     function insertCharacter($characterName, $userId) {
         //Add character
-        $checkUser = $this->checkOwner($characterName, $userId);
-        if (!$checkUser) {
-            $connection = connect();
-            $sql = "INSERT INTO `user_character` (`name`, `userId`) VALUES (:name, :userId)";
-            $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-            $sth->execute(array(':name' => $characterName, ':userId' => $userId));
-            if ($sth->rowCount() != 0) {
-                return 1;
-            } else {
-                return 0;
-            }
+
+        $connection = connect();
+        $sql = "INSERT INTO `user_character` (`name`, `userId`) VALUES (:name, :userId)";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':name' => $characterName, ':userId' => $userId));
+        if ($sth->rowCount() != 0) {
+            return 1;
         } else {
-            return "User Owner Error";
+            return 0;
         }
     }
 
@@ -84,20 +81,15 @@ class CharacterDAO {
             return false;
         }
     }
-    
-        
-    function selectCharacterSlots($userId){
+
+    function selectCharacterSlots($userId) {
         //Select character slots from user
         $connection = connect();
         $sql = "SELECT characterSlots FROM `user` WHERE id = :id";
         $sth = $connection->prepare($sql);
         $sth->execute(array(':id' => $userId));
         $avaliableSlots = $sth->fetch(PDO::FETCH_ASSOC);
-        return $avaliableSlots['characterSlots'];        
+        return $avaliableSlots['characterSlots'];
     }
-    
-  
-
-   
 
 }
