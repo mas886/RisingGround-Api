@@ -53,7 +53,7 @@ class Character {
 
     function getCharacter($characterName, $token) {
         //Returns the character's information () given token
-        if (strlen($characterName) > 20 || strlen($characterName) < 5 || $token != 30) {
+        if (strlen($characterName) > 20 || strlen($characterName) < 5 || strlen($token) != 30) {
             return 0;
         } else {
             $tkn = new Token;
