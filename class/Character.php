@@ -97,5 +97,12 @@ class Character {
         $dao = new CharacterDAO;
         return $dao->updateBuild($buildId, $characterName);
     }
+    
+    public function checkOwner($characterName, $userId) {
+        //THIS FUNCTION IS NOT INDEXED ON index.php
+        //Return true if the character belongs to the user, false if not
+        $dao = new CharacterDAO;
+        return $dao->checkOwner($characterName, $userId);
+    }
 
 }
