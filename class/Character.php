@@ -18,20 +18,19 @@ class Character {
             $userId = $tkn->getUserIdByToken($token);
             if ($userId == "Expired" || $userId == "Bad token") {
                 return $userId;
+            }
+            //Now we'll check if user has enough character slots for new one
+            $dao = new CharacterDAO;
+            $slotsUsed = sizeof($dao->selectCharacterList($userId));
+            $slots = $dao->selectCharacterSlots($userId);
+            if ($slots <= $slotsUsed) {
+                return "Character Slots Full";
+            }
+            if (sizeof($this->getCharacter($characterName, $token)) > 1) {
+                return "Name exist";
             } else {
-                //Now we'll check if user has enough character slots for new one
-                $dao = new CharacterDAO;
-                $slotsUsed = sizeof($dao->selectCharacterList($userId));
-                $slots = $dao->selectCharacterSlots($userId);
-                if ($slots <= $slotsUsed) {
-                    return "Character Slots Full";
-                }
-                if (sizeof($this->getCharacter($characterName, $token)) > 1) {
-                    return "Name exist";
-                } else {
-                    //Return 1 if is succesfull, 0 if character is not added
-                    return $dao->insertCharacter($characterName, $userId);
-                }
+                //Return 1 if is succesfull, 0 if character is not added
+                return $dao->insertCharacter($characterName, $userId);
             }
         }
     }
@@ -73,14 +72,16 @@ class Character {
         //After a battle, experience of character is increased with battleExp
         if ($token != 30 || !ctype_digit($battleExp) || strlen($characterName) > 12 || strlen($characterName) < 1) {
             return 0;
-        }else{
-        $tkn = new Token;
-        $userId = $tkn->getUserIdByToken($token);
-        if ($userId == "Expired" || $userId == "Bad token") {
-            return $userId;
-        }else{
-        $dao = new CharacterDAO;
-        return $dao->updateExp($battleExp, $characterName, $userId);}}
+        } else {
+            $tkn = new Token;
+            $userId = $tkn->getUserIdByToken($token);
+            if ($userId == "Expired" || $userId == "Bad token") {
+                return $userId;
+            } else {
+                $dao = new CharacterDAO;
+                return $dao->updateExp($battleExp, $characterName, $userId);
+            }
+        }
     }
 
     function selectBuild($buildId, $characterName, $token) {
