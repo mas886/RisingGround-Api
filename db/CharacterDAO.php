@@ -91,5 +91,15 @@ class CharacterDAO {
         $avaliableSlots = $sth->fetch(PDO::FETCH_ASSOC);
         return $avaliableSlots['characterSlots'];
     }
+    
+    public function getCharacterExp($characterName){
+        //Returns character EXP
+        $connection = connect();
+        $sql = "SELECT `experience`FROM `user_character` WHERE `name`= :characterName";
+        $sth = $connection->prepare($sql);
+        $sth->execute(array(':characterName' => $characterName));
+        $avaliableSlots = $sth->fetch(PDO::FETCH_ASSOC);
+        return $avaliableSlots['experience'];
+    }
 
 }
