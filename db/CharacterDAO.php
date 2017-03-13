@@ -57,7 +57,7 @@ class CharacterDAO {
     function insertCharacter($characterName, $userId) {
         //Add character
         $checkUser = $this->checkOwner($characterName, $userId);
-        if ($checkUser) {
+        if (!$checkUser) {
             $connection = connect();
             $sql = "INSERT INTO `user_character` (`name`, `userId`) VALUES (:name, :userId)";
             $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
