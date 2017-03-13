@@ -5,13 +5,9 @@
  *
  * @author PATATA and mas886
  */
-
-
-
 include_once "Token.php";
 
 include_once "./db/CharacterMonsterDAO.php";
-
 
 class CharacterMonster {
 
@@ -52,21 +48,28 @@ class CharacterMonster {
         if (strlen($characterName) > 20 || strlen($characterName) < 5 || strlen($token) != 30) {
             return 0;
         }
-        
+
         $tkn = new Token;
         $userId = $tkn->getUserIdByToken($token);
 
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        
+
         $dao = new CharacterMonsterDAO;
         return $dao->characterMonsterList($characterName);
-        
     }
-    
-    public function getCharacterMonster($characterMonsterId){
-        $dao=new CharacterMonsterDAO;
+
+    public function getCharacterMonster($characterMonsterId, $token) {
+        if (!ctype_digit($characterMonsterId) || $token != 30) {
+            return 0;
+        }
+        $tkn = new Token;
+        $userId = $tkn->getUserIdByToken($token);
+        if ($userId == "Expired" || $userId == "Bad token") {
+            return $userId;
+        }
+        $dao = new CharacterMonsterDAO;
         return $dao->getCharacterMonster($characterMonsterId);
     }
     
