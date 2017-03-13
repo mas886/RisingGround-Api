@@ -68,7 +68,7 @@ class CharacterDAO {
                 return 0;
             }
         } else {
-            return $checkUser;
+            return "User Owner Error";
         }
     }
 
@@ -81,7 +81,7 @@ class CharacterDAO {
         if ($resultUserId == $userId) {
             return true;
         } else {
-            return "User owner error.";
+            return false;
         }
     }
     
