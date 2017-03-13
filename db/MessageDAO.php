@@ -10,7 +10,7 @@ include_once("./class/config.php");
 
 class MessageDAO {
 
-    function insertMessageIntoDb($userId, $receiver, $text) {
+    public function insertMessageIntoDb($userId, $receiver, $text) {
         $connection = connect();
         $sql = "INSERT INTO `user_inbox`(`userSendId`, `userReceiveId`, `content`) VALUES (:userId,(SELECT `id` FROM `user` WHERE name=:receiver),:text)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
@@ -18,7 +18,7 @@ class MessageDAO {
         return 1;
     }
     
-    function getMessagesById($userId) {
+    public function getMessagesById($userId) {
         $connection = connect();
         $sql = 'SELECT (SELECT `name`FROM `user`WHERE `id`= `userSendId`) as`from`, `id`, `sendDate`, `content` FROM `user_inbox` WHERE `userReceiveId`=:userId';
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
@@ -27,7 +27,7 @@ class MessageDAO {
         return $messages;
     }
     
-    function deleteMessageFromDb($tokenOwner, $messageId){
+    public function deleteMessageFromDb($tokenOwner, $messageId){
         $connection = connect();
         $sql = "DELETE FROM `user_inbox` WHERE `id`= :messageId AND `userReceiveId`=:userId";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));

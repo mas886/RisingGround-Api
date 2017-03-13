@@ -10,7 +10,7 @@ include_once("./db/GameMessageDAO.php");
 
 class GameMessage {
 
-    function getMessages($token) {
+    public function getMessages($token) {
         if (strlen($token) != 30) {
             return 0;
         } else {
@@ -25,7 +25,7 @@ class GameMessage {
         }
     }
 
-    function deleteMessage($token, $messageId) {
+    public function deleteMessage($token, $messageId) {
         if (strlen($token) != 30 || strlen($messageId) == 0) {
             return 0;
         } else {

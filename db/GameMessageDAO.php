@@ -10,7 +10,7 @@ include_once("./class/config.php");
 
 class GameMessageDAO {
     
-    function getMessagesById($userId) {
+    public function getMessagesById($userId) {
         $connection = connect();
         $sql = 'SELECT `nameSender`, `id`, `sendDate`, `content` FROM `user_game_inbox` WHERE `userId`=:userId';
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
@@ -19,7 +19,7 @@ class GameMessageDAO {
         return $messages;
     }
     
-    function deleteMessageFromDb($tokenOwner, $messageId) {
+    public function deleteMessageFromDb($tokenOwner, $messageId) {
         $connection = connect();
         $sql = "DELETE FROM `user_game_inbox` WHERE `id`=:messageId AND `userId`=:userId";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));

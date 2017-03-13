@@ -5,7 +5,7 @@ include_once("Token.php");
 
 class User {
 
-    function login($username, $password) {
+    public function login($username, $password) {
         //Check if we have something
         if (strlen($username) > 1 && strlen($password) > 1) {
             $dao=new UserDAO;
@@ -21,7 +21,7 @@ class User {
         }
     }
 
-    function logout($token) {
+    public function logout($token) {
         //Checks if the lenght is correct (tokens are 30 lengh long)
         if (strlen($token) == 30) {
             $tkn = new Token;
@@ -31,7 +31,7 @@ class User {
         }
     }
 
-    function signUp($username, $password, $email) {
+    public function signUp($username, $password, $email) {
         //We check if wehave all the variables correctly
         if (!$this->correctCredentials($username, $password, $email)) {
             return "Some field is incorrect.";
@@ -54,7 +54,7 @@ class User {
         }
     }
 
-    function exist($username) {
+    public function exist($username) {
         $dao=new UserDAO;
         return $dao->exist($username);
     }

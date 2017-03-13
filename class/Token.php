@@ -4,7 +4,7 @@ include_once("./db/TokenDAO.php");
 
 class Token {
 
-    function createToken($userName) {
+   public function createToken($userName) {
         //This prevents generating duplicate tokens
         do {
             $token = bin2hex(random_bytes(15));
@@ -17,7 +17,7 @@ class Token {
         return $token;
     }
 
-    function deleteToken($token) {
+    public function deleteToken($token) {
         //First we check if the token exist
         if ($this->exist($token)) {
             $dao=new TokenDAO;
@@ -32,7 +32,7 @@ class Token {
         return $dao->exist($token);
     }
     
-    function getUserIdByToken($token){
+    public function getUserIdByToken($token){
         $dao=new TokenDAO;
         return $dao->getUserIdByToken($token);
     }

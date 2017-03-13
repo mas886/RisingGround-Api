@@ -11,7 +11,7 @@ include_once("./db/MonsterDAO.php");
 class Monster {
     
     //Will return a monster based on it's ID
-    function getMonster($monsterId){
+    public function getMonster($monsterId){
         $dao=new MonsterDAO;
         return $dao->getMonster($monsterId);
     }

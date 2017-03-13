@@ -11,7 +11,7 @@ include_once("./db/MessageDAO.php");
 
 class Message {
 
-    function sendMessage($token, $receiver, $text) {
+    public function sendMessage($token, $receiver, $text) {
         if (strlen($token) != 30 || strlen($receiver) <= 1 || strlen($text) < 10 || strlen($text) > 800) {
             return 0;
         } else {
@@ -32,7 +32,7 @@ class Message {
         }
     }
 
-    function getMessages($token) {
+    public function getMessages($token) {
         if (strlen($token) != 30) {
             return 0;
         } else {
@@ -47,7 +47,7 @@ class Message {
         }
     }
 
-    function deleteMessage($token, $messageId){
+    public function deleteMessage($token, $messageId){
         if (strlen($token) != 30 || strlen($messageId)==0) {
             return 0;
         } else {

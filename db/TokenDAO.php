@@ -9,7 +9,7 @@ include_once("./class/config.php");
 
 class TokenDAO {
 
-    function deleteToken($token) {
+    public function deleteToken($token) {
         $connection = connect();
         $sql = "DELETE FROM `user_login_tokens` WHERE `user_login_tokens`.`token` = :token";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
@@ -21,7 +21,7 @@ class TokenDAO {
         }
     }
 
-    function cleanTokens($userName) {
+    public function cleanTokens($userName) {
         //This will clean expired user tokens by Username
         $connection = connect();
         $sql = "DELETE FROM `user_login_tokens` WHERE `expireDate`< CURRENT_TIME AND `userId` = (SELECT `id` FROM `user` WHERE name=:user)";
@@ -29,7 +29,7 @@ class TokenDAO {
         $sth->execute(array(':user' => $userName));
     }
 
-    function insertTokenIntoDB($userName, $token) {
+    public function insertTokenIntoDB($userName, $token) {
         //Inserts the token into the db with an expire date of +30 days
         $connection = connect();
         $sql = "INSERT INTO `user_login_tokens`(`userId`, `token`, `expireDate`) VALUES ((SELECT `id` FROM `user` WHERE name=:user),:token,DATE_ADD(CURRENT_TIME,INTERVAL 30 DAY))";
@@ -37,7 +37,7 @@ class TokenDAO {
         $sth->execute(array(':user' => $userName, ':token' => $token));
     }    
     
-    function getUserIdByToken($token){
+    public function getUserIdByToken($token){
         //Will return userID when the token is correct, if not will return 0 (When the token doesn'texist) or "Expired" if the token expired (old token)
         $connection = connect();
         $sql = "SELECT `userId`,`expireDate` FROM `user_login_tokens` WHERE `token`=:token";
@@ -58,7 +58,7 @@ class TokenDAO {
         }
     }
     
-    function cleanTokensById($userId) {
+    private function cleanTokensById($userId) {
         //This will clean expired user tokens by userId
         $connection = connect();
         $sql = "DELETE FROM `user_login_tokens` WHERE `expireDate`< CURRENT_TIME AND `userId` = :userId";
@@ -66,7 +66,7 @@ class TokenDAO {
         $sth->execute(array(':userId' => $userId));
     }
     
-    function exist($token) {
+    public function exist($token) {
         $connection = connect();
         $sql = "SELECT token FROM `user_login_tokens` WHERE token=:token";
         $tokendb = [];

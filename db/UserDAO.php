@@ -10,7 +10,7 @@ include_once("./class/config.php");
 
 class UserDAO {
     
-    function getPassword($username) {
+    public function getPassword($username) {
         $connection = connect();
         $sql = "SELECT password FROM `user` WHERE name=:name";
         $user = [];
@@ -22,7 +22,7 @@ class UserDAO {
     }
     
     
-    function addUser($username, $password, $email) {
+    public function addUser($username, $password, $email) {
         $connection = connect();
         //Hashing passwords will prevent future security problems
         $password = password_hash($password, PASSWORD_DEFAULT);
@@ -36,7 +36,7 @@ class UserDAO {
         }
     }
     
-    function exist($username) {
+    public function exist($username) {
         $connection = connect();
         $sql = "SELECT name FROM `user` WHERE name=:name";
         $user = [];
