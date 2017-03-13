@@ -8,7 +8,7 @@ include_once("./class/config.php");
 
 class CharacterDAO {
 
-    function selectCharacterList($userId) {
+    public function selectCharacterList($userId) {
         //Return a list of user's characters
         $connection = connect();
         $sql = "SELECT `name`, `experience` FROM `user_character` WHERE `userId` = :id";
@@ -18,7 +18,7 @@ class CharacterDAO {
         return $characters;
     }
 
-    function selectCharacter($characterName) {
+    public function selectCharacter($characterName) {
         //Get information of the character
         $connection = connect();
         $sql = "SELECT `userId`, `experience`, `buildSlots`, `buildId`, `amulet` FROM `user_character` WHERE `name` = :name";
@@ -28,7 +28,7 @@ class CharacterDAO {
         return $character;
     }
 
-    function updateExp($battleExp, $characterName, $userId) {
+    public function updateExp($battleExp, $characterName, $userId) {
         //Increase actual experience with battle experience
         $connection = connect();
         $sql = "UPDATE `user_character` SET `experience` = ((SELECT experience FROM `user_character` WHERE `name` = :name) + :battleExp) WHERE `name` = :name AND `userId` = :userId";
@@ -42,7 +42,7 @@ class CharacterDAO {
         }
     }
 
-    function updateBuild($buildId, $characterName) {
+    public function updateBuild($buildId, $characterName) {
         //Select build ID to battle
         $connection = connect();
         $sql = "UPDATE `user_character` SET `selectedBuildId` = :selectedBuildId WHERE `name` = :name";
@@ -55,7 +55,7 @@ class CharacterDAO {
         }
     }
 
-    function insertCharacter($characterName, $userId) {
+    public function insertCharacter($characterName, $userId) {
         //Add character
 
         $connection = connect();
@@ -82,7 +82,7 @@ class CharacterDAO {
         }
     }
 
-    function selectCharacterSlots($userId) {
+    public function selectCharacterSlots($userId) {
         //Select character slots from user
         $connection = connect();
         $sql = "SELECT characterSlots FROM `user` WHERE id = :id";
