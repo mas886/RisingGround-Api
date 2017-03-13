@@ -5,6 +5,8 @@
  *
  * @author PATATA
  */
+include_once "./class/config.php";
+
 class ItemDAO {
    
     public function getItem($itemId){
