@@ -74,7 +74,7 @@ class CharacterDAO {
 
     private function checkOwner($characterName, $userId) {
         $connection = connect();
-        $sql = "SELECT `userId` FROM `user_character` WHERE `name` = :characterName";
+        $sql = "SELECT `userId` FROM `user_character` WHERE `name` = :name";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':name' => $characterName));
         $resultUserId = $sth->fetch(PDO::FETCH_ASSOC);
