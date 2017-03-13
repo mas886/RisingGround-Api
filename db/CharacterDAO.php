@@ -7,18 +7,6 @@ include_once("./class/config.php");
 
 class CharacterDAO {
 
-    function insertCharacter($characterName, $userId) {
-        //Add character
-        $connection = connect();
-        $sql = "INSERT INTO `user_character` (`name`, `userId`) VALUES (:name, :userId)";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':name' => $characterName, ':userId' => $userId));
-        if ($sth->rowCount() != 0) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
     
     function selectCharacterList($userId) {
         //Return a list of user's characters
@@ -64,6 +52,36 @@ class CharacterDAO {
             return 1;
         } else {
             return 0;
+        }
+    }
+    function insertCharacter($characterName, $userId) {
+        //Add character
+        $checkUser = $this->checkOwner($characterName, $userId);
+        if ($checkUser) {
+            $connection = connect();
+            $sql = "INSERT INTO `user_character` (`name`, `userId`) VALUES (:name, :userId)";
+            $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+            $sth->execute(array(':name' => $characterName, ':userId' => $userId));
+            if ($sth->rowCount() != 0) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } else {
+            return $checkUser;
+        }
+    }
+
+    private function checkOwner($characterName, $userId) {
+        $connection = connect();
+        $sql = "SELECT `userId` FROM `user_character` WHERE `name` = :characterName";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':name' => $characterName));
+        $resultUserId = $sth->fetch(PDO::FETCH_ASSOC);
+        if ($resultUserId == $userId) {
+            return true;
+        } else {
+            return "User owner error.";
         }
     }
     
