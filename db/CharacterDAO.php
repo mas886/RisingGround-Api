@@ -78,7 +78,7 @@ class CharacterDAO {
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':name' => $characterName));
         $resultUserId = $sth->fetch(PDO::FETCH_ASSOC);
-        if ($resultUserId == $userId) {
+        if ($resultUserId['userId'] == $userId) {
             return true;
         } else {
             return false;
