@@ -27,6 +27,7 @@ include_once("./class/Message.php");
 include_once("./class/GameMessage.php");
 include_once("./class/Character.php");
 include_once("./class/CharacterMonster.php");
+include_once("./class/Dungeon.php");
 
 $app = new \Slim\App;
 
@@ -161,6 +162,17 @@ $app->post('/charactermonster/getcharactermonster', function (Request $request, 
     $characterMonster = new CharacterMonster;
     //Will return a 1 when succesfull
     $response->getBody()->write(json_encode(array('Message' => $characterMonster->getCharacterMonster($characterMonsterId, $token))));
+    return $response;
+});
+
+//Dungeon system functions
+
+$app->post('/dungeon/getavailabledungeons', function (Request $request, Response $response, $args = []) {
+    $characterName = $request->getParam('characterName');
+    $token = $request->getParam('token');
+    $dungeon= new Dungeon;
+    //Will return a 1 when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $dungeon->getCharacterAvailableDungeons($characterName,$token))));
     return $response;
 });
 
