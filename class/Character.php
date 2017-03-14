@@ -120,6 +120,21 @@ class Character {
         }
     }
     
+    private function calculateLevelFromExp($exp){
+        //Outputs lvl based on the exp
+        if($exp>=0){
+            $lvl=0;
+            $a=0;
+            do{
+                $lvl+=1;
+                $a += floor($lvl+300*pow(2, ($lvl/7))); 
+            }while(floor($a/4)<=$exp);
+        
+            return $lvl;
+        }
+        return -1;
+    }
+    
     private function calculateExpFromLvl($lvl) {
         //Output exp needed to lvl
         $a=0;
