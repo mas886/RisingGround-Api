@@ -104,5 +104,20 @@ class Character {
         $dao = new CharacterDAO;
         return $dao->checkOwner($characterName, $userId);
     }
+    
+    public function getCharacterExp($characterName){
+        //Returns -1 if the character doesn't exist
+        if(strlen($characterName)>1){
+            $dao = new CharacterDAO;
+            $exp = $dao->getCharacterExp($characterName);
+            if($exp!=NULL){
+                return $exp;
+            }else{
+                return -1;
+            }
+        }else{
+            return -1;
+        }
+    }
 
 }
