@@ -119,5 +119,15 @@ class Character {
             return -1;
         }
     }
+    
+    private function calculateExpFromLvl($lvl) {
+        //Output exp needed to lvl
+        $a=0;
+        for($x=1; $x<$lvl; $x++) {
+            $a += floor($x+300*pow(2, ($x/7)));
+        }
+        return floor($a/4);
+    }
+
 
 }
