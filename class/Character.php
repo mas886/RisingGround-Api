@@ -120,6 +120,11 @@ class Character {
         }
     }
     
+    public function getCharacterLevel($characterName){
+        $charExp= $this->getCharacterExp($characterName);
+        return $this->calculateLevelFromExp($charExp);
+    }
+    
     private function calculateLevelFromExp($exp){
         //Outputs lvl based on the exp
         if($exp>=0){
