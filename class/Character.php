@@ -121,6 +121,7 @@ class Character {
     }
     
     public function getCharacterLevel($characterName){
+        //Not indexed (by now)
         $charExp= $this->getCharacterExp($characterName);
         return $this->calculateLevelFromExp($charExp);
     }
