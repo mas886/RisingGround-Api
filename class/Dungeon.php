@@ -32,6 +32,14 @@ class Dungeon {
         }
     }
 
+    private function checkCharacterDungeonAccess($characterName, $dungeonId) {
+        //On this function we follow a sequence of checks, once all are passed "true"is returned 
+        if(!$this->levelAccessCheck($characterName, $dungeonId)){
+            return false;
+        }
+        return true;
+    }
+
     private function levelAccessCheck($characterName, $dungeonId) {
         $dao = new DungeonDAO;
         if($dao->checkCharacterDungeonAccessLvl($dungeonId, $characterName)==FALSE){
