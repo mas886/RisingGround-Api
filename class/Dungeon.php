@@ -24,11 +24,21 @@ class Dungeon {
             //Check character belonging
             if (!$char->checkOwner($characterName, $tokenOwner)) {
                 return "Wrong Character";
-            }else{
+            } else {
                 //Once we passed everything we proceed to get the available dungeons
                 $dao = new DungeonDAO;
                 return $dao->getCharacterDungeons($characterName);
             }
+        }
+    }
+
+    private function levelAccessCheck($characterName, $dungeonId) {
+        $dao = new DungeonDAO;
+        if($dao->checkCharacterDungeonAccessLvl($dungeonId, $characterName)==FALSE){
+            //If the query results is FALSE means the user have no access to the dungeon
+            return false;
+        }else{
+            return true;
         }
     }
 
