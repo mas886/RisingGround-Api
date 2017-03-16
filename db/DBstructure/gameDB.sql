@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 01, 2017 at 10:29 AM
+-- Generation Time: Mar 16, 2017 at 11:39 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
--- PHP Version: 7.0.15-0ubuntu0.16.10.2
+-- PHP Version: 7.0.15-0ubuntu0.16.10.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -100,6 +100,16 @@ CREATE TABLE `dungeon` (
   `minLevel` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Dungeon list.';
 
+--
+-- Dumping data for table `dungeon`
+--
+
+INSERT INTO `dungeon` (`id`, `name`, `description`, `minLevel`) VALUES
+(1, 'dungeon1', 'First test dungeon.', 1),
+(2, 'dungeon2', 'Second test dungeon.', 1),
+(3, 'dungeon3', 'Third test dungeon.', 3),
+(4, 'dungeon4', 'Fourth test dungeon.', 99);
+
 -- --------------------------------------------------------
 
 --
@@ -121,9 +131,22 @@ CREATE TABLE `dungeon_character_status` (
 CREATE TABLE `dungeon_level` (
   `id` int(5) NOT NULL,
   `dungeonId` int(5) NOT NULL,
+  `position` int(3) NOT NULL,
   `name` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
   `description` text COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='List of the dungeon sub-levels.';
+
+--
+-- Dumping data for table `dungeon_level`
+--
+
+INSERT INTO `dungeon_level` (`id`, `dungeonId`, `position`, `name`, `description`) VALUES
+(1, 1, 0, 'Dungeon 1 Lvl 1', 'First Dunegon Lvl'),
+(2, 1, 1, 'Dungeon 1 Lvl 2', 'Second Dunegon Lvl'),
+(3, 1, 2, 'Dungeon 1 Lvl 3', 'Third Dunegon Lvl'),
+(4, 3, 0, 'Dungeon 3 Lvl 1', 'First Dunegon Lvl'),
+(5, 3, 1, 'Dungeon 3 Lvl 2', 'Second Dunegon Lvl'),
+(6, 3, 2, 'Dungeon 3 Lvl 3', 'Third Dunegon Lvl');
 
 -- --------------------------------------------------------
 
@@ -378,7 +401,7 @@ ALTER TABLE `dungeon_level_stages`
 --
 -- Indexes for table `items`
 --
-ALTER TABLE `items`
+ALTER TABLE `item`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -463,12 +486,12 @@ ALTER TABLE `character_monster`
 -- AUTO_INCREMENT for table `dungeon`
 --
 ALTER TABLE `dungeon`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `dungeon_level`
 --
 ALTER TABLE `dungeon_level`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `dungeon_level_stages`
 --
@@ -477,7 +500,7 @@ ALTER TABLE `dungeon_level_stages`
 --
 -- AUTO_INCREMENT for table `items`
 --
-ALTER TABLE `items`
+ALTER TABLE `item`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `monster`
@@ -538,7 +561,7 @@ ALTER TABLE `character_build`
 --
 ALTER TABLE `character_item`
   ADD CONSTRAINT `character_item_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
-  ADD CONSTRAINT `character_item_ibfk_2` FOREIGN KEY (`itemId`) REFERENCES `items` (`id`);
+  ADD CONSTRAINT `character_item_ibfk_2` FOREIGN KEY (`itemId`) REFERENCES `item` (`id`);
 
 --
 -- Constraints for table `character_monster`
@@ -583,13 +606,13 @@ ALTER TABLE `monster_stats`
 -- Constraints for table `shop_gems`
 --
 ALTER TABLE `shop_gems`
-  ADD CONSTRAINT `shop_gems_ibfk_1` FOREIGN KEY (`itemId`) REFERENCES `items` (`id`);
+  ADD CONSTRAINT `shop_gems_ibfk_1` FOREIGN KEY (`itemId`) REFERENCES `item` (`id`);
 
 --
 -- Constraints for table `shop_gold`
 --
 ALTER TABLE `shop_gold`
-  ADD CONSTRAINT `shop_gold_ibfk_1` FOREIGN KEY (`itemId`) REFERENCES `items` (`id`);
+  ADD CONSTRAINT `shop_gold_ibfk_1` FOREIGN KEY (`itemId`) REFERENCES `item` (`id`);
 
 --
 -- Constraints for table `user_character`
