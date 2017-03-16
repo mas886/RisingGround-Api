@@ -144,7 +144,7 @@ CREATE TABLE `dungeon_level_stages` (
 -- Table structure for table `items`
 --
 
-CREATE TABLE `items` (
+CREATE TABLE `item` (
   `id` int(5) NOT NULL,
   `name` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `description` text COLLATE utf8_spanish_ci NOT NULL,
