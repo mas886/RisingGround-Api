@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 16, 2017 at 11:39 PM
+-- Generation Time: Mar 16, 2017 at 11:45 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.15-0ubuntu0.16.10.4
 
@@ -164,7 +164,7 @@ CREATE TABLE `dungeon_level_stages` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `items`
+-- Table structure for table `item`
 --
 
 CREATE TABLE `item` (
@@ -399,7 +399,7 @@ ALTER TABLE `dungeon_level_stages`
   ADD KEY `dungeonLevelId` (`dungeonLevelId`);
 
 --
--- Indexes for table `items`
+-- Indexes for table `item`
 --
 ALTER TABLE `item`
   ADD PRIMARY KEY (`id`);
@@ -498,7 +498,7 @@ ALTER TABLE `dungeon_level`
 ALTER TABLE `dungeon_level_stages`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `items`
+-- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
