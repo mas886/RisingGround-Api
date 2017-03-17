@@ -46,7 +46,7 @@ class DungeonDAO {
         }
     }
     
-    public function listDungeonLvls($dungeonId,$characterName){
+    public function listDungeonLevels($dungeonId,$characterName){
         //Will return all dungeon lvls from a dungeon + a field called "available" with values "yes" or "no" depending on the availability of the lvl
         //The availability of the lvl depends of the current lvl (at dungeon_character_status)'s position  (i.e if the position of the current stored 
         //lvl is x all the lvls at position x+1 will be marked as available, also in case any level status is stored any lvl with position "0" will be

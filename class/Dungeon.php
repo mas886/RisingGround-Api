@@ -54,7 +54,7 @@ class Dungeon {
             }
             //Once we passed everything we proceed to get the available dungeons
             $dao=new DungeonDAO;
-            return $dao->listDungeonLvls($dungeonId, $characterName);
+            return $dao->listDungeonLevels($dungeonId, $characterName);
         }
     }
 
