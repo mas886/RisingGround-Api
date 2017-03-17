@@ -68,12 +68,7 @@ class Dungeon {
 
     private function levelAccessCheck($characterName, $dungeonId) {
         $dao = new DungeonDAO;
-        if ($dao->checkCharacterDungeonAccessLvl($dungeonId, $characterName) == FALSE) {
-            //If the query results is FALSE means the user have no access to the dungeon
-            return false;
-        } else {
-            return true;
-        }
+        return $dao->checkCharacterDungeonAccessLvl($dungeonId, $characterName);
     }
 
 }
