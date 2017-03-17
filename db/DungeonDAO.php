@@ -60,4 +60,24 @@ class DungeonDAO {
         return $dungeonLevelData;
     }
     
+    public function checkCharacterDungeonLevelAccess($levelId,$characterName){
+        //Will return true if a character have access to a concrete dungeon level
+        $connection = connect();
+        $sql= "SELECT
+            IF(((SELECT `position` FROM `dungeon_character_status` JOIN `dungeon_level` ON `dungeon_level`.`id`= `dungeon_character_status`.`levelId` WHERE `dungeon_character_status`.`characterId`= (SELECT `id` from `user_character` WHERE `name`= :characterName)  AND `dungeon_level`.`dungeonId`= (SELECT `dungeonId` FROM `dungeon_level` WHERE `id`= :levelId ) )>=`position`-1) OR (`position`=0),'yes','no'
+            ) as `available` 
+            FROM `dungeon_level` 
+            WHERE `id`= :levelId
+            ORDER BY `dungeon_level`.`position`  ASC";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterName' => $characterName,':levelId' => $levelId));
+        $dungeonLevelData = $sth->fetch(PDO::FETCH_ASSOC);
+        if($dungeonLevelData['available']=="yes"){
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
+    
 }
