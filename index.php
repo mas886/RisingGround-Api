@@ -176,4 +176,14 @@ $app->post('/dungeon/getavailabledungeons', function (Request $request, Response
     return $response;
 });
 
+$app->post('/dungeon/listdungeonlevels', function (Request $request, Response $response, $args = []) {
+    $characterName = $request->getParam('characterName');
+    $token = $request->getParam('token');
+    $dungeonId= $request->getParam('dungeonId');
+    $dungeon= new Dungeon;
+    //Will return a 1 when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $dungeon->listDungeonLevels($characterName, $token, $dungeonId))));
+    return $response;
+});
+
 $app->run();
