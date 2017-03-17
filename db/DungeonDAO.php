@@ -39,7 +39,11 @@ class DungeonDAO {
         $dungeonData = $sth->fetch(PDO::FETCH_ASSOC);
         //If there's NO access to the dungeon FALSE is returned
         //Note: If a dungeon exist but doesn't contain any lvl even if the minLvl requirement is met FALSE will be returned
-        return $dungeonData;
+        if($dungeonData==false){
+            return false;
+        }else{
+            return true;
+        }
     }
     
     public function listDungeonLvls($dungeonId,$characterName){
