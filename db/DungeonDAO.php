@@ -42,4 +42,22 @@ class DungeonDAO {
         return $dungeonData;
     }
     
+    public function listDungeonLvls($dungeonId,$characterName){
+        //Will return all dungeon lvls from a dungeon + a field called "available" with values "yes" or "no" depending on the availability of the lvl
+        //The availability of the lvl depends of the current lvl (at dungeon_character_status)'s position  (i.e if the position of the current stored 
+        //lvl is x all the lvls at position x+1 will be marked as available, also in case any level status is stored any lvl with position "0" will be
+        //marked always available.
+        $connection = connect();
+        $sql = "SELECT `id`, `dungeonId`,`position`, `name`, `description`, 
+            IF(((SELECT `position` FROM `dungeon_character_status` JOIN `dungeon_level` ON `dungeon_level`.`id`= `dungeon_character_status`.`levelId` WHERE `dungeon_character_status`.`characterId`= (SELECT `id` from `user_character` WHERE `name`=:characterName)  AND `dungeon_level`.`dungeonId`=:dungeonId  )>=`position`-1) OR (`position`=0),'yes','no'
+            ) as `available` 
+            FROM `dungeon_level` 
+            WHERE `dungeonId` = :dungeonId  
+            ORDER BY `dungeon_level`.`position`  ASC";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterName' => $characterName,':dungeonId' => $dungeonId));
+        $dungeonLevelData = $sth->fetchAll(PDO::FETCH_ASSOC);
+        return $dungeonLevelData;
+    }
+    
 }
