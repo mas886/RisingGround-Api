@@ -70,5 +70,12 @@ class Dungeon {
         $dao = new DungeonDAO;
         return $dao->checkCharacterDungeonAccessLvl($dungeonId, $characterName);
     }
+    
+    private function checkCharacterDungeonAccessByLevelId($characterName, $levelId) {
+        //Gets the dungeon Id of the level and checks the character access to that dungeon
+        $dao=new DungeonDAO;
+        $dungeonId=$dao->getDungeonId($levelId);
+        return $this->checkCharacterDungeonAccess($characterName, $dungeonId);
+    }
 
 }
