@@ -84,4 +84,19 @@ class DungeonDAO {
         
     }
     
+    private function getLastCharacterLevelStage($levelId,$characterName){
+        //Returns the position of the last lvl stage the character is at `dungeon_level_character_status` if there's no state 
+        //for a character on that lvl in the db 0 will be returned
+        $connection = connect();
+        $sql = "SELECT `position` FROM `dungeon_level_character_status`  JOIN `dungeon_level_stages` ON  `dungeon_level_stages`.`id` = `dungeon_level_character_status`.`stageId` WHERE `dungeon_level_stages`.`dungeonLevelId`= :levelId AND `dungeon_level_character_status`.`characterId`= (SELECT `id`FROM `user_character` WHERE `name`= :characterName)";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterName' => $characterName,':levelId' => $levelId));
+        $position = $sth->fetch(PDO::FETCH_ASSOC);
+        if($position!=false){
+            return (int)$position['position'];
+        }else{
+            return 0;
+        }
+    }
+    
 }
