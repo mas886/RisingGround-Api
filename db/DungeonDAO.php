@@ -64,7 +64,7 @@ class DungeonDAO {
         return $dungeonLevelData;
     }
     
-    public function checkCharacterDungeonLevelAccess($levelId,$characterName){
+    public function checkCharacterDungeonLevelAccess($characterName,$levelId){
         //Will return true if a character have access to a concrete dungeon level
         $connection = connect();
         $sql= "SELECT
