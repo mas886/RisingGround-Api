@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 16, 2017 at 11:45 PM
+-- Generation Time: Mar 19, 2017 at 08:43 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.15-0ubuntu0.16.10.4
 
@@ -151,15 +151,57 @@ INSERT INTO `dungeon_level` (`id`, `dungeonId`, `position`, `name`, `description
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `dungeon_level_character_status`
+--
+
+CREATE TABLE `dungeon_level_character_status` (
+  `dungeonLevelId` int(5) NOT NULL,
+  `characterId` int(12) NOT NULL,
+  `stageId` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `dungeon_level_stages`
 --
 
 CREATE TABLE `dungeon_level_stages` (
   `id` int(5) NOT NULL,
   `dungeonLevelId` int(5) NOT NULL,
-  `number` int(3) NOT NULL,
-  `content` text COLLATE utf8_spanish_ci NOT NULL
+  `typeId` int(2) NOT NULL,
+  `position` int(3) NOT NULL,
+  `content` text COLLATE utf8_spanish_ci NOT NULL,
+  `reward` text COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Stages/Phases or "screens" of each dungeon level.';
+
+--
+-- Dumping data for table `dungeon_level_stages`
+--
+
+INSERT INTO `dungeon_level_stages` (`id`, `dungeonLevelId`, `typeId`, `position`, `content`, `reward`) VALUES
+(1, 3, 1, 0, 'That\'s a try.', ''),
+(2, 3, 1, 1, 'Second Text', ''),
+(3, 3, 1, 2, 'Third Text', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dungeon_level_stages_type`
+--
+
+CREATE TABLE `dungeon_level_stages_type` (
+  `id` int(2) NOT NULL,
+  `name` varchar(20) COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Dumping data for table `dungeon_level_stages_type`
+--
+
+INSERT INTO `dungeon_level_stages_type` (`id`, `name`) VALUES
+(1, 'text'),
+(2, 'combat');
 
 -- --------------------------------------------------------
 
@@ -325,6 +367,8 @@ CREATE TABLE `user_login_tokens` (
   `expireDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Contains user login tokens.';
 
+-- --------------------------------------------------------
+
 --
 -- Indexes for dumped tables
 --
@@ -392,11 +436,26 @@ ALTER TABLE `dungeon_level`
   ADD KEY `dungeonId` (`dungeonId`);
 
 --
+-- Indexes for table `dungeon_level_character_status`
+--
+ALTER TABLE `dungeon_level_character_status`
+  ADD PRIMARY KEY (`dungeonLevelId`,`characterId`),
+  ADD KEY `stageId` (`stageId`),
+  ADD KEY `characterId` (`characterId`);
+
+--
 -- Indexes for table `dungeon_level_stages`
 --
 ALTER TABLE `dungeon_level_stages`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `dungeonLevelId` (`dungeonLevelId`);
+  ADD KEY `dungeonLevelId` (`dungeonLevelId`),
+  ADD KEY `typeId` (`typeId`);
+
+--
+-- Indexes for table `dungeon_level_stages_type`
+--
+ALTER TABLE `dungeon_level_stages_type`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `item`
@@ -496,7 +555,12 @@ ALTER TABLE `dungeon_level`
 -- AUTO_INCREMENT for table `dungeon_level_stages`
 --
 ALTER TABLE `dungeon_level_stages`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `dungeon_level_stages_type`
+--
+ALTER TABLE `dungeon_level_stages_type`
+  MODIFY `id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `item`
 --
@@ -591,10 +655,19 @@ ALTER TABLE `dungeon_level`
   ADD CONSTRAINT `dungeon_level_ibfk_1` FOREIGN KEY (`dungeonId`) REFERENCES `dungeon` (`id`);
 
 --
+-- Constraints for table `dungeon_level_character_status`
+--
+ALTER TABLE `dungeon_level_character_status`
+  ADD CONSTRAINT `dungeon_level_character_status_ibfk_1` FOREIGN KEY (`dungeonLevelId`) REFERENCES `dungeon_level` (`id`),
+  ADD CONSTRAINT `dungeon_level_character_status_ibfk_2` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
+  ADD CONSTRAINT `dungeon_level_character_status_ibfk_3` FOREIGN KEY (`stageId`) REFERENCES `dungeon_level_stages` (`id`);
+
+--
 -- Constraints for table `dungeon_level_stages`
 --
 ALTER TABLE `dungeon_level_stages`
-  ADD CONSTRAINT `dungeon_level_stages_ibfk_1` FOREIGN KEY (`dungeonLevelId`) REFERENCES `dungeon_level` (`id`);
+  ADD CONSTRAINT `dungeon_level_stages_ibfk_1` FOREIGN KEY (`dungeonLevelId`) REFERENCES `dungeon_level` (`id`),
+  ADD CONSTRAINT `dungeon_level_stages_ibfk_2` FOREIGN KEY (`typeId`) REFERENCES `dungeon_level_stages_type` (`id`);
 
 --
 -- Constraints for table `monster_stats`
