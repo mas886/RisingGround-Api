@@ -112,4 +112,15 @@ class DungeonDAO {
         }
     }
     
+    public function getDungeonId($levelId){
+        //Returns de dungeon Id based on the level Id
+        $connection = connect();
+        $sql = "SELECT `dungeonId` FROM `dungeon_level` WHERE `id`= :levelId";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':levelId' => $levelId));
+        $dungeonId = $sth->fetch(PDO::FETCH_ASSOC);
+        return (int)$dungeonId['dungeonId'];
+        
+    }
+    
 }
