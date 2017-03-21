@@ -29,7 +29,7 @@ class CharacterMonster {
     }
 
     public function deleteMonster($characterMonsterId, $token) {
-        if (!ctype_digit($characterMonsterId) || sizeof($token) != 30) {
+        if (!is_numeric($characterMonsterId) || sizeof($token) != 30) {
             return 0;
         }
 
@@ -61,7 +61,7 @@ class CharacterMonster {
     }
 
     public function getCharacterMonster($characterMonsterId, $token) {
-        if (!ctype_digit($characterMonsterId) || $token != 30) {
+        if (!is_numeric($characterMonsterId) || $token != 30) {
             return 0;
         }
         $tkn = new Token;
@@ -74,7 +74,7 @@ class CharacterMonster {
     }
     
     public function addExp($experience, $characterMonsterId, $token){
-        if(!ctype_digit($experience) || sizeof($characterMonsterId) != 18 || !ctype_digit($characterMonsterId) || strlen($token) != 30){
+        if(!is_numeric($experience) || sizeof($characterMonsterId) != 18 || !is_numeric($characterMonsterId) || strlen($token) != 30){
             return 0;
         }
         
@@ -86,7 +86,7 @@ class CharacterMonster {
         }
     }
     public function getLevel($characterMonsterId, $token) {
-        if (sizeof($characterMonsterId) != 18 || !ctype_digit($characterMonsterId) || strlen($token) != 30) {
+        if (sizeof($characterMonsterId) != 18 || !is_numeric($characterMonsterId) || strlen($token) != 30) {
             return 0;
         }
 
