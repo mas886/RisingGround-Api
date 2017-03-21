@@ -71,7 +71,7 @@ class Character {
 
     public function addExp($battleExp, $characterName, $token) {
         //After a battle, experience of character is increased with battleExp
-        if ($token != 30 || !ctype_digit($battleExp) || strlen($characterName) > 12 || strlen($characterName) < 1) {
+        if ($token != 30 || !is_numeric($battleExp) || strlen($characterName) > 12 || strlen($characterName) < 1) {
             return 0;
         } else {
             $tkn = new Token;
@@ -87,7 +87,7 @@ class Character {
 
     public function selectBuild($buildId, $characterName, $token) {
         //select the build for battle of the character
-        if (strlen($characterName) > 20 || strlen($characterName) < 1 || strlen($token) != 30 || !ctype_digit($buildId)) {
+        if (strlen($characterName) > 20 || strlen($characterName) < 1 || strlen($token) != 30 || !is_numeric($buildId)) {
             return 0;
         }
         $tkn = new Token;
