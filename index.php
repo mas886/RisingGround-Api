@@ -209,4 +209,15 @@ $app->post('/build/addbuild', function (Request $request, Response $response, $a
     return $response;
 });
 
+$app->post('/build/addmonster', function (Request $request, Response $response, $args = []) { 
+    $characterName = $request->getParam('characterName'); 
+    $characterMonsterId = $request->getParam('characterMonsterId'); 
+    $buildId = $request->getParam('buildId'); 
+    $token = $request->getParam('token'); 
+    $build = new Build; 
+    //Will return level stages when successful 
+    $response->getBody()->write(json_encode(array('Message' => $build->addMonster($characterName, $characterMonsterId, $buildId, $token)))); 
+    return $response; 
+}); 
+
 $app->run();
