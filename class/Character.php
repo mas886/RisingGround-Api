@@ -6,6 +6,7 @@
  */
 include_once("./db/CharacterDAO.php");
 include_once("Token.php");
+include_once("./mechanics/Level.php");
 
 class Character {
 
@@ -122,33 +123,9 @@ class Character {
     
     public function getCharacterLevel($characterName){
         //Not indexed (by now)
+        $lvl=new Level;
         $charExp= $this->getCharacterExp($characterName);
-        return $this->calculateLevelFromExp($charExp);
+        return $lvl->calculatePlayerLevel($charExp);
     }
-    
-    private function calculateLevelFromExp($exp){
-        //Outputs lvl based on the exp
-        if($exp>=0){
-            $lvl=0;
-            $a=0;
-            do{
-                $lvl+=1;
-                $a += floor($lvl+300*pow(2, ($lvl/7))); 
-            }while(floor($a/4)<=$exp);
-        
-            return $lvl;
-        }
-        return -1;
-    }
-    
-    private function calculateExpFromLvl($lvl) {
-        //Output exp needed to lvl
-        $a=0;
-        for($x=1; $x<$lvl; $x++) {
-            $a += floor($x+300*pow(2, ($x/7)));
-        }
-        return floor($a/4);
-    }
-
 
 }
