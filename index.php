@@ -28,6 +28,7 @@ include_once("./class/GameMessage.php");
 include_once("./class/Character.php");
 include_once("./class/CharacterMonster.php");
 include_once("./class/Dungeon.php");
+include_once("./class/Build.php");
 
 $app = new \Slim\App;
 
@@ -170,17 +171,17 @@ $app->post('/charactermonster/getcharactermonster', function (Request $request, 
 $app->post('/dungeon/getavailabledungeons', function (Request $request, Response $response, $args = []) {
     $characterName = $request->getParam('characterName');
     $token = $request->getParam('token');
-    $dungeon= new Dungeon;
+    $dungeon = new Dungeon;
     //Will return a 1 when succesfull
-    $response->getBody()->write(json_encode(array('Message' => $dungeon->getCharacterAvailableDungeons($characterName,$token))));
+    $response->getBody()->write(json_encode(array('Message' => $dungeon->getCharacterAvailableDungeons($characterName, $token))));
     return $response;
 });
 
 $app->post('/dungeon/listdungeonlevels', function (Request $request, Response $response, $args = []) {
     $characterName = $request->getParam('characterName');
     $token = $request->getParam('token');
-    $dungeonId= $request->getParam('dungeonId');
-    $dungeon= new Dungeon;
+    $dungeonId = $request->getParam('dungeonId');
+    $dungeon = new Dungeon;
     //Will return a 1 when succesfull
     $response->getBody()->write(json_encode(array('Message' => $dungeon->listDungeonLevels($characterName, $token, $dungeonId))));
     return $response;
@@ -189,10 +190,22 @@ $app->post('/dungeon/listdungeonlevels', function (Request $request, Response $r
 $app->post('/dungeon/getlevelstages', function (Request $request, Response $response, $args = []) {
     $characterName = $request->getParam('characterName');
     $token = $request->getParam('token');
-    $levelId= $request->getParam('levelId');
-    $dungeon= new Dungeon;
+    $levelId = $request->getParam('levelId');
+    $dungeon = new Dungeon;
     //Will return level stages when successful
     $response->getBody()->write(json_encode(array('Message' => $dungeon->getCharacterDungeonLevelStages($characterName, $token, $levelId))));
+    return $response;
+});
+
+//Build system functions
+
+$app->post('/build/addbuild', function (Request $request, Response $response, $args = []) {
+    $characterName = $request->getParam('characterName');
+    $characterMonsterId = $request->getParam('characterMonsterId');
+    $token = $request->getParam('token');
+    $build = new Build;
+    //Will return level stages when successful
+    $response->getBody()->write(json_encode(array('Message' => $build->addBuild($characterName, $characterMonsterId, $token))));
     return $response;
 });
 
