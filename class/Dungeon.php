@@ -7,6 +7,7 @@
  */
 include_once("./class/Character.php");
 include_once("./db/DungeonDAO.php");
+include_once("./mechanics/DungeonSys.php");
 
 class Dungeon {
 
@@ -100,7 +101,8 @@ class Dungeon {
                 return "Access Dennied";
             }
             //Once we passed everything we proceed to get the available dungeons
-            return $dao->listCharacterDungeonLevelStages($levelId, $characterName);
+            $dun= new DungeonSys;
+            return $dun->getLevelStages($levelId, $characterName);
         }
     }
 
