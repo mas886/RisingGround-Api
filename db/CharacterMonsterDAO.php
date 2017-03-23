@@ -62,7 +62,7 @@ class CharacterMonsterDAO {
     public function addExp($experience, $characterMonsterId, $userId) {
         $connection = connect();
         $checkOwner = $this->checkMonsterOwner($characterMonsterId, $userId);
-        if ($checkOwner == 1) {
+        if ($checkOwner) {
             $sql = "UPDATE `character_monster` SET `experience` = `experience` + :experience WHERE `id` = :characterMonsterId";
             $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
             $sth->execute(array(':experience' => $experience, ':characterMonsterId' => $characterMonsterId));
@@ -72,7 +72,7 @@ class CharacterMonsterDAO {
                 return 0;
             }
         } else {
-            return $checkOwner;
+            return "Character Monster Owner Error.";
         }
     }
 
@@ -95,9 +95,9 @@ class CharacterMonsterDAO {
         $sth->execute(array(':characterMonsterId' => $characterMonsterId));
         $userIdValue = $sth->fetch(PDO::FETCH_ASSOC);
         if ($userIdValue['userId'] == $userId) {
-            return 1;
+            return true;
         } else {
-            return "Owner Error";
+            return false;
         }
     }
 
