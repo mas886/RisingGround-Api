@@ -29,6 +29,8 @@ include_once("./class/Character.php");
 include_once("./class/CharacterMonster.php");
 include_once("./class/Dungeon.php");
 include_once("./class/Build.php");
+include_once("./class/Item.php");
+include_once("./class/Monster.php");
 
 $app = new \Slim\App;
 
@@ -204,7 +206,7 @@ $app->post('/build/addbuild', function (Request $request, Response $response, $a
     $characterMonsterId = $request->getParam('characterMonsterId');
     $token = $request->getParam('token');
     $build = new Build;
-    //Will return level stages when successful
+    //Will return 1 when successful
     $response->getBody()->write(json_encode(array('Message' => $build->addBuild($characterName, $characterMonsterId, $token))));
     return $response;
 });
@@ -215,9 +217,31 @@ $app->post('/build/addmonster', function (Request $request, Response $response, 
     $buildId = $request->getParam('buildId'); 
     $token = $request->getParam('token'); 
     $build = new Build; 
-    //Will return level stages when successful 
+    //Will return 1 when successful 
     $response->getBody()->write(json_encode(array('Message' => $build->addMonster($characterName, $characterMonsterId, $buildId, $token)))); 
     return $response; 
 }); 
+
+
+//Monster 
+$app->post('/monster/getmonster', function (Request $request, Response $response, $args = []) { 
+    $monsterId = $request->getParam('monsterId'); 
+    $token = $request->getParam('token'); 
+    $monster = new Monster; 
+    //Will return monster values array when successful 
+    $response->getBody()->write(json_encode(array('Message' => $monster->getMonster($monsterId, $token)))); 
+    return $response; 
+}); 
+
+//Item
+$app->post('/item/getitem', function (Request $request, Response $response, $args = []) { 
+    $itemId = $request->getParam('itemId'); 
+    $token = $request->getParam('token'); 
+    $item = new Item; 
+    //Will return item values array when successful 
+    $response->getBody()->write(json_encode(array('Message' => $item->getItem($itemId, $token)))); 
+    return $response; 
+}); 
+
 
 $app->run();
