@@ -90,7 +90,7 @@ class DungeonDAO {
         $position=$this->getLastCharacterLevelStage($levelId, $characterName);
         $connection = connect();
         //We get the levels till the last character's position
-        $sql = "SELECT `dungeon_level_stages`.`id`, `dungeon_level_stages`.`dungeonLevelId`, `dungeon_level_stages_type`.`name`, `dungeon_level_stages`.`position`, `dungeon_level_stages`.`content` FROM `dungeon_level_stages` JOIN `dungeon_level_stages_type` ON `dungeon_level_stages_type`.id = `dungeon_level_stages`.`typeId` WHERE `dungeonLevelId`= :levelId AND `dungeon_level_stages`.`position`<= :position";
+        $sql = "SELECT `dungeon_level_stages`.`id`, `dungeon_level_stages`.`dungeonLevelId`, `dungeon_level_stages_type`.`name` as `type`, `dungeon_level_stages`.`position`, `dungeon_level_stages`.`content` FROM `dungeon_level_stages` JOIN `dungeon_level_stages_type` ON `dungeon_level_stages_type`.id = `dungeon_level_stages`.`typeId` WHERE `dungeonLevelId`= :levelId AND `dungeon_level_stages`.`position`<= :position";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':levelId' => $levelId, ':position' => $position));
         $levels= $sth->fetchAll(PDO::FETCH_ASSOC);
