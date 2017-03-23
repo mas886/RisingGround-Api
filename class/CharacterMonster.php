@@ -73,18 +73,11 @@ class CharacterMonster {
         return $dao->getCharacterMonster($characterMonsterId);
     }
     
-    public function addExp($experience, $characterMonsterId, $token){
-        if(!is_numeric($experience) || sizeof($characterMonsterId) != 18 || !is_numeric($characterMonsterId) || strlen($token) != 30){
-            return 0;
-        }
-        
-        $tkn = new Token;
-        $userId = $tkn->getUserIdByToken($token);
-        
-        if ($userId == "Expired" || $userId == "Bad token") {
-            return $userId;
-        }
+    public function addExp($experience, $characterMonsterId){
+        $dao = new CharacterMonsterDAO;
+        return $dao->addExp($experience, $characterMonsterId);
     }
+    
     public function getLevel($characterMonsterId, $token) {
         if (sizeof($characterMonsterId) != 18 || !is_numeric($characterMonsterId) || strlen($token) != 30) {
             return 0;
