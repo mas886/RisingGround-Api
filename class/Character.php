@@ -69,20 +69,10 @@ class Character {
         }
     }
 
-    public function addExp($battleExp, $characterName, $token) {
+    public function addExp($battleExp, $characterName) {
         //After a battle, experience of character is increased with battleExp
-        if ($token != 30 || !is_numeric($battleExp) || strlen($characterName) > 12 || strlen($characterName) < 1) {
-            return 0;
-        } else {
-            $tkn = new Token;
-            $userId = $tkn->getUserIdByToken($token);
-            if ($userId == "Expired" || $userId == "Bad token") {
-                return $userId;
-            } else {
-                $dao = new CharacterDAO;
-                return $dao->updateExp($battleExp, $characterName, $userId);
-            }
-        }
+        $dao = new CharacterDAO;
+        return $dao->updateExp($battleExp, $characterName, $userId);
     }
 
     public function selectBuild($buildId, $characterName, $token) {
@@ -98,33 +88,33 @@ class Character {
         $dao = new CharacterDAO;
         return $dao->updateBuild($buildId, $characterName);
     }
-    
+
     public function checkOwner($characterName, $userId) {
         //THIS FUNCTION IS NOT INDEXED ON index.php
         //Return true if the character belongs to the user, false if not
         $dao = new CharacterDAO;
         return $dao->checkOwner($characterName, $userId);
     }
-    
-    public function getCharacterExp($characterName){
+
+    public function getCharacterExp($characterName) {
         //Returns -1 if the character doesn't exist
-        if(strlen($characterName)>1){
+        if (strlen($characterName) > 1) {
             $dao = new CharacterDAO;
             $exp = $dao->getCharacterExp($characterName);
-            if($exp!=NULL){
+            if ($exp != NULL) {
                 return $exp;
-            }else{
+            } else {
                 return -1;
             }
-        }else{
+        } else {
             return -1;
         }
     }
-    
-    public function getCharacterLevel($characterName){
+
+    public function getCharacterLevel($characterName) {
         //Not indexed (by now)
-        $lvl=new Level;
-        $charExp= $this->getCharacterExp($characterName);
+        $lvl = new Level;
+        $charExp = $this->getCharacterExp($characterName);
         return $lvl->calculatePlayerLevel($charExp);
     }
 
