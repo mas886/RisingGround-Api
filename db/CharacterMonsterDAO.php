@@ -59,20 +59,15 @@ class CharacterMonsterDAO {
         return $monster;
     }
 
-    public function addExp($experience, $characterMonsterId, $userId) {
+    public function addExp($experience, $characterMonsterId) {
         $connection = connect();
-        $checkOwner = $this->checkMonsterOwner($characterMonsterId, $userId);
-        if ($checkOwner == 1) {
-            $sql = "UPDATE `character_monster` SET `experience` = `experience` + :experience WHERE `id` = :characterMonsterId";
-            $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-            $sth->execute(array(':experience' => $experience, ':characterMonsterId' => $characterMonsterId));
-            if ($sth->rowCount() != 0) {
-                return 1;
-            } else {
-                return 0;
-            }
+        $sql = "UPDATE `character_monster` SET `experience` = `experience` + :experience WHERE `id` = :characterMonsterId";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':experience' => $experience, ':characterMonsterId' => $characterMonsterId));
+        if ($sth->rowCount() != 0) {
+            return 1;
         } else {
-            return $checkOwner;
+            return 0;
         }
     }
 
