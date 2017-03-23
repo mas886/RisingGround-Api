@@ -72,7 +72,7 @@ class Character {
     public function addExp($battleExp, $characterName) {
         //After a battle, experience of character is increased with battleExp
         $dao = new CharacterDAO;
-        return $dao->updateExp($battleExp, $characterName, $userId);
+        return $dao->updateExp($battleExp, $characterName);
     }
 
     public function selectBuild($buildId, $characterName, $token) {
