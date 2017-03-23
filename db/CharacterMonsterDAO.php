@@ -90,9 +90,9 @@ class CharacterMonsterDAO {
         $sth->execute(array(':characterMonsterId' => $characterMonsterId));
         $userIdValue = $sth->fetch(PDO::FETCH_ASSOC);
         if ($userIdValue['userId'] == $userId) {
-            return 1;
+            return true;
         } else {
-            return "Owner Error";
+            return false;
         }
     }
 
