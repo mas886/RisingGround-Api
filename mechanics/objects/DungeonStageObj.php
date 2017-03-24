@@ -44,4 +44,8 @@ class DungeonStageObj {
         return NULL;
     }
     
+    public function getStage(){
+        return array('StageId'=> $this->id,'LevelId'=>$this->levelId,'Type'=>$this->type, 'Position'=>$this->position, 'Picture'=>$this->pictureUrl, 'Text'=> $this->displayText);
+    }
+    
 }
