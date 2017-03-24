@@ -112,6 +112,15 @@ class DungeonDAO {
         }
     }
     
+    public function getStage($stageId){
+        $connection = connect();
+        $sql="SELECT `dungeon_level_stages`.`id`, `dungeon_level_stages`.`dungeonLevelId`, `dungeon_level_stages_type`.`name` as `type`, `dungeon_level_stages`.`position`, `dungeon_level_stages`.`content`, `dungeon_level_stages`.`reward` FROM `dungeon_level_stages` JOIN `dungeon_level_stages_type` ON `dungeon_level_stages_type`.id = `dungeon_level_stages`.`typeId`WHERE `dungeon_level_stages`.`id`= :stageId";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':stageId' => $stageId));
+        $stage = $sth->fetch(PDO::FETCH_ASSOC);
+        return $stage;
+    }
+    
     public function getDungeonId($levelId){
         //Returns de dungeon Id based on the level Id
         $connection = connect();
