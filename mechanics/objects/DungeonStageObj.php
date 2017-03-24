@@ -23,5 +23,15 @@ class DungeonStageObj {
         $this->displayText= $this->parseDisplayText($stageArray['content']);
     }
     
+    private function parseContent($stageContent,$keyWord){
+        $contentArray= explode("|", $stageContent);
+        foreach ($contentArray as $content){
+            $secExplode= explode(":", $content);
+            if($secExplode[0]==$keyWord){
+                return explode(";",$secExplode[1]);
+            }
+        }
+        return NULL;
+    }
     
 }
