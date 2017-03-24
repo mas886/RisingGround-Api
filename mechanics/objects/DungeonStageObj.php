@@ -13,6 +13,7 @@ class DungeonStageObj {
     public $position;
     public $pictureUrl;
     public $displayText;
+    public $monstersArray;
     
     public function __construct($stageArray) {
         $this->id=$stageArray['id'];
