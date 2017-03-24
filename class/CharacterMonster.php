@@ -5,9 +5,8 @@
  *
  * @author PATATA and mas886
  */
-include_once "Token.php";
-
-include_once "./db/CharacterMonsterDAO.php";
+include_once("Token.php");
+include_once("./db/CharacterMonsterDAO.php");
 
 class CharacterMonster {
 

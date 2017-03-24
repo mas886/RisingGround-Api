@@ -5,7 +5,7 @@
  *
  * @author PATATA
  */
-include_once "./class/config.php";
+include_once("./class/config.php");
 
 class ItemDAO {
    

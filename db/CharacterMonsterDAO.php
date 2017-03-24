@@ -5,7 +5,7 @@
  *
  * @author PATATA and mas886
  */
-include_once "./class/config.php";
+include_once("./class/config.php");
 
 class CharacterMonsterDAO {
 
