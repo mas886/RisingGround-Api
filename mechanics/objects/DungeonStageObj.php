@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Dungeon stage object
+ * Dungeon stage object class, intended to convert data at "dungeon_level_stages" into usable data.
  *
  * @author mas886/redrednose/arnau
  */
