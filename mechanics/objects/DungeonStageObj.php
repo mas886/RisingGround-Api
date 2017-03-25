@@ -25,11 +25,11 @@ class DungeonStageObj {
     }
     
     private function parseDisplayText($contentString){
-        return $this->parseContent($contentString,"text");
+        return $this->parseContent($contentString,"text")[0];
     }
     
     private  function parsePicture($contentString){
-        return $this->parseContent($contentString,"picture");
+        return $this->parseContent($contentString,"picture")[0];
     }
 
 
