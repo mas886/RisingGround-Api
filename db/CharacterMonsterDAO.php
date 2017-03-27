@@ -81,15 +81,14 @@ class CharacterMonsterDAO {
         
     }
 
-    //PRIVATE FUNCTIONS
 
-    private function checkMonsterOwner($characterMonsterId, $userId) {
+    public function checkMonsterOwner($characterMonsterId, $characterName) {
         $connection = connect();
-        $sql = "SELECT `userId` FROM `user_character` WHERE `id` = (SELECT `characterId` FROM `character_monster` WHERE `id` = :characterMonsterId)";
+        $sql = "SELECT `id` FROM `character_monster` WHERE `id` = :characterMonsterId  AND characterId = (SELECT `id` FROM `user_character` WHERE `name` = :characterName)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':characterMonsterId' => $characterMonsterId));
-        $userIdValue = $sth->fetch(PDO::FETCH_ASSOC);
-        if ($userIdValue['userId'] == $userId) {
+        $sth->execute(array(':characterMonsterId' => $characterMonsterId, ':characterName' => $characterName));
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+        if ($result != false) {
             return true;
         } else {
             return false;
