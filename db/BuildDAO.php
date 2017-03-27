@@ -9,11 +9,11 @@ include_once("./class/config.php");
 
 class BuildDAO {
 
-    public function addBuild($characterName, $characterMonsterId) {
+    public function addBuild($characterName) {
             $connection = connect();
-            $sql = "INSERT INTO `character_build` (`characterId`, `monster1`) VALUES ((SELECT `id` FROM `user_character` WHERE `name` = :characterName), :characterMonsterId)";
+            $sql = "INSERT INTO `character_build` (`characterId`) SELECT `id` FROM `user_character` WHERE `name` = :characterName";
             $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-            $sth->execute(array(':characterName' => $characterName, ':characterMonsterId' => $characterMonsterId));
+            $sth->execute(array(':characterName' => $characterName));
             if ($sth->rowCount() != 0) {
                 return 1;
             } else {
@@ -21,13 +21,13 @@ class BuildDAO {
             }
       }
 
-    public function checkBuildSlots($charaterName) {
+    public function checkBuildSlots($characterName) {
         $connection = connect();
         $sql = "SELECT `buildSlots` FROM `user_character` WHERE `name` = :characterName";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':characterName' => $charaterName));
+        $sth->execute(array(':characterName' => $characterName));
         $buildSlots = $sth->fetch(PDO::FETCH_ASSOC);
-        $slotsUsed = sizeof($this->getMonsters($charaterName));
+        $slotsUsed = sizeof($this->getBuilds($characterName));
         if ($buildSlots['buildSlots'] > $slotsUsed) {
             return true;
         } else {
@@ -71,6 +71,44 @@ class BuildDAO {
         $sth->execute(array(':characterName' => $characterName, ':buildId' => $buildId));
         $monsters = $sth->fetch(PDO::FETCH_ASSOC);
         return $monsters;
+    }
+    
+ 
+    
+    public function buildOwner($characterName, $buildId){
+        $connection = connect();
+        $sql = "SELECT `id` FROM `character_build` WHERE `id` = :buildId AND `characterId` = (SELECT `id` FROM `user_character` WHERE `name` = :characterName)";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterName' => $characterName, ':buildId' => $buildId));
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+        if($result != false){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function getBuilds($characterName) {
+        $connection = connect();
+        $sql = "SELECT `id` FROM `character_build` WHERE `characterId` = (SELECT `id` FROM `user_character` WHERE `name` = :characterName)";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterName' => $characterName));
+        $builds = $sth->fetchAll(PDO::FETCH_ASSOC);
+        return $builds;
+    }
+    
+    public function alreadyInOtherBuild($characterName, $characterMonsterId){
+         $connection = connect();
+        $sql = "SELECT `id` FROM `character_build` WHERE `characterId` = (SELECT `id` FROM `user_character` WHERE `name` = :characterName) "
+                . "AND (`monster1` = :characterMonsterId OR `monster2` = :characterMonsterId OR `monster3` = :characterMonsterId)";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterName' => $characterName, ':characterMonsterId' => $characterMonsterId));
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+        if($result != false){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }
