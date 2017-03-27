@@ -78,7 +78,7 @@ class Dungeon {
         $dungeonId=$dao->getDungeonId($levelId);
         return $this->checkCharacterDungeonAccess($characterName, $dungeonId);
     }
-    
+        
     public function getCharacterDungeonLevelStages($characterName, $token, $levelId){
         //Returns the list of dungeon stages that can be accessed by a player
         if (strlen($characterName) > 20 || strlen($characterName) < 5 || strlen($token) != 30 || !is_numeric($levelId)) {
@@ -103,6 +103,32 @@ class Dungeon {
             //Once we passed everything we proceed to get the available dungeons
             $dun= new DungeonSys;
             return $dun->getLevelStages($levelId, $characterName);
+        }
+    }
+    
+    public function proceedLevel($characterName, $token, $stageId){
+        if (strlen($characterName) > 20 || strlen($characterName) < 5 || strlen($token) != 30 || !is_numeric($stageId)) {
+            return 0;
+        } else {
+            $tkn = new Token;
+            //Check of user token.
+            $tokenOwner = $tkn->getUserIdByToken($token);
+            if ($tokenOwner == "Expired" || $tokenOwner == "Bad token") {
+                return $tokenOwner;
+            }
+            $char = new Character;
+            //Check character belonging
+            if (!$char->checkOwner($characterName, $tokenOwner)) {
+                return "Wrong Character";
+            }
+            //We check dungeon access, if there are no lvls on a dungeon access will be dennied
+            $dao=new DungeonDAO;
+            $levelId=$dao->getStageLevelId($stageId);
+            if (!$this->checkCharacterDungeonAccessByLevelId($characterName,$levelId) || !$dao->checkCharacterDungeonLevelAccess($characterName, $levelId) || !$dao->checkCharacterStageAccess($stageId, $characterName)) {
+                return "Access Dennied";
+            }
+            $dun= new DungeonSys;
+            return $dun->proceedStage($characterName,$stageId);
         }
     }
 
