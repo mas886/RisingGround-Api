@@ -52,6 +52,7 @@ class DungeonStageObj {
     }
     
     public function getStage(){
+        //Used by client to display stage visible information
         return array('StageId'=> $this->id,'LevelId'=>$this->levelId,'Type'=>$this->type, 'Position'=>$this->position, 'Picture'=>$this->pictureUrl, 'Text'=> $this->displayText);
     }
     
