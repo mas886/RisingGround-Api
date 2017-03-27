@@ -14,6 +14,7 @@ class DungeonStageObj {
     public $pictureUrl;
     public $displayText;
     public $monstersArray;
+    public $reward;
     
     public function __construct($stageArray) {
         $this->id=$stageArray['id'];
@@ -22,6 +23,12 @@ class DungeonStageObj {
         $this->position=$stageArray['position'];
         $this->pictureUrl= $this->parsePicture($stageArray['content']);
         $this->displayText= $this->parseDisplayText($stageArray['content']);
+        $this->monsters= $this->parseMonsters($stageArray['content']);
+        $this->reward=$stageArray['reward'];
+    }
+    
+    private function parseMonsters($contentString){
+        return $this->parseContent($contentString, "monsters");
     }
     
     private function parseDisplayText($contentString){
