@@ -112,6 +112,22 @@ class DungeonDAO {
         }
     }
     
+    public function checkCharacterStageAccess($stageId,$characterName){
+        $stageInfo= $this->getStage($stageId);
+        if($stageInfo!=NULL){
+            $charPosition = $this->getLastCharacterLevelStage($stageInfo['dungeonLevelId'], $characterName);
+            $stagePosition = (int)$stageInfo['position'];
+            if($stagePosition>$charPosition){
+                return false;
+            }else{
+                return true;
+            }
+            
+        }else{
+            return false;
+        }
+    }
+    
     public function getStage($stageId){
         $connection = connect();
         $sql="SELECT `dungeon_level_stages`.`id`, `dungeon_level_stages`.`dungeonLevelId`, `dungeon_level_stages_type`.`name` as `type`, `dungeon_level_stages`.`position`, `dungeon_level_stages`.`content`, `dungeon_level_stages`.`reward` FROM `dungeon_level_stages` JOIN `dungeon_level_stages_type` ON `dungeon_level_stages_type`.id = `dungeon_level_stages`.`typeId`WHERE `dungeon_level_stages`.`id`= :stageId";
