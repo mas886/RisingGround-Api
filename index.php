@@ -203,11 +203,10 @@ $app->post('/dungeon/getlevelstages', function (Request $request, Response $resp
 
 $app->post('/build/addbuild', function (Request $request, Response $response, $args = []) {
     $characterName = $request->getParam('characterName');
-    $characterMonsterId = $request->getParam('characterMonsterId');
     $token = $request->getParam('token');
     $build = new Build;
     //Will return 1 when successful
-    $response->getBody()->write(json_encode(array('Message' => $build->addBuild($characterName, $characterMonsterId, $token))));
+    $response->getBody()->write(json_encode(array('Message' => $build->addBuild($characterName, $token))));
     return $response;
 });
 
