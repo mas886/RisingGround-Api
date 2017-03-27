@@ -7,14 +7,14 @@
  */
 class DungeonStageObj {
     
-    public $id;
-    public $levelId;
-    public $type;
-    public $position;
-    public $pictureUrl;
-    public $displayText;
-    public $monstersArray;
-    public $reward;
+    private $id;
+    private $levelId;
+    private $type;
+    private $position;
+    private $pictureUrl;
+    private $displayText;
+    private $monstersArray;
+    private $reward;
     
     public function __construct($stageArray) {
         $this->id=$stageArray['id'];
@@ -49,6 +49,38 @@ class DungeonStageObj {
             }
         }
         return NULL;
+    }
+    
+    function getId() {
+        return $this->id;
+    }
+
+    function getLevelId() {
+        return $this->levelId;
+    }
+
+    function getType() {
+        return $this->type;
+    }
+
+    function getPosition() {
+        return $this->position;
+    }
+
+    function getPictureUrl() {
+        return $this->pictureUrl;
+    }
+
+    function getDisplayText() {
+        return $this->displayText;
+    }
+
+    function getMonstersArray() {
+        return $this->monstersArray;
+    }
+
+    function getReward() {
+        return $this->reward;
     }
     
     public function getStage(){
