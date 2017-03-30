@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 19, 2017 at 08:43 PM
+-- Generation Time: Mar 30, 2017 at 11:29 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.15-0ubuntu0.16.10.4
 
@@ -41,10 +41,7 @@ CREATE TABLE `battle_status` (
 
 CREATE TABLE `character_build` (
   `id` int(20) NOT NULL,
-  `characterId` int(12) NOT NULL,
-  `monster1` int(18) NOT NULL,
-  `monster2` int(18) DEFAULT NULL,
-  `monster3` int(18) DEFAULT NULL
+  `characterId` int(12) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -69,7 +66,8 @@ CREATE TABLE `character_monster` (
   `characterId` int(12) NOT NULL,
   `monsterId` int(5) NOT NULL,
   `id` int(18) NOT NULL,
-  `experience` int(11) NOT NULL DEFAULT '0'
+  `experience` int(11) NOT NULL DEFAULT '0',
+  `buildId` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='This contains the monsters owned by characters.';
 
 -- --------------------------------------------------------
@@ -180,9 +178,10 @@ CREATE TABLE `dungeon_level_stages` (
 --
 
 INSERT INTO `dungeon_level_stages` (`id`, `dungeonLevelId`, `typeId`, `position`, `content`, `reward`) VALUES
-(1, 3, 1, 0, 'That\'s a try.', ''),
-(2, 3, 1, 1, 'Second Text', ''),
-(3, 3, 1, 2, 'Third Text', '');
+(1, 3, 1, 0, 'picture:/url/picture.png|text:First level heyo!', ''),
+(2, 3, 2, 1, 'picture:/url/picture.png|text:This is a battle.|monsters:1;2;3', ''),
+(3, 3, 1, 2, 'picture:/url/picture.png|text:This is the third stage.', ''),
+(4, 5, 1, 0, 'asdfga', '');
 
 -- --------------------------------------------------------
 
@@ -367,7 +366,9 @@ CREATE TABLE `user_login_tokens` (
   `expireDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Contains user login tokens.';
 
--- --------------------------------------------------------
+--
+-- Dumping data for table `user_login_tokens`
+--
 
 --
 -- Indexes for dumped tables
@@ -385,10 +386,7 @@ ALTER TABLE `battle_status`
 --
 ALTER TABLE `character_build`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `characterId` (`characterId`),
-  ADD KEY `monster1` (`monster1`),
-  ADD KEY `monster2` (`monster2`),
-  ADD KEY `monster3` (`monster3`);
+  ADD KEY `characterId` (`characterId`);
 
 --
 -- Indexes for table `character_item`
@@ -405,7 +403,8 @@ ALTER TABLE `character_item`
 ALTER TABLE `character_monster`
   ADD PRIMARY KEY (`id`),
   ADD KEY `characterId` (`characterId`),
-  ADD KEY `monsterId` (`monsterId`);
+  ADD KEY `monsterId` (`monsterId`),
+  ADD KEY `buildId` (`buildId`);
 
 --
 -- Indexes for table `character_monster_stats`
@@ -555,7 +554,7 @@ ALTER TABLE `dungeon_level`
 -- AUTO_INCREMENT for table `dungeon_level_stages`
 --
 ALTER TABLE `dungeon_level_stages`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `dungeon_level_stages_type`
 --
@@ -615,10 +614,7 @@ ALTER TABLE `battle_status`
 -- Constraints for table `character_build`
 --
 ALTER TABLE `character_build`
-  ADD CONSTRAINT `character_build_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
-  ADD CONSTRAINT `character_build_ibfk_2` FOREIGN KEY (`monster1`) REFERENCES `character_monster` (`id`),
-  ADD CONSTRAINT `character_build_ibfk_3` FOREIGN KEY (`monster2`) REFERENCES `character_monster` (`id`),
-  ADD CONSTRAINT `character_build_ibfk_4` FOREIGN KEY (`monster3`) REFERENCES `character_monster` (`id`);
+  ADD CONSTRAINT `character_build_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`);
 
 --
 -- Constraints for table `character_item`
@@ -632,7 +628,8 @@ ALTER TABLE `character_item`
 --
 ALTER TABLE `character_monster`
   ADD CONSTRAINT `character_monster_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
-  ADD CONSTRAINT `character_monster_ibfk_2` FOREIGN KEY (`monsterId`) REFERENCES `monster` (`id`);
+  ADD CONSTRAINT `character_monster_ibfk_2` FOREIGN KEY (`monsterId`) REFERENCES `monster` (`id`),
+  ADD CONSTRAINT `character_monster_ibfk_3` FOREIGN KEY (`buildId`) REFERENCES `character_build` (`id`);
 
 --
 -- Constraints for table `character_monster_stats`
