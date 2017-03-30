@@ -20,5 +20,12 @@ class DungeonSys {
         }
         return $stagesRet;
     }
+    
+    public function proceedStage($characterName,$stageId){
+        $dao = new DungeonDAO;
+        $stageContent = $dao->getStage($stageId);
+        $stage=new DungeonStageObj($stageContent);
+        return $this->processStage($characterName, $stage);
+    }
 
 }
