@@ -27,5 +27,16 @@ class DungeonSys {
         $stage=new DungeonStageObj($stageContent);
         return $this->processStage($characterName, $stage);
     }
+    
+    private function processStage($characterName,$stage){
+        //We decide here what to do with each stage type
+        
+        $type = $stage->getType();
+        if($type=="text"){
+            return $this->processStageText($characterName,$stage);
+        }else if($type=="combat"){
+            return $this->processStageCombat($characterName,$stage);
+        }
+    }
 
 }
