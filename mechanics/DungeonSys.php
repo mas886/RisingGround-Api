@@ -7,6 +7,7 @@
  */
 include_once("./db/DungeonDAO.php");
 include_once("./mechanics/objects/DungeonStageObj.php");
+include_once("./class/Reward.php");
 
 class DungeonSys {
 
@@ -37,6 +38,12 @@ class DungeonSys {
         }else if($type=="combat"){
             return $this->processStageCombat($characterName,$stage);
         }
+    }
+    
+    private function processStageText($characterName,$stage){
+        //On this function we will give the reward inmediately
+        $rew=new Reward;
+        return $rew->applyReward($characterName, $stage);
     }
 
 }
