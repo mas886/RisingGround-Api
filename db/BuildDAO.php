@@ -9,17 +9,17 @@ include_once("./class/config.php");
 
 class BuildDAO {
 
-    public function addBuild($characterName) {
-            $connection = connect();
-            $sql = "INSERT INTO `character_build` (`characterId`) SELECT `id` FROM `user_character` WHERE `name` = :characterName";
-            $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-            $sth->execute(array(':characterName' => $characterName));
-            if ($sth->rowCount() != 0) {
-                return 1;
-            } else {
-                return 0;
-            }
-      }
+    public function addBuild($characterName, $buildName) {
+        $connection = connect();
+        $sql = "INSERT INTO `character_build` (`characterId`, `name`) VALUES ((SELECT `id` FROM `user_character` WHERE `name` = :characterName), :buildName )";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterName' => $characterName, ':buildName' => $buildName));
+        if ($sth->rowCount() != 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
     public function checkBuildSlots($characterName) {
         $connection = connect();
@@ -35,11 +35,11 @@ class BuildDAO {
         }
     }
 
-    public function addMonster($characterMonsterId, $characterName, $buildId, $counter) {
+    public function addMonster($characterMonsterId, $buildId, $counter) {
         $connection = connect();
         $sql = $this->orderMonsterSQL($counter);
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':characterMonsterId' => $characterMonsterId, ':characterName' => $characterName, 'buildId' => $buildId));
+        $sth->execute(array(':characterMonsterId' => $characterMonsterId, 'buildId' => $buildId));
         if ($sth->rowCount() != 0) {
             return 1;
         } else {
@@ -60,7 +60,7 @@ class BuildDAO {
                 $sql = $sql . "`monster3`";
                 break;
         }
-        $sql = $sql . " = :characterMonsterId WHERE characterId = (SELECT `id` FROM `user_character` WHERE `name` = :characterName) AND `id` = :buildId";
+        $sql = $sql . " = :characterMonsterId WHERE `id` = :buildId";
         return $sql;
     }
 
@@ -72,18 +72,16 @@ class BuildDAO {
         $monsters = $sth->fetch(PDO::FETCH_ASSOC);
         return $monsters;
     }
-    
- 
-    
-    public function buildOwner($characterName, $buildId){
+
+    public function buildOwner($characterName, $buildId) {
         $connection = connect();
         $sql = "SELECT `id` FROM `character_build` WHERE `id` = :buildId AND `characterId` = (SELECT `id` FROM `user_character` WHERE `name` = :characterName)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':characterName' => $characterName, ':buildId' => $buildId));
         $result = $sth->fetch(PDO::FETCH_ASSOC);
-        if($result != false){
+        if ($result != false) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -96,19 +94,21 @@ class BuildDAO {
         $builds = $sth->fetchAll(PDO::FETCH_ASSOC);
         return $builds;
     }
-    
-    public function alreadyInOtherBuild($characterName, $characterMonsterId){
-         $connection = connect();
+
+    public function alreadyInOtherBuild($characterName, $characterMonsterId) {
+        $connection = connect();
         $sql = "SELECT `id` FROM `character_build` WHERE `characterId` = (SELECT `id` FROM `user_character` WHERE `name` = :characterName) "
                 . "AND (`monster1` = :characterMonsterId OR `monster2` = :characterMonsterId OR `monster3` = :characterMonsterId)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':characterName' => $characterName, ':characterMonsterId' => $characterMonsterId));
         $result = $sth->fetch(PDO::FETCH_ASSOC);
-        if($result != false){
+        if ($result != false) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
+
+   
 
 }

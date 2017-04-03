@@ -159,6 +159,8 @@ $app->post('/charactermonster/monsterlist', function (Request $request, Response
     return $response;
 });
 
+$app->post('/charactermonster/changebuild', function (Request $request, Response $response, $args = []) { 
+    $characterMonsterId = $request->getParam('characterMonsterId');
 $app->post('/charactermonster/getcharactermonster', function (Request $request, Response $response, $args = []) {
     $characterMonsterId = $request->getParam('characterMonsterId');
     $token = $request->getParam('token');
@@ -203,23 +205,15 @@ $app->post('/dungeon/getlevelstages', function (Request $request, Response $resp
 
 $app->post('/build/addbuild', function (Request $request, Response $response, $args = []) {
     $characterName = $request->getParam('characterName');
+    $buildName = $request->getParam('buildName');
     $token = $request->getParam('token');
     $build = new Build;
     //Will return 1 when successful
-    $response->getBody()->write(json_encode(array('Message' => $build->addBuild($characterName, $token))));
+    $response->getBody()->write(json_encode(array('Message' => $build->addBuild($characterName, $buildName, $token))));
     return $response;
 });
 
-$app->post('/build/addmonster', function (Request $request, Response $response, $args = []) { 
-    $characterName = $request->getParam('characterName'); 
-    $characterMonsterId = $request->getParam('characterMonsterId'); 
-    $buildId = $request->getParam('buildId'); 
-    $token = $request->getParam('token'); 
-    $build = new Build; 
-    //Will return 1 when successful 
-    $response->getBody()->write(json_encode(array('Message' => $build->addMonster($characterName, $characterMonsterId, $buildId, $token)))); 
-    return $response; 
-}); 
+
 
 
 //Monster 
