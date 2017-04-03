@@ -159,8 +159,15 @@ $app->post('/charactermonster/monsterlist', function (Request $request, Response
     return $response;
 });
 
-$app->post('/charactermonster/changebuild', function (Request $request, Response $response, $args = []) { 
+$app->post('/charactermonster/changebuild', function (Request $request, Response $response, $args = []) {
     $characterMonsterId = $request->getParam('characterMonsterId');
+    $buildId = $request->getParam('buildId');
+    $token = $request->getParam('token');
+    $characterMonster = new CharacterMonster;
+    //Will return a 1 when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $characterMonster->changeBuild($characterMonsterId, $buildId, $token))));
+    return $response;
+});
 $app->post('/charactermonster/getcharactermonster', function (Request $request, Response $response, $args = []) {
     $characterMonsterId = $request->getParam('characterMonsterId');
     $token = $request->getParam('token');
@@ -217,24 +224,24 @@ $app->post('/build/addbuild', function (Request $request, Response $response, $a
 
 
 //Monster 
-$app->post('/monster/getmonster', function (Request $request, Response $response, $args = []) { 
-    $monsterId = $request->getParam('monsterId'); 
-    $token = $request->getParam('token'); 
-    $monster = new Monster; 
+$app->post('/monster/getmonster', function (Request $request, Response $response, $args = []) {
+    $monsterId = $request->getParam('monsterId');
+    $token = $request->getParam('token');
+    $monster = new Monster;
     //Will return monster values array when successful 
-    $response->getBody()->write(json_encode(array('Message' => $monster->getMonster($monsterId, $token)))); 
-    return $response; 
-}); 
+    $response->getBody()->write(json_encode(array('Message' => $monster->getMonster($monsterId, $token))));
+    return $response;
+});
 
 //Item
-$app->post('/item/getitem', function (Request $request, Response $response, $args = []) { 
-    $itemId = $request->getParam('itemId'); 
-    $token = $request->getParam('token'); 
-    $item = new Item; 
+$app->post('/item/getitem', function (Request $request, Response $response, $args = []) {
+    $itemId = $request->getParam('itemId');
+    $token = $request->getParam('token');
+    $item = new Item;
     //Will return item values array when successful 
-    $response->getBody()->write(json_encode(array('Message' => $item->getItem($itemId, $token)))); 
-    return $response; 
-}); 
+    $response->getBody()->write(json_encode(array('Message' => $item->getItem($itemId, $token))));
+    return $response;
+});
 
 
 $app->run();
