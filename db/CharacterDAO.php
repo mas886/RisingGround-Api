@@ -31,7 +31,7 @@ class CharacterDAO {
     public function updateExp($battleExp, $characterName) {
         //Increase actual experience with battle experience
         $connection = connect();
-        $sql = "UPDATE `user_character` SET `experience` = ((SELECT experience FROM `user_character` WHERE `name` = :name) + :battleExp) WHERE `name` = :name";
+        $sql = "UPDATE `user_character` SET `experience` = `experience` + :battleExp WHERE `name` = :name";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':battleExp' => $battleExp, ':name' => $characterName));
         //Check update
