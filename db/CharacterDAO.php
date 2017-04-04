@@ -101,5 +101,19 @@ class CharacterDAO {
         $avaliableSlots = $sth->fetch(PDO::FETCH_ASSOC);
         return $avaliableSlots['experience'];
     }
+    
+    public function addGold($characterName, $gold) {
+        //Increase player gold
+        $connection = connect();
+        $sql = "UPDATE `user` SET `gold` = `gold`+ :gold WHERE `id`= (SELECT `userId`FROM `user_character` WHERE `name` = :name)";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':gold' => $gold, ':name' => $characterName));
+        //Check update
+        if ($sth->rowCount() != 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
 }
