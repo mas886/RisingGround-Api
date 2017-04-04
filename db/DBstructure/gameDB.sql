@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 30, 2017 at 11:29 PM
+-- Generation Time: Apr 04, 2017 at 08:38 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.15-0ubuntu0.16.10.4
 
@@ -41,7 +41,8 @@ CREATE TABLE `battle_status` (
 
 CREATE TABLE `character_build` (
   `id` int(20) NOT NULL,
-  `characterId` int(12) NOT NULL
+  `characterId` int(12) NOT NULL,
+  `name` varchar(15) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -178,7 +179,7 @@ CREATE TABLE `dungeon_level_stages` (
 --
 
 INSERT INTO `dungeon_level_stages` (`id`, `dungeonLevelId`, `typeId`, `position`, `content`, `reward`) VALUES
-(1, 3, 1, 0, 'picture:/url/picture.png|text:First level heyo!', ''),
+(1, 3, 1, 0, 'picture:/url/picture.png|text:First level heyo!', 'gold:123|experience:911'),
 (2, 3, 2, 1, 'picture:/url/picture.png|text:This is a battle.|monsters:1;2;3', ''),
 (3, 3, 1, 2, 'picture:/url/picture.png|text:This is the third stage.', ''),
 (4, 5, 1, 0, 'asdfga', '');
@@ -539,7 +540,7 @@ ALTER TABLE `character_build`
 -- AUTO_INCREMENT for table `character_monster`
 --
 ALTER TABLE `character_monster`
-  MODIFY `id` int(18) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(18) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `dungeon`
 --
