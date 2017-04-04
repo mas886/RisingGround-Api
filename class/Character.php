@@ -74,6 +74,12 @@ class Character {
         $dao = new CharacterDAO;
         return $dao->updateExp($battleExp, $characterName);
     }
+    
+    public function addGold($characterName, $gold) {
+        //After a battle, experience of character is increased with battleExp
+        $dao = new CharacterDAO;
+        return $dao->addGold($characterName, $gold);
+    }
 
     public function selectBuild($buildId, $characterName, $token) {
         //select the build for battle of the character
