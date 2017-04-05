@@ -131,5 +131,11 @@ class Dungeon {
             return $dun->proceedStage($characterName,$stageId);
         }
     }
+    
+    public function checkCharacterStageStatusEntry($characterName, $dungeonLevelId){
+        //This function will determine if there's an entry for an specific character on a dungeon (`dungeon_level_character_status`)
+        $dao = new DungeonDAO;
+        return $dao->checkCharacterStageStatusEntry($characterName, $dungeonLevelId);
+    }
 
 }

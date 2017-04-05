@@ -155,7 +155,19 @@ class DungeonDAO {
         $sth->execute(array(':levelId' => $levelId));
         $dungeonId = $sth->fetch(PDO::FETCH_ASSOC);
         return (int)$dungeonId['dungeonId'];
-        
+    }
+    
+    public function checkCharacterStageStatusEntry($characterName, $dungeonLevelId){
+        $connection = connect();
+        $sql= "SELECT `dungeonLevelId` FROM `dungeon_level_character_status` WHERE `characterId` = (SELECT `id`FROM `user_character` WHERE `name`= :characterName) AND `dungeonLevelId`= :dungeonLevelId";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterName' => $characterName,':dungeonLevelId' => $dungeonLevelId));
+        $dat=$sth->fetch(PDO::FETCH_ASSOC);
+        if(!$dat){
+            return False;
+        }else{
+            return True;
+        }
     }
     
 }
