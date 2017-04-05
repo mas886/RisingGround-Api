@@ -26,6 +26,7 @@ class DungeonStageObj {
         $this->pictureUrl= $this->parsePicture($stageArray['content']);
         $this->displayText= $this->parseDisplayText($stageArray['content']);
         $this->monstersArray= $this->parseMonsters($stageArray['content']);
+        $stageArray['reward'] = isset($stageArray['reward']) ? $stageArray['reward'] : '';
         $this->reward=$stageArray['reward'];
     }
     
