@@ -16,6 +16,10 @@ class RewardSys {
         $gold = $this->parseGold($rewardContent);
         $experience= $this->parseExperience($rewardContent);
         return $this->addCharacterRewards($characterName,$gold,$experience);
+    
+    private function addDungeonStageEntry($characterName,$dungeonLevelId, $stageId){
+        $dun=new Dungeon;
+        return $dun->addDungeonStageEntry($characterName,$dungeonLevelId, $stageId);
     }
     
     private function addCharacterRewards($characterName,$gold,$experience){
