@@ -184,4 +184,13 @@ class DungeonDAO {
         }
     }
     
+    private function getCharacterLevelLastStagePosition($characterName,$dungeonLevelId){
+        $connection = connect();
+        $sql = "SELECT `position` FROM `dungeon_level_stages` WHERE `id` = (SELECT `stageId` FROM `dungeon_level_character_status` WHERE `dungeonLevelId`= :dungeonLevelId AND `characterId`= (SELECT `id`FROM `user_character` WHERE `name`= :characterName))";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterName' => $characterName,':dungeonLevelId' => $dungeonLevelId));
+        $pos = $sth->fetch(PDO::FETCH_ASSOC);
+        return (int)$pos['position'];
+    }
+    
 }
