@@ -8,6 +8,7 @@
 
 include_once("./mechanics/Parser.php");
 include_once("./class/Character.php");
+include_once("./class/Dungeon.php");
 
 class RewardSys {
     
@@ -15,7 +16,25 @@ class RewardSys {
         $rewardContent= $stage->getReward();
         $gold = $this->parseGold($rewardContent);
         $experience= $this->parseExperience($rewardContent);
-        return $this->addCharacterRewards($characterName,$gold,$experience);
+        return $this->proceedToNextStage($characterName, $stage->getLevelId(), $stage->getId());
+    }
+    
+    private function proceedToNextStage($characterName,$dungeonLevelId, $stageId){
+        $dun=new Dungeon;
+        $stageIsSet = $dun->checkCharacterStageStatusEntry($characterName, $dungeonLevelId);
+        $check=1;
+        if($stageIsSet){
+            $this->updateDungeonStageEntry($characterName,$dungeonLevelId, $stageId);
+        }else{
+            $check=$this->addDungeonStageEntry($characterName,$dungeonLevelId, $stageId);
+        }
+        return $check;
+        if($check!=1){
+            return "Error updating stage information.";
+        }else{
+            return 1;
+        }
+    }
     
     private function updateDungeonStageEntry($characterName,$dungeonLevelId, $stageId){
         $dun=new Dungeon;
