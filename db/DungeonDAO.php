@@ -200,4 +200,24 @@ class DungeonDAO {
         $pos = $sth->fetch(PDO::FETCH_ASSOC);
         return (int)$pos['position'];
     }
+    
+    public function updateDungeonStageEntry($characterName,$dungeonLevelId, $stageId){
+        //Updates an entry at '`dungeon_level_character_status` table for the specified values
+        $currentPosition=$this->getCharacterLevelLastStagePosition($characterName,$dungeonLevelId);
+        $nextPosition= $this->getNextLevelStagePosition($dungeonLevelId,$stageId);
+        if($nextPosition>$currentPosition){
+            $connection = connect();
+            $sql="UPDATE `dungeon_level_character_status` SET `stageId` = (SELECT `id` FROM `dungeon_level_stages` WHERE `position` > (SELECT `position`FROM `dungeon_level_stages` WHERE `id`= :stageId) AND `dungeonLevelId` = :dungeonLevelId LIMIT 1) WHERE `dungeon_level_character_status`.`dungeonLevelId` = :dungeonLevelId AND `dungeon_level_character_status`.`characterId` = (SELECT `id`FROM `user_character` WHERE `name`= :characterName)";
+            $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+            $sth->execute(array(':characterName' => $characterName,':dungeonLevelId' => $dungeonLevelId,':stageId' =>$stageId));
+            if ($sth->rowCount() != 0) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }else{
+            return "Stage was already completed.";
+        }
+    }
+    
 }

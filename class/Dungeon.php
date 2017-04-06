@@ -143,5 +143,11 @@ class Dungeon {
         $dao = new DungeonDAO;
         return $dao->addDungeonStageEntry($characterName, $dungeonLevelId, $stageId);
     }
+    
+    public function updateDungeonStageEntry($characterName,$dungeonLevelId, $stageId){
+        //Updates an entry at '`dungeon_level_character_status` table for the specified values
+        $dao = new DungeonDAO;
+        return $dao->updateDungeonStageEntry($characterName, $dungeonLevelId, $stageId);
+    }
 
 }
