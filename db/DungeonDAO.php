@@ -193,4 +193,12 @@ class DungeonDAO {
         return (int)$pos['position'];
     }
     
+    private function getNextLevelStagePosition($dungeonLevelId,$stageId){
+        $connection = connect();
+        $sql = "SELECT IF ((SELECT `position` FROM `dungeon_level_stages` WHERE `position` > (SELECT `position`FROM `dungeon_level_stages` WHERE `id`= :stageId) AND `dungeonLevelId` = :dungeonLevelId LIMIT 1),(SELECT `position` FROM `dungeon_level_stages` WHERE `position` > (SELECT `position`FROM `dungeon_level_stages` WHERE `id`= :stageId) AND `dungeonLevelId` = :dungeonLevelId LIMIT 1),0) as `position`";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':stageId' => $stageId,':dungeonLevelId' => $dungeonLevelId));
+        $pos = $sth->fetch(PDO::FETCH_ASSOC);
+        return (int)$pos['position'];
+    }
 }
