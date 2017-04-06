@@ -173,7 +173,6 @@ class DungeonDAO {
     public function addDungeonStageEntry($characterName,$dungeonLevelId, $stageId){
         //Adds an entry at '`dungeon_level_character_status` table for the specified values
         $connection = connect();
-        $sql="INSERT INTO `dungeon_level_character_status` (`dungeonLevelId`, `characterId`, `stageId`) VALUES (:dungeonLevelId, (SELECT `id`FROM `user_character` WHERE `name`= :characterName), :stageId)";
         $sql="INSERT INTO `dungeon_level_character_status` (`dungeonLevelId`, `characterId`, `stageId`) VALUES (:dungeonLevelId, (SELECT `id`FROM `user_character` WHERE `name`= :characterName), (SELECT `id` FROM `dungeon_level_stages` WHERE `position` > (SELECT `position`FROM `dungeon_level_stages` WHERE `id`= :stageId) AND `dungeonLevelId` = :dungeonLevelId LIMIT 1))";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':characterName' => $characterName,':dungeonLevelId' => $dungeonLevelId,':stageId' =>$stageId));
