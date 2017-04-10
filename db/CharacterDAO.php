@@ -2,7 +2,7 @@
 
 /**
  * Class to connect with user_character table
- * @autor tinez09
+ * @autor tinez09 & mas886/Arnau
  */
 include_once("./class/config.php");
 

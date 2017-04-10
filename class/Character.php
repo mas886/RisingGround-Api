@@ -2,7 +2,7 @@
 
 /**
  * Class of Character
- * @autor tinez09
+ * @autor tinez09 & mas886/Arnau
  */
 include_once("./db/CharacterDAO.php");
 include_once("Token.php");
