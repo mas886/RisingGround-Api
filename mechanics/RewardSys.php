@@ -22,7 +22,7 @@ class RewardSys {
     private function proceedToNextStage($characterName,$dungeonLevelId, $stageId){
         //Can return 0 (means proceeding level failed somehow (Means previous checks weren't done correctly)
         //1 means we correctly proceeded the level
-        // And "Stage was already completed." means literally what it says
+        // And "Stage was already completed." means literally what it says, this will also be returned if we are on the latest dungeon level
         $dun=new Dungeon;
         $stageIsSet = $dun->checkCharacterStageStatusEntry($characterName, $dungeonLevelId);
         $check=1;
