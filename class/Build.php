@@ -18,7 +18,7 @@ class Build {
         }
         //Value securities
         $securities = $this->addBuildCheckValues($characterName, $token);
-        if ($securities != "Acces") {
+        if ($securities != "Access") {
             return $securities;
         }
         //Check if there's enought Build Slots
@@ -45,7 +45,7 @@ class Build {
         if (!$characterOwner) {
             return "Character Owner Error";
         } else {
-            return "Acces";
+            return "Access";
         }
     }
 
