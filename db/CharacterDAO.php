@@ -71,11 +71,11 @@ class CharacterDAO {
 
     public function checkOwner($characterName, $userId) {
         $connection = connect();
-        $sql = "SELECT `userId` FROM `user_character` WHERE `name` = :name";
+        $sql = "SELECT `userId` FROM `user_character` WHERE `name` = :name AND `userId` = :userId";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':name' => $characterName));
-        $resultUserId = $sth->fetch(PDO::FETCH_ASSOC);
-        if ($resultUserId['userId'] == $userId) {
+        $sth->execute(array(':name' => $characterName, ':userId' => $userId));
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+        if ($result != false) {
             return true;
         } else {
             return false;

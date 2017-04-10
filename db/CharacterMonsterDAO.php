@@ -15,8 +15,7 @@ class CharacterMonsterDAO {
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':characterName' => $characterName, ':monsterName' => $monsterName));
         if ($sth->rowCount() != 0) {
-            $characterMonsterId = mysqli_insert_id();
-            return $this->setBaseStats($characterMonsterId, $connection);
+            return 1;
         } else {
             return 0;
         }
@@ -81,31 +80,53 @@ class CharacterMonsterDAO {
         
     }
 
-    //PRIVATE FUNCTIONS
 
-    private function checkMonsterOwner($characterMonsterId, $userId) {
+    public function checkMonsterOwner($characterMonsterId, $userId) {
         $connection = connect();
-        $sql = "SELECT `userId` FROM `user_character` WHERE `id` = (SELECT `characterId` FROM `character_monster` WHERE `id` = :characterMonsterId)";
+        $sql = "SELECT `id` FROM `character_monster` WHERE `id` = :characterMonsterId  AND characterId = (SELECT `id` FROM `user_character` WHERE `userId` = :userId AND `id`  = characterId)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':characterMonsterId' => $characterMonsterId));
-        $userIdValue = $sth->fetch(PDO::FETCH_ASSOC);
-        if ($userIdValue['userId'] == $userId) {
+        $sth->execute(array(':characterMonsterId' => $characterMonsterId, ':userId' => $userId));
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+        if ($result != false) {
             return true;
         } else {
             return false;
         }
     }
-
-    private function setBaseStats($characterMonsterId) {
+    
+    public function changeBuild($characterMonsterId, $buildId){
         $connection = connect();
-        $sql = "INSERT INTO `character_monster_stats` (characterMonsterId) VALUES (:characterMonsterId)";
+        $sql = "UPDATE `character_monster` SET `buildId` = :buildId WHERE `id` = :characterMonsterId";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array('characterMonsterId' => $characterMonsterId));
+        $sth->execute(array(':characterMonsterId' => $characterMonsterId, ':buildId' => $buildId));
         if ($sth->rowCount() != 0) {
             return 1;
         } else {
-            return "Stats error";
+            return 0;
         }
     }
+    
+    public function getBuildId($characterMonsterId){
+        //Returns the buildId where character_monster belongs, null if don't belongs at anyone
+        $connection = connect();
+        $sql = "SELECT `buildId` FROM `character_monster` WHERE `id` = :characterMonsterId";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterMonsterId' => $characterMonsterId));
+        $buildId = $sth->fetch(PDO::FETCH_ASSOC);
+        return $buildId['buildId'];
+    }
+    
+    public function monsterSlots($buildId){
+        //Will return how many monsters there are in build
+        $connection = connect();
+        $sql = "SELECT `id` FROM `character_monster` WHERE `buildId` = :buildId";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array( ':buildId' => $buildId));
+        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
+        return sizeof($result);
+    }
+    
+
+ 
 
 }
