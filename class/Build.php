@@ -7,7 +7,7 @@
  */
 include_once("./db/BuildDAO.php");
 include_once("./db/CharacterMonsterDAO.php");
-include_once("./db/CharacterDAO.php");
+include_once("./class/Character.php");
 include_once("Token.php");
 
 class Build {
@@ -40,7 +40,7 @@ class Build {
             return $userId;
         }
         //Check if character owns at userId
-        $character = new CharacterDAO;
+        $character = new Character;
         $characterOwner = $character->checkOwner($characterName, $userId);
         if (!$characterOwner) {
             return "Character Owner Error";
