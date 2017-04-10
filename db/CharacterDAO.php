@@ -116,7 +116,7 @@ class CharacterDAO {
         }
     }
     
-    public function getSelectedBuild($characterName){
+    public function getSelectedBuildId($characterName){
         $connection = connect();
         $sql="SELECT `buildId` FROM `user_character` WHERE `name` = :characterName";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));

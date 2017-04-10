@@ -124,10 +124,10 @@ class Character {
         return $lvl->calculatePlayerLevel($charExp);
     }
     
-    public function getSelectedBuild($characterName){
+    public function getSelectedBuildId($characterName){
         //Not indexed (by now)
         $dao = new CharacterDAO;
-        return $dao->getSelectedBuild($characterName);
+        return $dao->getSelectedBuildId($characterName);
     }
-
+    
 }
