@@ -20,20 +20,18 @@ class RewardSys {
     }
     
     private function proceedToNextStage($characterName,$dungeonLevelId, $stageId){
+        //Can return 0 (means proceeding level failed somehow (Means previous checks weren't done correctly)
+        //1 means we correctly proceeded the level
+        // And "Stage was already completed." means literally what it says
         $dun=new Dungeon;
         $stageIsSet = $dun->checkCharacterStageStatusEntry($characterName, $dungeonLevelId);
         $check=1;
         if($stageIsSet){
-            $this->updateDungeonStageEntry($characterName,$dungeonLevelId, $stageId);
+            $check=$this->updateDungeonStageEntry($characterName,$dungeonLevelId, $stageId);
         }else{
             $check=$this->addDungeonStageEntry($characterName,$dungeonLevelId, $stageId);
         }
         return $check;
-        if($check!=1){
-            return "Error updating stage information.";
-        }else{
-            return 1;
-        }
     }
     
     private function updateDungeonStageEntry($characterName,$dungeonLevelId, $stageId){
