@@ -13,10 +13,18 @@ include_once("./class/Dungeon.php");
 class RewardSys {
     
     public function applyReward($characterName,$stage){
-        $rewardContent= $stage->getReward();
-        $gold = $this->parseGold($rewardContent);
-        $experience= $this->parseExperience($rewardContent);
-        return $this->proceedToNextStage($characterName, $stage->getLevelId(), $stage->getId());
+        //1 means everything went correctly, 0 that something (most likely sql query) failed(We should avoid this one) or
+        //"Stage already completed", tht will be returned whenever stage is already completed or when we are on the last stage level.
+        //Or Reward Apply Error (sql query to apply some reward failed)
+        $proceedVal= $this->proceedToNextStage($characterName, $stage->getLevelId(), $stage->getId());
+        if($proceedVal!="Stage was already completed." || $stage->getType()=="combat"){
+            $rewardContent= $stage->getReward();
+            $gold = $this->parseGold($rewardContent);
+            $experience= $this->parseExperience($rewardContent);
+            $rewResult= $this->addCharacterRewards($characterName,$gold,$experience);
+            return $rewResult;
+        }
+        return $proceedVal;
     }
     
     private function proceedToNextStage($characterName,$dungeonLevelId, $stageId){
