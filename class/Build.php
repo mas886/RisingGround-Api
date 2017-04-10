@@ -6,7 +6,6 @@
  * @author PATATA
  */
 include_once("./db/BuildDAO.php");
-include_once("./db/CharacterMonsterDAO.php");
 include_once("./class/Character.php");
 include_once("Token.php");
 
