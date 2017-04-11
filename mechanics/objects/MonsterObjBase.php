@@ -15,7 +15,7 @@ class monsterObjBase extends monsterObj{
     
     function __construct($monsterId,$team) {
         $monster=new Monster;
-        $statsArray=$monster->getMonster($monsterId);
+        $statsArray=$monster->getMonsterInternal($monsterId);
         parent::__construct($statsArray,$team);
     }
 

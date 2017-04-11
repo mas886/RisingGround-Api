@@ -65,6 +65,13 @@ class CharacterMonster {
         return $dao->getCharacterMonster($characterMonsterId);
     }
 
+    
+    public function getCharacterMonsterInternal($characterMonsterId) {
+        //Non inedxed version of getCharacterMonster for internal operations
+        $dao = new CharacterMonsterDAO;
+        return $dao->getCharacterMonster($characterMonsterId);
+    }
+    
     public function addExp($experience, $characterMonsterId) {
         $dao = new CharacterMonsterDAO;
         return $dao->addExp($experience, $characterMonsterId);

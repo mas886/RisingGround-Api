@@ -25,4 +25,11 @@ class Monster {
         return $dao->getMonster($monsterId);
     }
     
+    //Will return a monster based on it's ID
+    public function getMonsterInternal($monsterId){
+        //Non inedxed version of getMonster for internal operations
+        $dao=new MonsterDAO;
+        return $dao->getMonster($monsterId);
+    }
+    
 }
