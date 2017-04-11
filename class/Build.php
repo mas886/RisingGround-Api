@@ -48,11 +48,16 @@ class Build {
         }
     }
 
-
+    public function getCharacterSelectedBuildMonsters($characterName){
+        $char=new Character;
+        $buildId=$char->getSelectedBuildId($characterName);
+        $dao = new BuildDAO;
+        $sqlIdsArray= $dao->getBuildMonsterIds($buildId);
+        $idsArray=[];
+        foreach($sqlIdsArray as $monstID){
+            $idsArray[]=(int)$monstID['id'];
+        }
+        return $idsArray;
+    }
     
-
-   
-
-   
-
 }
