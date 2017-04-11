@@ -109,6 +109,17 @@ class BuildDAO {
         }
     }
 
-   
+   public function getBuildMonsterIds($buildId){
+        $connection = connect();
+        $sql="SELECT `id` FROM `character_monster` WHERE `buildId` = :buildId";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':buildId' => $buildId));
+        $buildMonsters = $sth->fetchAll(PDO::FETCH_ASSOC);
+        if(!$buildMonsters){
+            return array();
+        }else{
+            return $buildMonsters;
+        }
+    }
 
 }
