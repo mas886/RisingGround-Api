@@ -9,7 +9,7 @@ include_once("./class/config.php");
 
 class CharacterMonsterDAO {
 
-    public function insertCharacterMonster($monsterName, $characterName) {
+    public function insertCharacterMonster($characterName, $monsterName) {
         $connection = connect();
         $sql = "INSERT INTO `character_monster` (`characterId`, `monsterId`) VALUES ((SELECT `id` FROM `user_character` WHERE `name` = :characterName),(SELECT `id` FROM monster WHERE `name` = :monsterName))";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
