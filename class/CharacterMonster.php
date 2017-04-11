@@ -11,7 +11,7 @@ include_once("./db/BuildDAO.php");
 
 class CharacterMonster {
 
-    private $monsterSlots = 3;
+    private $maxBuildMonsterSlots = 3;
 
     public function addMonster($characterName, $monsterName) {
         //Add monsters to the character's collection
@@ -141,7 +141,7 @@ class CharacterMonster {
         if(!$this->checkMonsterOwner($characterMonsterId, $userId)){
             return "Error monster owner";
         }
-        if ($this->monstersSlots($buildId) >= $this->monsterSlots) {
+        if ($this->monstersSlots($buildId) >= $this->maxBuildMonsterSlots) {
             return "Build full";
         } else {
             return "Acces";
