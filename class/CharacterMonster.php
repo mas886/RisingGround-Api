@@ -13,19 +13,9 @@ class CharacterMonster {
 
     private $monsterSlots = 3;
 
-    public function addMonster($monsterName, $characterName, $token) {
+    public function addMonster($monsterName, $characterName) {
         //Add monsters to the character's collection
-        if (strlen($characterName) > 20 || strlen($characterName) < 5 || strlen($monsterName) > 20 || strlen($monsterName) < 5 || strlen($token) != 30) {
-            return 0;
-        }
-
-        $tkn = new Token;
-        $userId = $tkn->getUserIdByToken($token);
-
-        if ($userId == "Expired" || $userId == "Bad token") {
-            return $userId;
-        }
-
+        //MUSN'T be indexed.
         $dao = new CharacterMonsterDAO;
         return $dao->insertCharacterMonster($monsterName, $characterName);
     }
