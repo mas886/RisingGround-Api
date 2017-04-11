@@ -8,6 +8,11 @@
 include_once("./db/DungeonDAO.php");
 include_once("./mechanics/objects/DungeonStageObj.php");
 include_once("./class/Reward.php");
+include_once("./class/Build.php");
+include_once("./mechanics/objects/DungeonStageObj.php");
+include_once("./mechanics/objects/MonsterObjBase.php");
+include_once("./mechanics/objects/MonsterObjCharacter.php");
+include_once("./mechanics/Battle.php");
 
 class DungeonSys {
 
@@ -46,4 +51,28 @@ class DungeonSys {
         return $rew->applyReward($characterName, $stage);
     }
 
+    private function makeBattle($characterName, $stageMonsterArray){
+        //A team identifier is assigned at each team, used later on the foreach loops
+        $playerTeam=1;
+        $enemyTeam=2;
+        $buil=new Build;
+        $charMonsters=$buil->getCharacterSelectedBuildMonsters($characterName);
+        $monsterArray=[];
+        foreach($charMonsters as $charMonster){
+            $monsterArray[]=new MonsterObjCharacter($charMonster,$playerTeam);
+        }
+        foreach($stageMonsterArray as $stageMonster){
+            $monsterArray[]=new monsterObjBase($stageMonster,$enemyTeam);
+        }
+        $bat=new Battle;
+        //The winner team identifier is returned
+        $battleWinner=$bat->fight(array($monsterArray));
+        //If the winner team is the player team a "True" will be returned.
+        if($battleWinner==$playerTeam){
+            return True;
+        }else{
+            return False;
+        }
+    }
+    
 }
