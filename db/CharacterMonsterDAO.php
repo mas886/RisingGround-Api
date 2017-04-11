@@ -11,10 +11,15 @@ class CharacterMonsterDAO {
 
     public function insertCharacterMonster($characterName, $monsterName) {
         $connection = connect();
-        $sql = "INSERT INTO `character_monster` (`characterId`, `monsterId`) VALUES ((SELECT `id` FROM `user_character` WHERE `name` = :characterName),(SELECT `id` FROM monster WHERE `name` = :monsterName))";
+        $sql = "BEGIN;
+                    INSERT INTO `character_monster` (`characterId`, `monsterId`) 
+                        VALUES ((SELECT `id` FROM `user_character` WHERE `name` = :characterName),(SELECT `id` FROM monster WHERE `name` = :monsterName));
+                    INSERT INTO `character_monster_stats` (`characterMonsterId`) 
+                        VALUES (LAST_INSERT_ID());
+                COMMIT;";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':characterName' => $characterName, ':monsterName' => $monsterName));
-        if ($sth->rowCount() != 0) {
+        $success=$sth->execute(array(':characterName' => $characterName, ':monsterName' => $monsterName));
+        if ($success) {
             return 1;
         } else {
             return 0;
