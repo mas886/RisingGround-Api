@@ -15,6 +15,7 @@ class DungeonStageObj {
     private $position;
     private $pictureUrl;
     private $displayText;
+    private $waitTime;
     private $monstersArray;
     private $reward;
     
@@ -26,8 +27,18 @@ class DungeonStageObj {
         $this->pictureUrl= $this->parsePicture($stageArray['content']);
         $this->displayText= $this->parseDisplayText($stageArray['content']);
         $this->monstersArray= $this->parseMonsters($stageArray['content']);
+        $this->waitTime= $this->parseWaitTime($stageArray['content']);
         $stageArray['reward'] = isset($stageArray['reward']) ? $stageArray['reward'] : '';
         $this->reward=$stageArray['reward'];
+    }
+    
+    private function parseWaitTime($contentString){
+        $waitTime= $this->parseContent($contentString,"waitTime")[0];
+        if($waitTime==NULL){
+            return 0;
+        }else{
+            return (int)$waitTime;
+        }
     }
     
     private function parseMonsters($contentString){
@@ -78,6 +89,10 @@ class DungeonStageObj {
 
     function getReward() {
         return $this->reward;
+    }
+    
+    function getWaitTime() {
+        return $this->waitTime;
     }
     
     public function getStage(){
