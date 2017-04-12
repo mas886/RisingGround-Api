@@ -124,5 +124,14 @@ class CharacterDAO {
         $build=$sth->fetch(PDO::FETCH_ASSOC);
         return $build['buildId'];
     }
+    
+    public function addCharacterDefaultWaitTime($characterName){
+        //Adds a default wait time (current) into the `battle_status`table to prevent it from being empty.
+        $connection = connect();
+        $sql="INSERT INTO `battle_status`(`characterId`, `reward`) VALUES ((SELECT `id`FROM `user_character` WHERE `name` = :characterName),' ')";
+        $sth = $connection->prepare($sql);
+        $res=$sth->execute(array(':characterName' => $characterName));
+        return $res;
+    }
 
 }

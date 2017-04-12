@@ -130,4 +130,9 @@ class Character {
         return $dao->getSelectedBuildId($characterName);
     }
     
+    private function addCharacterDefaultWaitTime($characterName){
+        $dao=new CharacterDAO;
+        return $dao->addCharacterDefaultWaitTime($characterName);
+    }
+    
 }
