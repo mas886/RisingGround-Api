@@ -31,7 +31,12 @@ class Character {
                 return "Name exist";
             } else {
                 //Return 1 if is succesfull, 0 if character is not added
-                return $dao->insertCharacter($characterName, $userId);
+                $res= $dao->insertCharacter($characterName, $userId);
+                if($res==1){
+                    //We add a default "wait time" on `battle_status` table to prevent it from being empty.
+                    $this->addCharacterDefaultWaitTime($characterName);
+                }
+                return $res;
             }
         }
     }
