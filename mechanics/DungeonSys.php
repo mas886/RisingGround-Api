@@ -6,7 +6,6 @@
  * @author mas886/redrednose/arnau
  */
 include_once("./db/DungeonDAO.php");
-include_once("./mechanics/objects/DungeonStageObj.php");
 include_once("./class/Reward.php");
 include_once("./class/Build.php");
 include_once("./mechanics/objects/DungeonStageObj.php");
