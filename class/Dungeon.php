@@ -119,13 +119,17 @@ class Dungeon {
             $char = new Character;
             //Check character belonging
             if (!$char->checkOwner($characterName, $tokenOwner)) {
-                return "Wrong Character";
+                return "Wrong character";
+            }
+            //We check the character is not resting
+            if($char->isCharacterResting($characterName)){
+                return "Character is bussy";
             }
             //We check dungeon access, if there are no lvls on a dungeon access will be dennied
             $dao=new DungeonDAO;
             $levelId=$dao->getStageLevelId($stageId);
             if (!$this->checkCharacterDungeonAccessByLevelId($characterName,$levelId) || !$dao->checkCharacterDungeonLevelAccess($characterName, $levelId) || !$dao->checkCharacterStageAccess($stageId, $characterName)) {
-                return "Access Dennied";
+                return "Access dennied";
             }
             $dun= new DungeonSys;
             return $dun->proceedStage($characterName,$stageId);
