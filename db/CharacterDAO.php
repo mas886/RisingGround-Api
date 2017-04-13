@@ -146,4 +146,18 @@ class CharacterDAO {
             return 0;
         }
     }
+    
+    public function isCharacterResting($characterName){
+        $connection = connect();
+        $sql="SELECT IF((SELECT `restUntil` FROM `battle_status` WHERE `characterId` = (SELECT `id`FROM `user_character` WHERE `name` = :characterName)) > CURRENT_TIMESTAMP,'yes','no') AS `resting`";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterName' => $characterName));
+        $res=$sth->fetch(PDO::FETCH_ASSOC);
+        if($res['resting']=="yes"){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
 }

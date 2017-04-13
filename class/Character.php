@@ -145,4 +145,9 @@ class Character {
         return $dao->updateCharacterWaitTime($characterName, $waitTime);
     }
     
+    public function isCharacterResting($characterName){
+        $dao = new CharacterDAO;
+        return $dao->isCharacterResting($characterName);
+    }
+    
 }
