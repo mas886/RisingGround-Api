@@ -50,6 +50,11 @@ class DungeonSys {
         return $rew->applyReward($characterName, $stage);
     }
 
+    private function updateCharacterWaitTime($characterName,$waitTime){
+        $char=new Character;
+        return $char->updateCharacterWaitTime($characterName, $waitTime);
+    }
+    
     private function makeBattle($characterName, $stageMonsterArray){
         //A team identifier is assigned at each team, used later on the foreach loops
         $playerTeam=1;

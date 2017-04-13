@@ -140,4 +140,9 @@ class Character {
         return $dao->addCharacterDefaultWaitTime($characterName);
     }
     
+    public function updateCharacterWaitTime($characterName,$waitTime){
+        $dao = new CharacterDAO;
+        return $dao->updateCharacterWaitTime($characterName, $waitTime);
+    }
+    
 }

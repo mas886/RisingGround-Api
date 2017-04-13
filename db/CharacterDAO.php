@@ -134,4 +134,16 @@ class CharacterDAO {
         return $res;
     }
 
+    public function updateCharacterWaitTime($characterName,$waitTime){
+        $connection = connect();
+        $sql="UPDATE `battle_status` SET `restUntil` = (CURRENT_TIMESTAMP + INTERVAL :minutes MINUTE) WHERE `battle_status`.`characterId` = (SELECT `id`FROM `user_character` WHERE `name` = :characterName)";
+        $sth = $connection->prepare($sql);
+        $sth->execute(array(':characterName' => $characterName,':minutes' => $waitTime));
+        //Check update
+        if ($sth->rowCount() != 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }
