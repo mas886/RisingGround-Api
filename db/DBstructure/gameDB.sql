@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 04, 2017 at 08:38 PM
+-- Generation Time: Apr 13, 2017 at 11:48 PM
 -- Server version: 10.0.29-MariaDB-0ubuntu0.16.10.1
 -- PHP Version: 7.0.15-0ubuntu0.16.10.4
 
@@ -28,9 +28,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `battle_status` (
   `characterId` int(12) NOT NULL,
-  `restUntil` datetime NOT NULL,
-  `inBattle` tinyint(1) NOT NULL DEFAULT '0',
-  `reward` text COLLATE utf8_spanish_ci NOT NULL
+  `restUntil` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `inBattle` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Control user rest times and battle rewards.';
 
 -- --------------------------------------------------------
@@ -84,6 +83,19 @@ CREATE TABLE `character_monster_stats` (
   `strength` int(11) NOT NULL DEFAULT '0',
   `vitality` int(11) NOT NULL DEFAULT '0',
   `defence` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `character_reward`
+--
+
+CREATE TABLE `character_reward` (
+  `id` int(40) NOT NULL,
+  `characterId` int(12) NOT NULL,
+  `reward` text COLLATE utf8_spanish_ci NOT NULL,
+  `visibleAfter` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -179,10 +191,12 @@ CREATE TABLE `dungeon_level_stages` (
 --
 
 INSERT INTO `dungeon_level_stages` (`id`, `dungeonLevelId`, `typeId`, `position`, `content`, `reward`) VALUES
-(1, 3, 1, 0, 'picture:/url/picture.png|text:First level heyo!', 'gold:123|experience:911'),
-(2, 3, 2, 1, 'picture:/url/picture.png|text:This is a battle.|monsters:1;2;3', ''),
+(1, 3, 1, 0, 'picture:/url/picture.png|text:First level heyo!', 'gold:50|exp:10'),
+(2, 3, 2, 1, 'picture:/url/picture.png|text:This is a battle.|monsters:1;2;3|waitTime:10', ''),
 (3, 3, 1, 2, 'picture:/url/picture.png|text:This is the third stage.', ''),
-(4, 5, 1, 0, 'asdfga', '');
+(4, 5, 1, 0, 'asdfga', ''),
+(5, 5, 1, 1, 'asdfga', ''),
+(6, 3, 1, 3, 'asdfga', '');
 
 -- --------------------------------------------------------
 
@@ -320,6 +334,7 @@ CREATE TABLE `user` (
 CREATE TABLE `user_character` (
   `id` int(12) NOT NULL,
   `name` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
+  `creationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `experience` int(30) NOT NULL DEFAULT '0',
   `buildSlots` int(4) NOT NULL DEFAULT '3',
   `amulet` int(5) DEFAULT NULL,
@@ -412,6 +427,13 @@ ALTER TABLE `character_monster`
 --
 ALTER TABLE `character_monster_stats`
   ADD PRIMARY KEY (`characterMonsterId`);
+
+--
+-- Indexes for table `character_reward`
+--
+ALTER TABLE `character_reward`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `characterId` (`characterId`);
 
 --
 -- Indexes for table `dungeon`
@@ -540,7 +562,12 @@ ALTER TABLE `character_build`
 -- AUTO_INCREMENT for table `character_monster`
 --
 ALTER TABLE `character_monster`
-  MODIFY `id` int(18) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(18) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `character_reward`
+--
+ALTER TABLE `character_reward`
+  MODIFY `id` int(40) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `dungeon`
 --
@@ -555,7 +582,7 @@ ALTER TABLE `dungeon_level`
 -- AUTO_INCREMENT for table `dungeon_level_stages`
 --
 ALTER TABLE `dungeon_level_stages`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `dungeon_level_stages_type`
 --
@@ -637,6 +664,12 @@ ALTER TABLE `character_monster`
 --
 ALTER TABLE `character_monster_stats`
   ADD CONSTRAINT `character_monster_stats_ibfk_1` FOREIGN KEY (`characterMonsterId`) REFERENCES `character_monster` (`id`);
+
+--
+-- Constraints for table `character_reward`
+--
+ALTER TABLE `character_reward`
+  ADD CONSTRAINT `character_reward_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`);
 
 --
 -- Constraints for table `dungeon_character_status`
