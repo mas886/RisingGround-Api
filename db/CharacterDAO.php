@@ -141,7 +141,11 @@ class CharacterDAO {
         $sth->execute(array(':characterName' => $characterName,':minutes' => $waitTime));
         //Check update
         if ($sth->rowCount() != 0) {
-            return 1;
+            $sql="SELECT `restUntil` FROM `battle_status` WHERE `characterId`= (SELECT `id`FROM `user_character` WHERE `name` = :characterName)";
+            $sth = $connection->prepare($sql);
+            $sth->execute(array(':characterName' => $characterName));
+            $res=$sth->fetch(PDO::FETCH_ASSOC);
+            return $res['restUntil'];
         } else {
             return 0;
         }
