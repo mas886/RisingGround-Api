@@ -50,6 +50,23 @@ class DungeonSys {
         return $rew->applyReward($characterName, $stage);
     }
 
+    private function processStageCombat($characterName,$stage){
+        $stageWaitTime= $stage->getWaitTime($stage);
+        $waitUntil=0;
+        if($stageWaitTime!=0){
+            $waitUntil= $this->updateCharacterWaitTime($characterName,$stageWaitTime);
+        }
+        $battleWon=$this->makeBattle($characterName,$stage->getMonstersArray());
+        if($battleWon){
+            if($waitUntil!=0){
+                $this->stashStageReward($characterName,$stage->getId(),$waitUntil);
+            }else{
+                //If there's no wait time we apply the reward directly.
+                $this->applyReward($characterName,$stage);
+            }
+        }
+        return $battleWon;
+    }
     
     private function applyReward($characterName,$stage){
         $rew = new Reward;
