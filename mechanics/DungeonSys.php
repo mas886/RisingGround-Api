@@ -50,6 +50,12 @@ class DungeonSys {
         return $rew->applyReward($characterName, $stage);
     }
 
+    
+    private function applyReward($characterName,$stage){
+        $rew = new Reward;
+        return $rew->applyReward($characterName, $stage);
+    }
+    
     private function stashStageReward($characterName,$stageId,$visibleAfter){
         //This will add an stage reward into reward stash
         $rew=new Reward;
