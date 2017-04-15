@@ -26,4 +26,14 @@ class RewardDAO {
         return $rewards;
     }
     
+    public function getCharacterRewardWhenAvailable($characterName,$rewardId){
+        //Returns a reward if it exists, belongs to the character and it's available.
+        $connection = connect();
+        $sql="SELECT `stageCompletedId`, `reward`, `visibleAfter` FROM `character_reward` WHERE  `id` = :rewardId AND `characterId` = (SELECT `id`FROM `user_character` WHERE `name` = :characterName) AND`visibleAfter` <= CURRENT_TIMESTAMP";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterName' => $characterName,':rewardId' => $rewardId));
+        $reward=$sth->fetch(PDO::FETCH_ASSOC);
+        return $reward;
+    }
+    
 }
