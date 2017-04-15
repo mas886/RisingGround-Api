@@ -28,6 +28,9 @@ class Reward {
             return $dao->listAvailableRewards($characterName);
         }
         
+    public function applyRewardString($characterName, $reward){
+        $rew=new RewardSys;
+        return $this->applyRewardString($characterName, $reward);
     }
     
     public function applyReward($characterName,$stage){
@@ -41,4 +44,5 @@ class Reward {
         return $dao->stashStageReward($characterName, $stageId, $visibleAfter);
     }
     
+}
 }
