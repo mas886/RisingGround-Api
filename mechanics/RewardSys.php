@@ -19,12 +19,17 @@ class RewardSys {
         $proceedVal= $this->proceedToNextStage($characterName, $stage->getLevelId(), $stage->getId());
         if($proceedVal!="Stage was already completed." || $stage->getType()=="combat"){
             $rewardContent= $stage->getReward();
-            $gold = $this->parseGold($rewardContent);
-            $experience= $this->parseExperience($rewardContent);
-            $rewResult= $this->addCharacterRewards($characterName,$gold,$experience);
-            return $rewResult;
+            return $this->applyRewardString($characterName,$rewardContent);
         }
         return $proceedVal;
+    }
+    
+    public function applyRewardString($characterName,$rewardContent){
+        //Applies a reward string into a character
+        $gold = $this->parseGold($rewardContent);
+        $experience= $this->parseExperience($rewardContent);
+        $rewResult= $this->addCharacterRewards($characterName,$gold,$experience);
+        return $rewResult;
     }
     
     private function proceedToNextStage($characterName,$dungeonLevelId, $stageId){
