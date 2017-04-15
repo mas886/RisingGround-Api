@@ -31,6 +31,7 @@ include_once("./class/Dungeon.php");
 include_once("./class/Build.php");
 include_once("./class/Item.php");
 include_once("./class/Monster.php");
+include_once("./class/Reward.php");
 
 $app = new \Slim\App;
 
@@ -224,6 +225,7 @@ $app->post('/build/addbuild', function (Request $request, Response $response, $a
 
 
 //Monster 
+
 $app->post('/monster/getmonster', function (Request $request, Response $response, $args = []) {
     $monsterId = $request->getParam('monsterId');
     $token = $request->getParam('token');
@@ -234,12 +236,24 @@ $app->post('/monster/getmonster', function (Request $request, Response $response
 });
 
 //Item
+
 $app->post('/item/getitem', function (Request $request, Response $response, $args = []) {
     $itemId = $request->getParam('itemId');
     $token = $request->getParam('token');
     $item = new Item;
     //Will return item values array when successful 
     $response->getBody()->write(json_encode(array('Message' => $item->getItem($itemId, $token))));
+    return $response;
+});
+
+//Reward
+
+$app->post('/reward/listavailablerewards', function (Request $request, Response $response, $args = []) {
+    $characterName = $request->getParam('characterName');
+    $token = $request->getParam('token');
+    $reward = new Reward;
+    //Will return a 1 when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $reward->listAvailableRewards($characterName, $token))));
     return $response;
 });
 
