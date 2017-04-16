@@ -59,6 +59,11 @@ class Reward {
         return "Reward does not exist";
     }
     
+    private function deleteReward($rewardId){
+        $dao= new RewardDAO;
+        return $dao->deleteReward($rewardId);
+    }
+    
     public function applyRewardString($characterName, $reward){
         $rew=new RewardSys;
         return $this->applyRewardString($characterName, $reward);

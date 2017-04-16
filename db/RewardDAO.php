@@ -36,4 +36,13 @@ class RewardDAO {
         return $reward;
     }
     
+    public function deleteReward($rewardId){
+        //Deletes a reward given it's id
+        $connection = connect();
+        $sql="DELETE FROM `character_reward` WHERE `character_reward`.`id` = :rewardId";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':rewardId' => $rewardId));
+        return $sth;
+    }
+    
 }
