@@ -209,6 +209,16 @@ $app->post('/dungeon/getlevelstages', function (Request $request, Response $resp
     return $response;
 });
 
+$app->post('/dungeon/proceedlevel', function (Request $request, Response $response, $args = []) {
+    $characterName = $request->getParam('characterName');
+    $token = $request->getParam('token');
+    $stageId = $request->getParam('stageId');
+    $dungeon = new Dungeon;
+    //Will return level stages when successful
+    $response->getBody()->write(json_encode(array('Message' => $dungeon->proceedLevel($characterName, $token, $stageId))));
+    return $response;
+});
+
 //Build system functions
 
 $app->post('/build/addbuild', function (Request $request, Response $response, $args = []) {
