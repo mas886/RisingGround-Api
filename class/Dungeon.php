@@ -154,4 +154,9 @@ class Dungeon {
         return $dao->updateDungeonStageEntry($characterName, $dungeonLevelId, $stageId);
     }
 
+    public function getStage($stageId){
+        $dao = new DungeonDAO;
+        return $dao->getStage($stageId);
+    }
+    
 }
