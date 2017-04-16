@@ -54,6 +54,7 @@ class Reward {
             if($reward['reward']!=NULL){
                 $this->applyRewardString($characterName, $reward['reward']);
             }
+            $this->deleteReward($rewardId);
             return 1;
         }
         return "Reward does not exist";
