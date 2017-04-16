@@ -257,5 +257,15 @@ $app->post('/reward/listavailablerewards', function (Request $request, Response 
     return $response;
 });
 
+$app->post('/reward/claimreward', function (Request $request, Response $response, $args = []) {
+    $characterName = $request->getParam('characterName');
+    $token = $request->getParam('token');
+    $rewardId = $request->getParam('rewardId');
+    $reward = new Reward;
+    //Will return a 1 when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $reward->claimReward($characterName, $token, $rewardId))));
+    return $response;
+});
+
 
 $app->run();
