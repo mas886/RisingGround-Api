@@ -9,6 +9,7 @@ include_once("./mechanics/RewardSys.php");
 include_once("./mechanics/objects/DungeonStageObj.php");
 include_once("./db/RewardDAO.php");
 include_once ("Character.php");
+include_once ("Dungeon.php");
 
 class Reward {
     
@@ -31,6 +32,7 @@ class Reward {
     }
     
     public function claimReward($characterName,$token,$rewardId){
+        //Adds a reward at `character_reward` to the charater-user
         if (strlen($characterName) > 20 || strlen($characterName) < 1 || strlen($token) != 30 || !is_numeric($rewardId)) {
             return 0;
         }
@@ -46,7 +48,7 @@ class Reward {
         $reward= $dao->getCharacterRewardWhenAvailable($characterName, $rewardId);
         if($reward!=NULL){
             if ($reward['stageCompletedId']!=NULL){
-                $stage=new DungeonStageObj($reward['stageCompletedId']);
+                $stage=new DungeonStageObj(Dungeon::getStage($reward['stageCompletedId']));
                 $this->applyReward($characterName, $stage);
             }
             if($reward['reward']!=NULL){
