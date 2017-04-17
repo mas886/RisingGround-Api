@@ -34,16 +34,8 @@ class BuildDAO {
             return false;
         }
     }
-    public function getMonsters($characterName, $buildId) {
-        $connection = connect();
-        $sql = "SELECT `monster1`, `monster2`, `monster3` FROM `character_build` WHERE `characterId` = (SELECT `id` FROM `user_character` WHERE `name` = :characterName) AND `id` = :buildId";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':characterName' => $characterName, ':buildId' => $buildId));
-        $monsters = $sth->fetch(PDO::FETCH_ASSOC);
-        return $monsters;
-    }
-
-    public function buildOwner($characterMontserId, $buildId) {
+   
+       public function buildOwner($characterMontserId, $buildId) {
         $connection = connect();
         $sql = "SELECT `id` FROM `character_build` WHERE `id` = :buildId AND `characterId` = (SELECT `characterId` FROM `character_monster` WHERE `id` = :characterMonsterId)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
