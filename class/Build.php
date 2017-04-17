@@ -60,4 +60,8 @@ class Build {
         return $idsArray;
     }
     
+    public function getBuilds($characterName){
+        $dao = new BuildDAO;
+        return $dao->getBuilds($characterName);
+    }
 }
