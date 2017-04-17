@@ -71,4 +71,11 @@ class Build {
         return $dao->buildOwner($characterMonsterId, $buildId);
     }
     
+    public function getMonsters($buildId){
+        //Return idArray with monsters of build
+         $dao = new BuildDAO;
+         return $dao->getBuildMonsterIds($buildId);
+    }
+    
+    
 }
