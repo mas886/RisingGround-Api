@@ -12,7 +12,7 @@ include_once("Token.php");
 class Build {
 
     public function addBuild($characterName, $buildName, $token) {
-        if (strlen($token) != 30 || strlen($characterName) < 5 || strlen($characterName) > 20 || strlen($buildName) < 3 || strlen($buildName) > 13) {
+        if (strlen($token) != 30 || strlen($characterName) < 3 || strlen($characterName) > 20 || strlen($buildName) < 3 || strlen($buildName) > 13) {
             return 0;
         }
         //Value securities
