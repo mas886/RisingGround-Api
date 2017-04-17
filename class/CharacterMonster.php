@@ -8,6 +8,7 @@
 include_once("Token.php");
 include_once("./db/CharacterMonsterDAO.php");
 include_once("./db/BuildDAO.php");
+include_once("./mechanics/Level.php");
 
 class CharacterMonster {
 
@@ -92,34 +93,11 @@ class CharacterMonster {
         $dao = new CharacterMonsterDAO;
         $experience = $dao->getExp($characterMonsterId);
 
-        return $this->experienceToLevel($experience[experience]);
+        $level = new Level;
+        return $level->calculateExpToLvlMonster($experience[experience]);
     }
 
-    private function experienceToLevel($experience) {
-        /*
-         * returns level array 
-         * ['level'], 
-         * ['experience'] (How much have monster to next level) and
-         * ['nextLevel'] (Experience necessary to level up)
-         */
-        $level = array('level' => 0, 'experience' => 0, 'nextLevel' => 0);
-        //Firt level is with 500 experience points
-        $levelUp = 500;
-        while ($experience > $levelUp) {
-            $level[level] = $level[level] + 1;
-            $experience = $experience - $levelUp;
-            //Experience level will be increased with 50% any level
-            $levelUp = $levelUp * 1.5;
-        }
-        //Experience to next level
-        $level[experience] = $experience;
-        //Next level 
-        $level[nextLevel] = $levelUp;
-
-        return $level;
-    }
-
-    public function changeBuild($characterMonsterId, $buildId, $token) {
+      public function changeBuild($characterMonsterId, $buildId, $token) {
         if (!is_numeric($characterMonsterId) || !is_numeric($buildId) || strlen($token) != 30) {
             return 0;
         }
