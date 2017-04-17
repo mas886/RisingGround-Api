@@ -7,7 +7,7 @@
  */
 include_once("Token.php");
 include_once("./db/CharacterMonsterDAO.php");
-include_once("./db/BuildDAO.php");
+include_once("./class/Build.php");
 include_once("./mechanics/Level.php");
 
 class CharacterMonster {
@@ -158,7 +158,7 @@ class CharacterMonster {
 
     private function checkBuildOwner($characterMonsterId, $buildId) {
         //Will return true if the character_monster and the build belongs at the same character, if not false
-        $dao = new BuildDAO;
+        $dao = new Build;
         return $dao->buildOwner($characterMonsterId, $buildId);
     }
 
