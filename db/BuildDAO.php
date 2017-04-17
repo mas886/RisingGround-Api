@@ -34,19 +34,6 @@ class BuildDAO {
             return false;
         }
     }
-
-    public function addMonster($characterMonsterId, $buildId, $counter) {
-        $connection = connect();
-        $sql = $this->orderMonsterSQL($counter);
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':characterMonsterId' => $characterMonsterId, 'buildId' => $buildId));
-        if ($sth->rowCount() != 0) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
     private function orderMonsterSQL($counter) {
         $sql = "UPDATE `character_build` SET ";
         switch ($counter) {
