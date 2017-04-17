@@ -6,6 +6,7 @@
  * @author PATATA
  */
 include_once("./class/config.php");
+include_once("CharacterDAO.php");
 
 class BuildDAO {
 
@@ -67,6 +68,34 @@ class BuildDAO {
             return array();
         }else{
             return $buildMonsters;
+        }
+    }
+    
+    public function checkBuildOwnsUser($buildId, $userId){
+        $connection = connect();
+        $sql="SELECT `name` FROM `user_character` WHERE `id` = (SELECT `characterId` FROM  `character_build` WHERE `id` = :buildId)";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':buildId' => $buildId));
+        $characterName = $sth->fetch(PDO::FETCH_ASSOC);
+        $character = new CharacterDAO;
+        $characters = $character->selectCharacterList($userId);
+        foreach ($characters as $c){
+            if($c == $characterName['name']){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public function deleteBuild($buildId){
+        $connection = connect();
+        $sql="DELETE FROM `character_build` WHERE `id` = :buildId";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':buildId' => $buildId));
+        if ($sth->rowCount() != 0) {
+            return 1;
+        } else {
+            return 0;
         }
     }
 
