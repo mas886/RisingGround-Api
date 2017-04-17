@@ -64,13 +64,6 @@ class Build {
         $dao = new BuildDAO;
         return $dao->getBuilds($characterName);
     }
-    
-    public function buildOwner($characterMonsterId, $buildId){
-        //Compare if the build owner id is the same as characterMonster
-        $dao = new BuildDAO;
-        return $dao->buildOwner($characterMonsterId, $buildId);
-    }
-    
     public function getMonsters($buildId){
         //Return idArray with monsters of build
          $dao = new BuildDAO;
