@@ -34,23 +34,6 @@ class BuildDAO {
             return false;
         }
     }
-    private function orderMonsterSQL($counter) {
-        $sql = "UPDATE `character_build` SET ";
-        switch ($counter) {
-            case 0:
-                $sql = $sql . "`monster1`";
-                break;
-            case 1:
-                $sql = $sql . "`monster2`";
-                break;
-            case 2:
-                $sql = $sql . "`monster3`";
-                break;
-        }
-        $sql = $sql . " = :characterMonsterId WHERE `id` = :buildId";
-        return $sql;
-    }
-
     public function getMonsters($characterName, $buildId) {
         $connection = connect();
         $sql = "SELECT `monster1`, `monster2`, `monster3` FROM `character_build` WHERE `characterId` = (SELECT `id` FROM `user_character` WHERE `name` = :characterName) AND `id` = :buildId";
