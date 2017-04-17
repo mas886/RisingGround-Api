@@ -57,20 +57,6 @@ class BuildDAO {
         return $builds;
     }
 
-    public function alreadyInOtherBuild($characterName, $characterMonsterId) {
-        $connection = connect();
-        $sql = "SELECT `id` FROM `character_build` WHERE `characterId` = (SELECT `id` FROM `user_character` WHERE `name` = :characterName) "
-                . "AND (`monster1` = :characterMonsterId OR `monster2` = :characterMonsterId OR `monster3` = :characterMonsterId)";
-        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':characterName' => $characterName, ':characterMonsterId' => $characterMonsterId));
-        $result = $sth->fetch(PDO::FETCH_ASSOC);
-        if ($result != false) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
    public function getBuildMonsterIds($buildId){
         $connection = connect();
         $sql="SELECT `id` FROM `character_monster` WHERE `buildId` = :buildId";
