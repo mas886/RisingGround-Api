@@ -231,6 +231,14 @@ $app->post('/build/addbuild', function (Request $request, Response $response, $a
     return $response;
 });
 
+$app->post('/build/deletebuild', function (Request $request, Response $response, $args = []) {
+    $buildId = $request->getParam('buildId');
+    $token = $request->getParam('token');
+    $build = new Build;
+    //Will return 1 when successful
+    $response->getBody()->write(json_encode(array('Message' => $build->deleteBuild($buildId, $token))));
+    return $response;
+});
 
 
 
