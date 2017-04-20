@@ -46,6 +46,22 @@ class Build {
         }
         
     }
+    
+    public function changeName($buildId, $buildName, $token){
+         if(strlen($buildName) < 3 || strlen($buildName) > 15 || !is_numeric($buildId) || strlen($token) != 30){
+            return 0;
+        }
+         $tkn = new Token;
+        $userId = $tkn->getUserIdByToken($token);
+        if ($userId == "Expired" || $userId == "Bad token") {
+            return $userId;
+        }
+        $dao = new BuildDAO;
+        return $dao->changeName($buildId, $buildName);
+        
+        
+    }
+    
 
     //PRIVATE functions
 

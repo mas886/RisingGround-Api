@@ -98,5 +98,17 @@ class BuildDAO {
             return 0;
         }
     }
+    
+    public function changeName($buildId, $buildName){
+        $connection = connect();
+        $sql="UPDATE `character_build` SET `name` = :buildName WHERE `id` = :buildId";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':buildId' => $buildId, ':buildName' => $buildName));
+        if ($sth->rowCount() != 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
 }

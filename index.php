@@ -240,6 +240,15 @@ $app->post('/build/deletebuild', function (Request $request, Response $response,
     return $response;
 });
 
+$app->post('/build/changename', function (Request $request, Response $response, $args = []) {
+    $buildId = $request->getParam('buildId');
+    $buildName = $request->getParam('buildName');
+    $token = $request->getParam('token');
+    $build = new Build;
+    //Will return 1 when successful
+    $response->getBody()->write(json_encode(array('Message' => $build->changeName($buildId, $buildName, $token))));
+    return $response;
+});
 
 
 //Monster 
