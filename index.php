@@ -149,6 +149,7 @@ $app->post('/character/selectbuild', function (Request $request, Response $respo
     return $response;
 });
 
+
 //character_monsters system functions
 
 $app->post('/charactermonster/monsterlist', function (Request $request, Response $response, $args = []) {
@@ -250,6 +251,14 @@ $app->post('/build/changename', function (Request $request, Response $response, 
     return $response;
 });
 
+$app->post('/build/getcharacterbuilds', function (Request $request, Response $response, $args = []) {
+    $characterName = $request->getParam('characterName');
+    $token = $request->getParam('token');
+    $build = new Build;
+    //Will return 1 when successful
+    $response->getBody()->write(json_encode(array('Message' => $build->getCharacterBuilds($characterName, $token))));
+    return $response;
+});
 
 //Monster 
 

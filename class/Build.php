@@ -93,6 +93,21 @@ class Build {
         }
         return $idsArray;
     }
+    public function getCharacterBuilds($characterName, $token){
+        //indexed function
+        if(strlen($characterName) < 3 || strlen($characterName) > 15 || strlen($token) != 30){
+            return 0;
+        }
+         $tkn = new Token;
+        $userId = $tkn->getUserIdByToken($token);
+        if ($userId == "Expired" || $userId == "Bad token") {
+            return $userId;
+        }
+        //not indexed
+        $dao = new BuildDAO;
+        return $dao->getBuilds($characterName);
+    }
+    
     
     public function getBuilds($characterName){
         //not indexed
