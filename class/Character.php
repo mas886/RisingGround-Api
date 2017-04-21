@@ -6,6 +6,7 @@
  */
 include_once("./db/CharacterDAO.php");
 include_once("Token.php");
+include_once("Build.php");
 include_once("./mechanics/Level.php");
 
 class Character {
@@ -31,8 +32,8 @@ class Character {
                 return "Name exist";
             } else {
                 //Return 1 if is succesfull, 0 if character is not added
-                $res= $dao->insertCharacter($characterName, $userId);
-                if($res==1){
+                $res = $dao->insertCharacter($characterName, $userId);
+                if ($res == 1) {
                     //We add a default "wait time" on `battle_status` table to prevent it from being empty.
                     $this->addCharacterDefaultWaitTime($characterName);
                 }
@@ -79,9 +80,9 @@ class Character {
         $dao = new CharacterDAO;
         return $dao->updateExp($battleExp, $characterName);
     }
-    
+
     public function addGold($characterName, $gold) {
-        //After a battle, experience of character is increased with battleExp
+        //After a battle, gold of character is increased with battleGold
         $dao = new CharacterDAO;
         return $dao->addGold($characterName, $gold);
     }
@@ -96,8 +97,19 @@ class Character {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        $dao = new CharacterDAO;
-        return $dao->updateBuild($buildId, $characterName);
+        if (!$this->checkOwner($characterName, $userId)) {
+            return "Owner Error";
+        } else {
+            $build = new Build;
+            $builds = $build->getBuilds($characterName);
+            foreach ($builds as $b) {
+                if ($b['id'] == $buildId) {
+                    $dao = new CharacterDAO;
+                    return $dao->updateBuild($buildId, $characterName);
+                }
+            }
+            return "Owner Error";
+        }
     }
 
     public function checkOwner($characterName, $userId) {
@@ -128,26 +140,26 @@ class Character {
         $charExp = $this->getCharacterExp($characterName);
         return $lvl->calculatePlayerLevel($charExp);
     }
-    
-    public function getSelectedBuildId($characterName){
+
+    public function getSelectedBuildId($characterName) {
         //Not indexed (by now)
         $dao = new CharacterDAO;
         return $dao->getSelectedBuildId($characterName);
     }
-    
-    private function addCharacterDefaultWaitTime($characterName){
-        $dao=new CharacterDAO;
+
+    private function addCharacterDefaultWaitTime($characterName) {
+        $dao = new CharacterDAO;
         return $dao->addCharacterDefaultWaitTime($characterName);
     }
-    
-    public function updateCharacterWaitTime($characterName,$waitTime){
+
+    public function updateCharacterWaitTime($characterName, $waitTime) {
         $dao = new CharacterDAO;
         return $dao->updateCharacterWaitTime($characterName, $waitTime);
     }
-    
-    public function isCharacterResting($characterName){
+
+    public function isCharacterResting($characterName) {
         $dao = new CharacterDAO;
         return $dao->isCharacterResting($characterName);
     }
-    
+
 }
