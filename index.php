@@ -32,6 +32,7 @@ include_once("./class/Build.php");
 include_once("./class/Item.php");
 include_once("./class/Monster.php");
 include_once("./class/Reward.php");
+include_once("./class/Shop.php");
 
 $app = new \Slim\App;
 
@@ -302,6 +303,16 @@ $app->post('/reward/claimreward', function (Request $request, Response $response
     $response->getBody()->write(json_encode(array('Message' => $reward->claimReward($characterName, $token, $rewardId))));
     return $response;
 });
+
+//shop funcions
+$app->post('/shop/getshop', function (Request $request, Response $response, $args = []) {
+    $token = $request->getParam('token');
+   $shop = new Shop;
+    //Will return a 1 when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $shop->getItems($token))));
+    return $response;
+});
+
 
 
 $app->run();
