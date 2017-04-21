@@ -256,7 +256,7 @@ $app->post('/build/getcharacterbuilds', function (Request $request, Response $re
     $characterName = $request->getParam('characterName');
     $token = $request->getParam('token');
     $build = new Build;
-    //Will return 1 when successful
+    //Will return a id array of character builds when successful
     $response->getBody()->write(json_encode(array('Message' => $build->getCharacterBuilds($characterName, $token))));
     return $response;
 });
@@ -305,14 +305,32 @@ $app->post('/reward/claimreward', function (Request $request, Response $response
 });
 
 //shop funcions
-$app->post('/shop/getshop', function (Request $request, Response $response, $args = []) {
+$app->post('/shop/getarticles', function (Request $request, Response $response, $args = []) {
     $token = $request->getParam('token');
    $shop = new Shop;
-    //Will return a 1 when succesfull
-    $response->getBody()->write(json_encode(array('Message' => $shop->getItems($token))));
+    //Will return a shop array->(gold, gems)->inside->(items to buy) when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $shop->getArticles($token))));
     return $response;
 });
 
+$app->post('/shop/buyarticlegold', function (Request $request, Response $response, $args = []) {
+    $articleId = $request->getParam('articleId');
+    $characterName = $request->getParam('characterName');
+    $token = $request->getParam('token');
+   $shop = new Shop;
+    //Will return 1 when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $shop->buyArticleGold($articleId, $characterName, $token))));
+    return $response;
+});
 
+$app->post('/shop/buyarticlegems', function (Request $request, Response $response, $args = []) {
+    $articleId = $request->getParam('articleId');
+    $characterName = $request->getParam('articleId');
+    $token = $request->getParam('token');
+   $shop = new Shop;
+    //Will return 1 when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $shop->buyArticleGems($articleId, $characterName, $token))));
+    return $response;
+});
 
 $app->run();

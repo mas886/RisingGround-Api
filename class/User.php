@@ -58,5 +58,15 @@ class User {
         $dao=new UserDAO;
         return $dao->exist($username);
     }
+    
+    public function getGold($userId){
+        $dao = new UserDAO;
+        return $dao->getGold($userId);
+    }
+    
+     public function getGems($userId){
+        $dao = new UserDAO;
+        return $dao->getGems($userId);
+    }
 
 }

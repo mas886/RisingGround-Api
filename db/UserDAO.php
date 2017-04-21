@@ -5,11 +5,10 @@
  *
  * @author redrednose
  */
-
 include_once("./class/config.php");
 
 class UserDAO {
-    
+
     public function getPassword($username) {
         $connection = connect();
         $sql = "SELECT password FROM `user` WHERE name=:name";
@@ -20,8 +19,7 @@ class UserDAO {
         }
         return $user;
     }
-    
-    
+
     public function addUser($username, $password, $email) {
         $connection = connect();
         //Hashing passwords will prevent future security problems
@@ -35,7 +33,7 @@ class UserDAO {
             return 0;
         }
     }
-    
+
     public function exist($username) {
         $connection = connect();
         $sql = "SELECT name FROM `user` WHERE name=:name";
@@ -50,5 +48,23 @@ class UserDAO {
             return false;
         }
     }
+
+    public function getGold($userId) {
+        $connection = connect();
+        $sql = "SELECT `gold` FROM `user` WHERE `id`=:userId";
+        $stmt = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $stmt->execute(array(':userId' => $userId));
+        $gold = $stmt->fetch(PDO::FETCH_ASSOC);
+        return intval($gold['gold']);
+    }
     
+     public function getGems($userId) {
+        $connection = connect();
+        $sql = "SELECT `gems` FROM `user` WHERE `id`=:userId";
+        $stmt = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $stmt->execute(array(':userId' => $userId));
+        $gems = $stmt->fetch(PDO::FETCH_ASSOC);
+        return intval($gems['gems']);
+    }
+
 }
