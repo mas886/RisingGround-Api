@@ -66,13 +66,12 @@ class CharacterMonster {
         return $dao->getCharacterMonster($characterMonsterId);
     }
 
-    
     public function getCharacterMonsterInternal($characterMonsterId) {
         //Non inedxed version of getCharacterMonster for internal operations
         $dao = new CharacterMonsterDAO;
         return $dao->getCharacterMonster($characterMonsterId);
     }
-    
+
     public function addExp($experience, $characterMonsterId) {
         $dao = new CharacterMonsterDAO;
         return $dao->addExp($experience, $characterMonsterId);
@@ -97,7 +96,8 @@ class CharacterMonster {
         return $level->calculateExpToLvlMonster($experience[experience]);
     }
 
-      public function changeBuild($characterMonsterId, $buildId, $token) {
+    public function changeBuild($characterMonsterId, $buildId, $token) {
+        //If $buildId == -1 it will put buildId = null in SQL
         if (!is_numeric($characterMonsterId) || !is_numeric($buildId) || strlen($token) != 30) {
             return 0;
         }
@@ -117,17 +117,19 @@ class CharacterMonster {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        if ($this->getBuildId($characterMonsterId) == $buildId) {
-            return "Already in build";
-        }
-        if(!$this->checkBuildOwner($characterMonsterId, $buildId)){
-            return "Doesn't belongs same character";
-        }
-        if(!$this->checkMonsterOwner($characterMonsterId, $userId)){
-            return "Error monster owner";
-        }
-        if ($this->monstersSlots($buildId) >= $this->maxBuildMonsterSlots) {
-            return "Build full";
+        if ($buildId != -1) {
+            if ($this->getBuildId($characterMonsterId) == $buildId) {
+                return "Already in build";
+            }
+            if (!$this->checkBuildOwner($characterMonsterId, $buildId)) {
+                return "Doesn't belongs same character";
+            }
+            if (!$this->checkMonsterOwner($characterMonsterId, $userId)) {
+                return "Error monster owner";
+            }
+            if ($this->monstersSlots($buildId) >= $this->maxBuildMonsterSlots) {
+                return "Build full";
+            }
         } else {
             return "Acces";
         }
