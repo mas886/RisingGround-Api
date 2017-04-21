@@ -95,11 +95,13 @@ class Build {
     }
     
     public function getBuilds($characterName){
+        //not indexed
+        //Return a bidimensional array of buildsId of character: $builds as $build -> $build['id'] = buildId
         $dao = new BuildDAO;
         return $dao->getBuilds($characterName);
     }
     
-    public function buildOwner($characterMonsterId, $buildId){
+    public function buildMonsterOwner($characterMonsterId, $buildId){
         //Compare if the build owner id is the same as characterMonster
         $dao = new BuildDAO;
         return $dao->buildOwner($characterMonsterId, $buildId);

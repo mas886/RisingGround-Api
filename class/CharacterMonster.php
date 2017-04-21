@@ -159,7 +159,7 @@ class CharacterMonster {
     private function checkBuildOwner($characterMonsterId, $buildId) {
         //Will return true if the character_monster and the build belongs at the same character, if not false
         $dao = new Build;
-        return $dao->buildOwner($characterMonsterId, $buildId);
+        return $dao->buildMonsterOwner($characterMonsterId, $buildId);
     }
 
 }
