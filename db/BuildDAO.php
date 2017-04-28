@@ -36,7 +36,8 @@ class BuildDAO {
         }
     }
    
-       public function buildOwner($characterMontserId, $buildId) {
+       public function checkCharacterBuildOwnership($characterMontserId, $buildId) {
+        //Will return true if the character_monster and the build belongs at the same character, if not false
         $connection = connect();
         $sql = "SELECT `id` FROM `character_build` WHERE `id` = :buildId AND `characterId` = (SELECT `characterId` FROM `character_monster` WHERE `id` = :characterMonsterId)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));

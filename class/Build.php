@@ -116,10 +116,10 @@ class Build {
         return $dao->getBuilds($characterName);
     }
     
-    public function buildMonsterOwner($characterMonsterId, $buildId){
-        //Compare if the build owner id is the same as characterMonster
+    public function checkCharacterBuildOwnership($characterMonsterId, $buildId){
+        //Will return true if the character_monster and the build belongs at the same character, if not false
         $dao = new BuildDAO;
-        return $dao->buildOwner($characterMonsterId, $buildId);
+        return $dao->checkCharacterBuildOwnership($characterMonsterId, $buildId);
     }
     
     public function getMonsters($buildId){

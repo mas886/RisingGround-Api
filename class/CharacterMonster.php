@@ -121,8 +121,8 @@ class CharacterMonster {
             if ($this->getBuildId($characterMonsterId) == $buildId) {
                 return "Already in build";
             }
-            if (!$this->checkBuildOwner($characterMonsterId, $buildId)) {
-                return "Doesn't belongs same character";
+            if (!$this->checkCharacterBuildOwnership($characterMonsterId, $buildId)) {
+                return "Build doesn't belongs to same character";
             }
             if (!$this->checkMonsterOwner($characterMonsterId, $userId)) {
                 return "Error monster owner";
@@ -158,10 +158,10 @@ class CharacterMonster {
         return $dao->checkMonsterOwner($characterMonsterId, $userId);
     }
 
-    private function checkBuildOwner($characterMonsterId, $buildId) {
+    private function checkCharacterBuildOwnership($characterMonsterId, $buildId) {
         //Will return true if the character_monster and the build belongs at the same character, if not false
-        $dao = new Build;
-        return $dao->buildMonsterOwner($characterMonsterId, $buildId);
+        $build = new Build;
+        return $build->checkCharacterBuildOwnership($characterMonsterId, $buildId);
     }
 
 }
