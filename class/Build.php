@@ -52,12 +52,6 @@ class Build {
         
     }
     
-    private function checkBuildBelongsToUser($buildId, $userId){
-        //returns true if the build belongs to the user
-        $dao = new BuildDAO;
-        return $dao->checkBuildBelongsToUser($buildId, $userId);
-    }
-    
     public function changeName($buildId, $buildName, $token){
          if(strlen($buildName) < 3 || strlen($buildName) > 15 || !is_numeric($buildId) || strlen($token) != 30){
             return 0;
@@ -76,9 +70,33 @@ class Build {
         
     }
     
+    
+    public function getCharacterBuilds($characterName, $token){
+        //indexed function
+        if(strlen($characterName) < 3 || strlen($characterName) > 15 || strlen($token) != 30){
+            return 0;
+        }
+         $tkn = new Token;
+        $userId = $tkn->getUserIdByToken($token);
+        if ($userId == "Expired" || $userId == "Bad token") {
+            return $userId;
+        }
+        $char=new Character;
+        if(!$char->checkOwner($characterName, $userId)){
+            return "Character does not belong to the user.";
+        }
+        $dao = new BuildDAO;
+        return $dao->getBuilds($characterName);
+    }
 
-    //PRIVATE functions
-
+    //Non indexed functions
+    
+    private function checkBuildBelongsToUser($buildId, $userId){
+        //returns true if the build belongs to the user
+        $dao = new BuildDAO;
+        return $dao->checkBuildBelongsToUser($buildId, $userId);
+    }
+    
     private function addBuildCheckValues($characterName, $token) {
         //Check token
         $tkn = new Token;
@@ -106,25 +124,7 @@ class Build {
             $idsArray[]=(int)$monstID['id'];
         }
         return $idsArray;
-    }
-    public function getCharacterBuilds($characterName, $token){
-        //indexed function
-        if(strlen($characterName) < 3 || strlen($characterName) > 15 || strlen($token) != 30){
-            return 0;
-        }
-         $tkn = new Token;
-        $userId = $tkn->getUserIdByToken($token);
-        if ($userId == "Expired" || $userId == "Bad token") {
-            return $userId;
-        }
-        $char=new Character;
-        if(!$char->checkOwner($characterName, $userId)){
-            return "Character does not belong to the user.";
-        }
-        $dao = new BuildDAO;
-        return $dao->getBuilds($characterName);
-    }
-    
+    }    
     
     public function getBuilds($characterName){
         //not indexed
