@@ -47,7 +47,7 @@ class Shop {
             return "Not enough money";
         }
         
-        if (!$dao->buy($amount, $value, $userId, "gold")) {
+        if (!$dao->subtractCurrency($amount, $value, $userId, "gold")) {
             return "Money transition failed";
         } else {
             return $dao->addCharacterItem(intval($article['itemId']), $amount, $characterName);
@@ -75,7 +75,7 @@ class Shop {
         if ($gems < ($amount * $value)) {
             return "Not enough gems";
         }
-        if (!$dao->buy($amount, $value, $userId, "gems")) {
+        if (!$dao->subtractCurrency($amount, $value, $userId, "gems")) {
             return "Gems transition failed";
         } else {
             return $dao->addCharacterItem(intval($article['itemId']), $amount, $characterName);

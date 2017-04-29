@@ -51,7 +51,7 @@ class ShopDAO {
         return $article;
     }
 
-    public function buy($amount, $value, $userId, $coin) {
+    public function subtractCurrency($amount, $value, $userId, $coin) {
         //Make money transition at user
         $connection = connect();
         $sql = "";
