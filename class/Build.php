@@ -62,10 +62,13 @@ class Build {
          if(strlen($buildName) < 3 || strlen($buildName) > 15 || !is_numeric($buildId) || strlen($token) != 30){
             return 0;
         }
-         $tkn = new Token;
+        $tkn = new Token;
         $userId = $tkn->getUserIdByToken($token);
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
+        }
+        if(!$this->checkBuildBelongsToUser($buildId, $userId)){
+            return "Owner Error";
         }
         $dao = new BuildDAO;
         return $dao->changeName($buildId, $buildName);
