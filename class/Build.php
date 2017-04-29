@@ -33,7 +33,7 @@ class Build {
         if(!is_numeric($buildId) || strlen($token) != 30){
             return 0;
         }
-         $tkn = new Token;
+        $tkn = new Token;
         $userId = $tkn->getUserIdByToken($token);
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
@@ -42,7 +42,12 @@ class Build {
             return "Owner Error";
         }else{
             $dao=new BuildDAO;
-            return $dao->deleteBuild($buildId);
+            $res=$dao->deleteBuild($buildId);
+            if($res==0){
+                return "Error! Check if the build is empty.";
+            }else{
+                return $res;
+            }
         }
         
     }
