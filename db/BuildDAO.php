@@ -72,20 +72,18 @@ class BuildDAO {
         }
     }
     
-    public function checkBuildOwnsUser($buildId, $userId){
+    public function checkBuildBelongsToUser($buildId, $userId){
+        //returns true if the build belongs to the user
         $connection = connect();
-        $sql="SELECT `name` FROM `user_character` WHERE `id` = (SELECT `characterId` FROM  `character_build` WHERE `id` = :buildId)";
+        $sql="SELECT `userId` FROM `user_character` WHERE `id` = (SELECT `characterId` FROM  `character_build` WHERE `id` = :buildId) AND `userId` = :userId";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':buildId' => $buildId));
-        $characterName = $sth->fetch(PDO::FETCH_ASSOC);
-        $character = new CharacterDAO;
-        $characters = $character->selectCharacterList($userId);
-        foreach ($characters as $c){
-            if($c == $characterName['name']){
-                return true;
-            }
+        $sth->execute(array(':buildId' => $buildId,':userId' => $userId));
+        $returnedValue = $sth->fetch(PDO::FETCH_ASSOC);
+        if($returnedValue!=false){
+            return true;
+        }else{
+            return false;
         }
-        return false;
     }
     
     public function deleteBuild($buildId){

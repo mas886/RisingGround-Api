@@ -38,13 +38,19 @@ class Build {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        $dao = new BuildDAO;
-        if(!$dao->checkBuildOwnsUser($buildId, $userId)){
+        if(!$this->checkBuildBelongsToUser($buildId, $userId)){
             return "Owner Error";
         }else{
+            $dao=new BuildDAO;
             return $dao->deleteBuild($buildId);
         }
         
+    }
+    
+    private function checkBuildBelongsToUser($buildId, $userId){
+        //returns true if the build belongs to the user
+        $dao = new BuildDAO;
+        return $dao->checkBuildBelongsToUser($buildId, $userId);
     }
     
     public function changeName($buildId, $buildName, $token){
