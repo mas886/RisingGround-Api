@@ -117,7 +117,10 @@ class Build {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        //not indexed
+        $char=new Character;
+        if(!$char->checkOwner($characterName, $userId)){
+            return "Character does not belong to the user.";
+        }
         $dao = new BuildDAO;
         return $dao->getBuilds($characterName);
     }
