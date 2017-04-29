@@ -34,23 +34,23 @@ class Shop {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-
+        
         $dao = new ShopDAO;
         $article = $dao->getItemGold($articleId);
-        $user = new UserDAO;
+        $user = new User;
 
         $gold = $user->getGold($userId);
         $amount = intval($article['amount']);
         $value = floatval($article['value']);
 
         if ($gold < ($amount * $value)) {
-            return "No money";
+            return "Not enough money";
         }
         
-        if (!$dao->buy(intval($article['amount']), floatval($article['value']), $userId, "gold")) {
+        if (!$dao->buy($amount, $value, $userId, "gold")) {
             return "Money transition failed";
         } else {
-            return $dao->addCharacterItem(intval($article['itemId']), intval($article['amount']), $characterName);
+            return $dao->addCharacterItem(intval($article['itemId']), $amount, $characterName);
         }
     }
 
