@@ -65,20 +65,20 @@ class Shop {
         }
 
         $dao = new ShopDAO;
-        $article = $dao->getItemGold($articleId);
-        $user = new UserDAO;
+        $article = $dao->getItemGems($articleId);
+        $user = new User;
 
         $gems = $user->getGems($userId);
         $amount = intval($article['amount']);
         $value = floatval($article['value']);
 
         if ($gems < ($amount * $value)) {
-            return "No money";
+            return "Not enough gems";
         }
-        if (!$dao->buy(intval($article['amount']), floatval($article['value']), $userId, "gold")) {
-            return "Money transition failed";
+        if (!$dao->buy($amount, $value, $userId, "gems")) {
+            return "Gems transition failed";
         } else {
-            return $dao->addCharacterItem(intval($article['itemId']), intval($article['amount']), $characterName);
+            return $dao->addCharacterItem(intval($article['itemId']), $amount, $characterName);
         }
     }
 
