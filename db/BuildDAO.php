@@ -22,18 +22,13 @@ class BuildDAO {
         }
     }
 
-    public function checkBuildSlots($characterName) {
+    public function getBuildSlots($characterName) {
         $connection = connect();
         $sql = "SELECT `buildSlots` FROM `user_character` WHERE `name` = :characterName";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':characterName' => $characterName));
         $buildSlots = $sth->fetch(PDO::FETCH_ASSOC);
-        $slotsUsed = sizeof($this->getBuilds($characterName));
-        if ($buildSlots['buildSlots'] > $slotsUsed) {
-            return true;
-        } else {
-            return false;
-        }
+        return $buildSlots['buildSlots'];
     }
    
        public function checkCharacterBuildOwnership($characterMontserId, $buildId) {

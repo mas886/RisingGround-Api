@@ -21,11 +21,11 @@ class Build {
             return $securities;
         }
         //Check if there's enought Build Slots
-        $dao = new BuildDAO;
-        if ($dao->checkBuildSlots($characterName)) {
+        if ($this->checkFreeBuildSlots($characterName)) {
+            $dao = new BuildDAO;
             return $dao->addBuild($characterName, $buildName);
         } else {
-            return "Build Slots Full";
+            return "Build slots full";
         }
     }
     
@@ -90,6 +90,17 @@ class Build {
     }
 
     //Non indexed functions
+    
+    private function checkFreeBuildSlots($characterName){
+        $dao=new BuildDAO;
+        $buildSlots=$dao->getBuildSlots($characterName);
+        $slotsUsed = sizeof($dao->getBuilds($characterName));
+        if ($buildSlots > $slotsUsed) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
     private function checkBuildBelongsToUser($buildId, $userId){
         //returns true if the build belongs to the user
