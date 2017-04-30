@@ -14,11 +14,11 @@ class CharacterMonster {
 
     private $maxBuildMonsterSlots = 3;
 
-    public function addMonster($characterName, $monsterName) {
+    public function addMonster($characterName, $monsterId) {
         //Add monsters to the character's collection
         //MUSN'T be indexed.
         $dao = new CharacterMonsterDAO;
-        return $dao->insertCharacterMonster($characterName, $monsterName);
+        return $dao->addMonster($characterName, $monsterId);
     }
 
     public function deleteMonster($characterMonsterId, $token) {
