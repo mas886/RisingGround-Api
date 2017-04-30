@@ -3,10 +3,11 @@
 /**
  * Shop of monsters and items
  *
- * @author PATATA
+ * @author PATATA and mas886/Arnau/redrednose
  */
 include_once("Token.php");
 include_once("User.php");
+include_once("Character.php");
 include_once("./db/ShopDAO.php");
 
 class Shop {
@@ -34,7 +35,13 @@ class Shop {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        return $this->buyArticle($userId, $characterName, $articleId, $amount, "gold");
+        $character = new Character;
+        $characterOwner = $character->checkOwner($characterName, $userId);
+        if (!$characterOwner) {
+            return "Character Owner Error";
+        }else{
+            return $this->buyArticle($userId, $characterName, $articleId, $amount, "gold");
+        }
     }
 
     public function buyArticleGems($articleId, $characterName, $amount, $token) {
@@ -46,7 +53,13 @@ class Shop {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        return $this->buyArticle($userId, $characterName, $articleId, $amount, "gems");
+        $character = new Character;
+        $characterOwner = $character->checkOwner($characterName, $userId);
+        if (!$characterOwner) {
+            return "Character Owner Error";
+        }else{
+            return $this->buyArticle($userId, $characterName, $articleId, $amount, "gems");
+        }
     }
     
     private function buyArticle($userId, $characterName, $articleId, $amount, $currency){
