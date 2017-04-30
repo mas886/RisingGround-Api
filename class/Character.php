@@ -7,6 +7,7 @@
 include_once("./db/CharacterDAO.php");
 include_once("Token.php");
 include_once("Build.php");
+include_once("CharacterMonster.php");
 include_once("./mechanics/Level.php");
 
 class Character {
@@ -85,6 +86,11 @@ class Character {
         //After a battle, gold of character is increased with battleGold
         $dao = new CharacterDAO;
         return $dao->addGold($characterName, $gold);
+    }
+    
+    public function addMonster($characterName, $monsterId) {
+        $charmonst=new CharacterMonster;
+        return $charmonst->addMonster($characterName, $monsterId);
     }
 
     public function selectBuild($buildId, $characterName, $token) {
