@@ -28,7 +28,8 @@ class RewardSys {
         //Applies a reward string into a character
         $gold = $this->parseGold($rewardContent);
         $experience= $this->parseExperience($rewardContent);
-        $rewResult= $this->addCharacterRewards($characterName,$gold,$experience);
+        $monsters= $this->parseMonsters($rewardContent);
+        $rewResult= $this->addCharacterRewards($characterName,$monsters,$gold,$experience);
         return $rewResult;
     }
     
@@ -57,7 +58,7 @@ class RewardSys {
         return $dun->addDungeonStageEntry($characterName,$dungeonLevelId, $stageId);
     }
     
-    private function addCharacterRewards($characterName,$gold,$experience){
+    private function addCharacterRewards($characterName,$monsters,$gold,$experience){
         $check=1;
         $char=new Character;
         if ($experience != NULL){
@@ -66,13 +67,23 @@ class RewardSys {
         if($gold != NULL){
             $check=$char->addGold($characterName, $gold);
         }
+        if($monsters != NULL){
+            foreach($monsters as $monsterId){
+                $char->addMonster($characterName, $monsterId);
+            }
+        }
         if ($check==1){
             return 1;
         }else{
             return "Reward Apply Error";
         }
     }
-        
+    
+    private  function parseMonsters($rewardString){
+        $parser=new Parser;
+        return $parser->parseContent($rewardString,"monsters");
+    }
+    
     private  function parseGold($rewardString){
         $parser=new Parser;
         return $parser->parseContent($rewardString,"gold")[0];
