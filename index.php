@@ -307,7 +307,7 @@ $app->post('/reward/claimreward', function (Request $request, Response $response
 //shop funcions
 $app->post('/shop/getarticles', function (Request $request, Response $response, $args = []) {
     $token = $request->getParam('token');
-   $shop = new Shop;
+    $shop = new Shop;
     //Will return a shop array->(gold, gems)->inside->(items to buy) when succesfull
     $response->getBody()->write(json_encode(array('Message' => $shop->getArticles($token))));
     return $response;
@@ -317,9 +317,10 @@ $app->post('/shop/buyarticlegold', function (Request $request, Response $respons
     $articleId = $request->getParam('articleId');
     $characterName = $request->getParam('characterName');
     $token = $request->getParam('token');
-   $shop = new Shop;
+    $amount = $request->getParam('amount');
+    $shop = new Shop;
     //Will return 1 when succesfull
-    $response->getBody()->write(json_encode(array('Message' => $shop->buyArticleGold($articleId, $characterName, $token))));
+    $response->getBody()->write(json_encode(array('Message' => $shop->buyArticleGold($articleId, $characterName, $amount, $token))));
     return $response;
 });
 
@@ -327,9 +328,10 @@ $app->post('/shop/buyarticlegems', function (Request $request, Response $respons
     $articleId = $request->getParam('articleId');
     $characterName = $request->getParam('articleId');
     $token = $request->getParam('token');
-   $shop = new Shop;
+    $amount = $request->getParam('amount');
+    $shop = new Shop;
     //Will return 1 when succesfull
-    $response->getBody()->write(json_encode(array('Message' => $shop->buyArticleGems($articleId, $characterName, $token))));
+    $response->getBody()->write(json_encode(array('Message' => $shop->buyArticleGems($articleId, $characterName, $amount, $token))));
     return $response;
 });
 

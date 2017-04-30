@@ -25,8 +25,8 @@ class Shop {
         return $shop;
     }
 
-    public function buyArticleGold($articleId, $characterName, $token) {
-        if (strlen($token) != 30 || strlen($characterName) < 3 || strlen($characterName) > 15 || !is_numeric($articleId)) {
+    public function buyArticleGold($articleId, $characterName, $amount, $token) {
+        if (strlen($token) != 30 || strlen($characterName) < 3 || strlen($characterName) > 15 || !is_numeric($articleId) || !is_numeric($amount)) {
             return 0;
         }
         $tkn = new Token;
@@ -34,10 +34,10 @@ class Shop {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        return $this->buyArticle($userId, $characterName, $articleId, "gold");
+        return $this->buyArticle($userId, $characterName, $articleId, $amount, "gold");
     }
 
-    public function buyArticleGems($articleId, $characterName, $token) {
+    public function buyArticleGems($articleId, $characterName, $amount, $token) {
         if (strlen($token) != 30 || strlen($characterName) < 3 || strlen($characterName) > 15 || !is_numeric($articleId)) {
             return 0;
         }
@@ -46,10 +46,10 @@ class Shop {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        return $this->buyArticle($userId, $characterName, $articleId, "gems");
+        return $this->buyArticle($userId, $characterName, $articleId, $amount, "gems");
     }
     
-    private function buyArticle($userId, $characterName, $articleId, $currency){
+    private function buyArticle($userId, $characterName, $articleId, $amount, $currency){
         $dao = new ShopDAO;
         $usr = new User;
         if($currency=="gems"){
@@ -59,16 +59,16 @@ class Shop {
             $article = $dao->getItemGold($articleId);
             $money = $usr->getGold($userId);
         }
-        $amount = intval($article['amount']);
+        $bundleAmount = intval($article['amount']);
         $value = floatval($article['value']);
-        //No ($money < ($amount * $value)) cause we are buying the full bundle, not spare items!
-        if ($money < $value) {
+        //No ($money < ($bundleAmount * $value)) cause we are buying the full bundle, not the spare items!
+        if ($money < ($value * $amount)) {
             return "Not enough ".$currency;
         }
-        if (!$dao->subtractCurrency(1, $value, $userId, $currency)) {
+        if (!$dao->subtractCurrency($amount, $value, $userId, $currency)) {
             return $currency." transition failed";
         } else {
-            return $dao->addCharacterItem(intval($article['itemId']), $amount, $characterName);
+            return $dao->addCharacterItem($article['itemId'], $amount * $bundleAmount, $characterName);
         }
     }
 
