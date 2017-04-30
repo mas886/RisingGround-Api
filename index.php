@@ -326,7 +326,7 @@ $app->post('/shop/buyarticlegold', function (Request $request, Response $respons
 
 $app->post('/shop/buyarticlegems', function (Request $request, Response $response, $args = []) {
     $articleId = $request->getParam('articleId');
-    $characterName = $request->getParam('articleId');
+    $characterName = $request->getParam('characterName');
     $token = $request->getParam('token');
     $amount = $request->getParam('amount');
     $shop = new Shop;
