@@ -67,7 +67,7 @@ class Reward {
     
     public function applyRewardString($characterName, $reward){
         $rew=new RewardSys;
-        return $this->applyRewardString($characterName, $reward);
+        return $rew->applyRewardString($characterName, $reward);
     }
     
     public function applyReward($characterName,$stage){
