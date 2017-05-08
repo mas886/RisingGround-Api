@@ -42,10 +42,10 @@ class UserDAO {
         if ($stmt->execute(array(':name' => $username))) {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
         }
-        if (sizeof($user) > 1) {
-            return True;
-        } else {
+        if(!$user){
             return false;
+        }else{
+            return true;
         }
     }
 
