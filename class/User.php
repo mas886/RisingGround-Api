@@ -44,6 +44,20 @@ class User {
             return $dao->addUser($username, $password, $email);
         }
     }
+    
+    public function tokenIsValid($token){
+        if (strlen($token) != 30) {
+            return false;
+        }else{
+            $tkn = new Token;
+            $userId = $tkn->getUserIdByToken($token);
+            if ($userId == "Expired" || $userId == "Bad token") {
+                return false;
+            }else{
+                return true;
+            }        
+        }
+    }
 
     private function correctCredentials($username, $password, $email) {
         //The size of the credentials will depend on the db

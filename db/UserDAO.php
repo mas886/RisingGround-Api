@@ -33,7 +33,7 @@ class UserDAO {
             return 0;
         }
     }
-
+    
     public function exist($username) {
         $connection = connect();
         $sql = "SELECT name FROM `user` WHERE name=:name";

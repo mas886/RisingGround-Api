@@ -65,6 +65,14 @@ $app->post('/user/signup', function (Request $request, Response $response, $args
     return $response;
 });
 
+$app->post('/user/checktoken', function (Request $request, Response $response, $args = []) {
+    $token = $request->getParam('token');
+    $user = new User();
+    //Will return 1 when successfull
+    $response->getBody()->write(json_encode(array('Message' => $user->tokenIsValid($token))));
+    return $response;
+});
+
 //User to user messaging system functions
 
 $app->post('/message/send', function (Request $request, Response $response, $args = []) {
