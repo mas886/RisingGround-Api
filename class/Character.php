@@ -30,7 +30,7 @@ class Character {
                 return "Character Slots Full";
             }
             if (sizeof($this->getCharacter($characterName, $token)) > 1) {
-                return "Name exist";
+                return "Name already exist";
             } else {
                 //Return 1 if is succesfull, 0 if character is not added
                 $res = $dao->insertCharacter($characterName, $userId);
