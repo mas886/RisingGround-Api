@@ -148,7 +148,7 @@ $app->post('/character/getcharacter', function (Request $request, Response $resp
     $response->getBody()->write(json_encode(array('Message' => $character->getCharacter($characterName, $token))));
     return $response;
 });
-$app->post('/character/selectbuild', function (Request $request, Response $response, $args = []) {
+$app->post('/character/updatebuild', function (Request $request, Response $response, $args = []) {
     $buildId = $request->getParam('buildId');
     $characterName = $request->getParam('characterName');
     $token = $request->getParam('token');

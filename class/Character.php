@@ -93,7 +93,7 @@ class Character {
         return $charmonst->addMonster($characterName, $monsterId);
     }
 
-    public function selectBuild($buildId, $characterName, $token) {
+    public function updateBuild($buildId, $characterName, $token) {
         //select the build for battle of the character
         if (strlen($characterName) > 20 || strlen($characterName) < 3 || strlen($token) != 30 || !is_numeric($buildId)) {
             return 0;
@@ -104,17 +104,13 @@ class Character {
             return $userId;
         }
         if (!$this->checkOwner($characterName, $userId)) {
-            return "Owner Error";
-        } else {
-            $build = new Build;
-            $builds = $build->getBuilds($characterName);
-            foreach ($builds as $b) {
-                if ($b['id'] == $buildId) {
-                    $dao = new CharacterDAO;
-                    return $dao->updateBuild($buildId, $characterName);
-                }
-            }
-            return "Owner Error";
+            return "Character Owner Error";
+        } 
+        $dao = new CharacterDAO;
+        if($dao->updateBuild($buildId, $characterName)!=1){
+            return "Build Owner Error";
+        }else{
+            return 1;
         }
     }
 

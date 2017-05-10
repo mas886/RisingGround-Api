@@ -45,16 +45,16 @@ class CharacterDAO {
     public function updateBuild($buildId, $characterName) {
         //Select build ID to battle
         $connection = connect();
-        $sql = "UPDATE `user_character` SET `selectedBuildId` = :selectedBuildId WHERE `name` = :name";
+        $sql = "UPDATE `user_character` SET `buildId`=:buildId where `name`=:name AND `user_character`.`id`=(SELECT `characterId` FROM `character_build` WHERE `id`=:buildId)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':selectedBuildId' => $buildId, ':name' => $characterName));
+        $sth->execute(array(':buildId' => $buildId, ':name' => $characterName));
         if ($sth->rowCount() != 0) {
             return 1;
         } else {
             return 0;
         }
     }
-
+    
     public function insertCharacter($characterName, $userId) {
         //Add character
 
