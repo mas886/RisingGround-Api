@@ -11,13 +11,13 @@ class UserDAO {
 
     public function getPassword($username) {
         $connection = connect();
-        $sql = "SELECT password FROM `user` WHERE name=:name";
+        $sql = "SELECT `password` FROM `user` WHERE name=:name";
         $user = [];
         $stmt = $connection->prepare($sql);
         if ($stmt->execute(array(':name' => $username))) {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
         }
-        return $user;
+        return (string)$user['password'];
     }
 
     public function addUser($username, $password, $email) {

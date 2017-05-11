@@ -10,11 +10,11 @@ class User {
         if (strlen($username) > 1 && strlen($password) > 1) {
             $dao=new UserDAO;
             $user= $dao->getPassword($username);
-            if (password_verify($password, $user['password'])) {
+            if (password_verify($password, $user)) {
                 $token = new Token;
                 return $token->createToken($username);
             } else {
-                return 0;
+                return "Wrong credentials";
             }
         } else {
             return 0;
