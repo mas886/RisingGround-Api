@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 16, 2017 at 11:40 PM
+-- Generation Time: May 11, 2017 at 11:11 AM
 -- Server version: 10.1.22-MariaDB-
 -- PHP Version: 7.0.15-1ubuntu4
 
@@ -194,7 +194,7 @@ CREATE TABLE `dungeon_level_stages` (
 INSERT INTO `dungeon_level_stages` (`id`, `dungeonLevelId`, `typeId`, `position`, `content`, `reward`) VALUES
 (1, 3, 1, 0, 'picture:/url/picture.png|text:First level heyo!', 'gold:50|exp:10'),
 (2, 3, 2, 1, 'picture:/url/picture.png|text:This is a battle.|monsters:1;2;3|waitTime:10', 'exp:5'),
-(3, 3, 1, 2, 'picture:/url/picture.png|text:This is the third stage.', ''),
+(3, 3, 1, 2, 'picture:/url/picture.png|text:This is the third stage.', 'monsters:1;2;3'),
 (4, 5, 1, 0, 'asdfga', ''),
 (5, 5, 1, 1, 'asdfga', ''),
 (6, 3, 1, 3, 'asdfga', '');
@@ -232,6 +232,13 @@ CREATE TABLE `item` (
   `category` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `sprite` varchar(90) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Item table.';
+
+--
+-- Dumping data for table `item`
+--
+
+INSERT INTO `item` (`id`, `name`, `description`, `properties`, `category`, `sprite`) VALUES
+(1, 'itemProva1', 'desc1', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -294,6 +301,13 @@ CREATE TABLE `shop_gems` (
   `value` int(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Gem shop.';
 
+--
+-- Dumping data for table `shop_gems`
+--
+
+INSERT INTO `shop_gems` (`id`, `itemId`, `discount`, `amount`, `sprite`, `value`) VALUES
+(2, 1, 0, 2, '', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -308,6 +322,13 @@ CREATE TABLE `shop_gold` (
   `sprite` varchar(90) COLLATE utf8_spanish_ci NOT NULL,
   `value` int(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Gold shop.';
+
+--
+-- Dumping data for table `shop_gold`
+--
+
+INSERT INTO `shop_gold` (`id`, `itemId`, `discount`, `amount`, `sprite`, `value`) VALUES
+(1, 1, 0, 2, '', 5);
 
 -- --------------------------------------------------------
 
@@ -412,7 +433,7 @@ ALTER TABLE `character_item`
   ADD PRIMARY KEY (`characterId`,`itemId`),
   ADD KEY `characterId` (`characterId`,`itemId`),
   ADD KEY `characterId_2` (`characterId`,`itemId`),
-  ADD KEY `itemId` (`itemId`);
+  ADD KEY `character_item_ibfk_2` (`itemId`);
 
 --
 -- Indexes for table `character_monster`
@@ -465,7 +486,7 @@ ALTER TABLE `dungeon_level`
 ALTER TABLE `dungeon_level_character_status`
   ADD PRIMARY KEY (`dungeonLevelId`,`characterId`),
   ADD KEY `stageId` (`stageId`),
-  ADD KEY `characterId` (`characterId`);
+  ADD KEY `dungeon_level_character_status_ibfk_2` (`characterId`);
 
 --
 -- Indexes for table `dungeon_level_stages`
@@ -594,7 +615,7 @@ ALTER TABLE `dungeon_level_stages_type`
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `monster`
 --
@@ -604,12 +625,12 @@ ALTER TABLE `monster`
 -- AUTO_INCREMENT for table `shop_gems`
 --
 ALTER TABLE `shop_gems`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `shop_gold`
 --
 ALTER TABLE `shop_gold`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `user`
 --
@@ -638,40 +659,40 @@ ALTER TABLE `user_inbox`
 -- Constraints for table `battle_status`
 --
 ALTER TABLE `battle_status`
-  ADD CONSTRAINT `battle_status_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`);
+  ADD CONSTRAINT `battle_status_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `character_build`
 --
 ALTER TABLE `character_build`
-  ADD CONSTRAINT `character_build_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`);
+  ADD CONSTRAINT `character_build_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `character_item`
 --
 ALTER TABLE `character_item`
-  ADD CONSTRAINT `character_item_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
+  ADD CONSTRAINT `character_item_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `character_item_ibfk_2` FOREIGN KEY (`itemId`) REFERENCES `item` (`id`);
 
 --
 -- Constraints for table `character_monster`
 --
 ALTER TABLE `character_monster`
-  ADD CONSTRAINT `character_monster_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
+  ADD CONSTRAINT `character_monster_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `character_monster_ibfk_2` FOREIGN KEY (`monsterId`) REFERENCES `monster` (`id`),
-  ADD CONSTRAINT `character_monster_ibfk_3` FOREIGN KEY (`buildId`) REFERENCES `character_build` (`id`);
+  ADD CONSTRAINT `character_monster_ibfk_3` FOREIGN KEY (`buildId`) REFERENCES `character_build` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `character_monster_stats`
 --
 ALTER TABLE `character_monster_stats`
-  ADD CONSTRAINT `character_monster_stats_ibfk_1` FOREIGN KEY (`characterMonsterId`) REFERENCES `character_monster` (`id`);
+  ADD CONSTRAINT `character_monster_stats_ibfk_1` FOREIGN KEY (`characterMonsterId`) REFERENCES `character_monster` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `character_reward`
 --
 ALTER TABLE `character_reward`
-  ADD CONSTRAINT `character_reward_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
+  ADD CONSTRAINT `character_reward_ibfk_1` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `character_reward_ibfk_2` FOREIGN KEY (`stageCompletedId`) REFERENCES `dungeon_level_stages` (`id`);
 
 --
@@ -679,7 +700,7 @@ ALTER TABLE `character_reward`
 --
 ALTER TABLE `dungeon_character_status`
   ADD CONSTRAINT `dungeon_character_status_ibfk_1` FOREIGN KEY (`dungeonId`) REFERENCES `dungeon` (`id`),
-  ADD CONSTRAINT `dungeon_character_status_ibfk_2` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
+  ADD CONSTRAINT `dungeon_character_status_ibfk_2` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `dungeon_character_status_ibfk_3` FOREIGN KEY (`levelId`) REFERENCES `dungeon_level` (`id`);
 
 --
@@ -693,7 +714,7 @@ ALTER TABLE `dungeon_level`
 --
 ALTER TABLE `dungeon_level_character_status`
   ADD CONSTRAINT `dungeon_level_character_status_ibfk_1` FOREIGN KEY (`dungeonLevelId`) REFERENCES `dungeon_level` (`id`),
-  ADD CONSTRAINT `dungeon_level_character_status_ibfk_2` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`),
+  ADD CONSTRAINT `dungeon_level_character_status_ibfk_2` FOREIGN KEY (`characterId`) REFERENCES `user_character` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `dungeon_level_character_status_ibfk_3` FOREIGN KEY (`stageId`) REFERENCES `dungeon_level_stages` (`id`);
 
 --
@@ -725,15 +746,15 @@ ALTER TABLE `shop_gold`
 -- Constraints for table `user_character`
 --
 ALTER TABLE `user_character`
-  ADD CONSTRAINT `user_character_ibfk_1` FOREIGN KEY (`amulet`) REFERENCES `character_item` (`itemId`),
-  ADD CONSTRAINT `user_character_ibfk_2` FOREIGN KEY (`buildId`) REFERENCES `character_build` (`id`),
+  ADD CONSTRAINT `user_character_ibfk_1` FOREIGN KEY (`amulet`) REFERENCES `character_item` (`itemId`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_character_ibfk_2` FOREIGN KEY (`buildId`) REFERENCES `character_build` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `user_character_ibfk_3` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `user_game_inbox`
 --
 ALTER TABLE `user_game_inbox`
-  ADD CONSTRAINT `user_game_inbox_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `user_game_inbox_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_inbox`
@@ -746,7 +767,7 @@ ALTER TABLE `user_inbox`
 -- Constraints for table `user_login_tokens`
 --
 ALTER TABLE `user_login_tokens`
-  ADD CONSTRAINT `user_login_tokens_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `user_login_tokens_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
