@@ -42,6 +42,25 @@ class Character {
             }
         }
     }
+    
+    public function deleteCharacter($characterName, $token){
+        //Returns 1 when successfull, this function will delete character and ALL db entries depending of the character table, use with precaution
+        if (strlen($characterName) > 20 || strlen($characterName) < 3 || strlen($token) != 30) {
+            return 0;
+        } else {
+            $tkn = new Token;
+            $userId = $tkn->getUserIdByToken($token);
+            if ($userId == "Expired" || $userId == "Bad token") {
+                return $userId;
+            }
+            if(!$this->checkOwner($characterName, $userId)){
+                return "Character Owner Error";
+            }
+            //Further security i.e: sending confirmation mail should be implemented
+            $dao = new CharacterDAO;
+            return $dao->deleteCharacter($characterName);
+        }
+    }
 
     public function characterList($token) {
         //Returns a list with all the characters's ID of the user given token

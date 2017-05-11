@@ -132,6 +132,15 @@ $app->post('/character/addcharacter', function (Request $request, Response $resp
     return $response;
 });
 
+$app->post('/character/deletecharacter', function (Request $request, Response $response, $args = []) {
+    $characterName = $request->getParam('characterName');
+    $token = $request->getParam('token');
+    $character = new Character;
+    //Will return 1 when successfull
+    $response->getBody()->write(json_encode(array('Message' => $character->deleteCharacter($characterName, $token))));
+    return $response;
+});
+
 $app->post('/character/characterlist', function (Request $request, Response $response, $args = []) {
     $token = $request->getParam('token');
     $character = new Character;

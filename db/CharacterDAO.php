@@ -55,6 +55,18 @@ class CharacterDAO {
         }
     }
     
+    public function deleteCharacter($characterName){
+        $connection = connect();
+        $sql="DELETE FROM `user_character` WHERE `user_character`.`name` = :characterName";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterName' => $characterName));
+        if ($sth->rowCount() != 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    
     public function insertCharacter($characterName, $userId) {
         //Add character
 
