@@ -65,6 +65,14 @@ $app->post('/user/signup', function (Request $request, Response $response, $args
     return $response;
 });
 
+$app->post('/user/getuser', function (Request $request, Response $response, $args = []) {
+    $token = $request->getParam('token');
+    $user = new User();
+    //Will returns an array with the gold and gems of an user when successfull
+    $response->getBody()->write(json_encode(array('Message' => $user->getUser($token))));
+    return $response;
+});
+
 $app->post('/user/checktoken', function (Request $request, Response $response, $args = []) {
     $token = $request->getParam('token');
     $user = new User();

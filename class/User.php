@@ -45,6 +45,19 @@ class User {
         }
     }
     
+    public function getUser($token){
+        if (strlen($token) == 30) {
+            $tkn = new Token;
+            $userId = $tkn->getUserIdByToken($token);
+            if ($userId == "Expired" || $userId == "Bad token") {
+                return $userId;
+            }
+            return array('gold'=>$this->getGold($userId),'gems'=> $this->getGems($userId));
+        }else{
+            return 0;
+        }
+    }
+    
     public function tokenIsValid($token){
         if (strlen($token) != 30) {
             return false;
