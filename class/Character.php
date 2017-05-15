@@ -90,7 +90,13 @@ class Character {
             } 
             if($this->checkOwner($characterName, $userId)){
                 $dao = new CharacterDAO;
-                return $dao->selectCharacter($characterName);
+                $charData= $dao->selectCharacter($characterName);
+                $charData['resting']= $this->isCharacterResting($characterName);
+                $charData['restingUntil']=null;
+                if($charData['resting']){
+                    $charData['restingUntil']= $this->restingUntil($characterName);
+                }
+                return $charData;
             }else{
                 return "Character ownership error";
             }
