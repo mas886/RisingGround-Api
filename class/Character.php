@@ -87,10 +87,12 @@ class Character {
             $userId = $tkn->getUserIdByToken($token);
             if ($userId == "Expired" || $userId == "Bad token") {
                 return $userId;
-            } else {
+            } 
+            if($this->checkOwner($characterName, $userId)){
                 $dao = new CharacterDAO;
-
                 return $dao->selectCharacter($characterName);
+            }else{
+                return "Character ownership error";
             }
         }
     }
