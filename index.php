@@ -158,6 +158,7 @@ $app->post('/character/characterlist', function (Request $request, Response $res
 });
 
 $app->post('/character/getcharacter', function (Request $request, Response $response, $args = []) {
+    //return format: {"Message":{"userId":"x","experience":"0","buildSlots":"3","buildId":null,"amulet":null,"resting":false,"restingUntil":null}}
     $characterName = $request->getParam('characterName');
     $token = $request->getParam('token');
     $character = new Character;
