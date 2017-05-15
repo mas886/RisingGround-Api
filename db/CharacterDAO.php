@@ -176,4 +176,13 @@ class CharacterDAO {
         }
     }
     
+    public function restingUntil($characterName){
+        $connection= connect();
+        $sql="SELECT `restUntil` FROM `battle_status` WHERE `characterId`=(SELECT `id`FROM `user_character` WHERE `name` = :characterName)";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterName' => $characterName));
+        $res=$sth->fetch(PDO::FETCH_ASSOC);
+        return $res['restUntil'];
+    }
+    
 }

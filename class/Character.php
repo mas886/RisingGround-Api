@@ -184,5 +184,11 @@ class Character {
         $dao = new CharacterDAO;
         return $dao->isCharacterResting($characterName);
     }
+    
+    private function restingUntil($characterName) {
+        //returns until when the character is resting
+        $dao = new CharacterDAO;
+        return $dao->restingUntil($characterName);
+    }
 
 }
