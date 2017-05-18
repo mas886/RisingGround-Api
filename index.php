@@ -212,7 +212,7 @@ $app->post('/dungeon/getavailabledungeons', function (Request $request, Response
     $characterName = $request->getParam('characterName');
     $token = $request->getParam('token');
     $dungeon = new Dungeon;
-    //Will return a 1 when succesfull
+    //Will return dungeon array when succesfull
     $response->getBody()->write(json_encode(array('Message' => $dungeon->getCharacterAvailableDungeons($characterName, $token))));
     return $response;
 });
@@ -222,7 +222,7 @@ $app->post('/dungeon/listdungeonlevels', function (Request $request, Response $r
     $token = $request->getParam('token');
     $dungeonId = $request->getParam('dungeonId');
     $dungeon = new Dungeon;
-    //Will return a 1 when succesfull
+    //Will return dungeon levels array when succesfull
     $response->getBody()->write(json_encode(array('Message' => $dungeon->listDungeonLevels($characterName, $token, $dungeonId))));
     return $response;
 });
@@ -232,7 +232,7 @@ $app->post('/dungeon/getlevelstages', function (Request $request, Response $resp
     $token = $request->getParam('token');
     $levelId = $request->getParam('levelId');
     $dungeon = new Dungeon;
-    //Will return level stages when successful
+    //Will return level stages array when successful
     $response->getBody()->write(json_encode(array('Message' => $dungeon->getCharacterDungeonLevelStages($characterName, $token, $levelId))));
     return $response;
 });
@@ -242,7 +242,7 @@ $app->post('/dungeon/proceedlevel', function (Request $request, Response $respon
     $token = $request->getParam('token');
     $stageId = $request->getParam('stageId');
     $dungeon = new Dungeon;
-    //Will return level stages when successful
+    //Will return 1 when successful
     $response->getBody()->write(json_encode(array('Message' => $dungeon->proceedLevel($characterName, $token, $stageId))));
     return $response;
 });
