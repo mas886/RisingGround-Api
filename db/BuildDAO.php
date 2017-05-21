@@ -47,7 +47,7 @@ class BuildDAO {
 
     public function getBuilds($characterName) {
         $connection = connect();
-        $sql = "SELECT `id` FROM `character_build` WHERE `characterId` = (SELECT `id` FROM `user_character` WHERE `name` = :characterName)";
+        $sql = "SELECT `id`, `name` FROM `character_build` WHERE `characterId` = (SELECT `id` FROM `user_character` WHERE `name` = :characterName)";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':characterName' => $characterName));
         $builds = $sth->fetchAll(PDO::FETCH_ASSOC);
