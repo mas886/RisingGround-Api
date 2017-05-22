@@ -104,5 +104,14 @@ class BuildDAO {
             return 0;
         }
     }
+    
+    public function getBuildName($buildId){
+        $connection = connect();
+        $sql="SELECT `name` FROM `character_build` WHERE `id`=:buildId";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':buildId' => $buildId));
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+        return $result['name'];
+    }
 
 }
