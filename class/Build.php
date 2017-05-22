@@ -66,10 +66,26 @@ class Build {
         }
         $dao = new BuildDAO;
         return $dao->changeName($buildId, $buildName);
-        
-        
     }
     
+    public function getBuild($token, $buildId){
+         if(!is_numeric($buildId) || strlen($token) != 30){
+            return 0;
+        }
+        $tkn = new Token;
+        $userId = $tkn->getUserIdByToken($token);
+        if ($userId == "Expired" || $userId == "Bad token") {
+            return $userId;
+        }
+        if(!$this->checkBuildBelongsToUser($buildId, $userId)){
+            return "Owner Error";
+        }
+        $dao = new BuildDAO;
+        $build['id']=$buildId;
+        $build['name']=$dao->getBuildName($buildId);
+        $build['monsters']= $this->getMonsters($buildId);
+        return $build;
+    }
     
     public function getCharacterBuilds($characterName, $token){
         //indexed function
