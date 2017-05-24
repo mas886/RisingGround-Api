@@ -8,6 +8,7 @@
 include_once("Token.php");
 include_once("./db/CharacterMonsterDAO.php");
 include_once("./class/Build.php");
+include_once("./class/Character.php");
 include_once("./mechanics/Level.php");
 
 class CharacterMonster {
@@ -22,6 +23,7 @@ class CharacterMonster {
     }
 
     public function deleteMonster($characterMonsterId, $token) {
+        //To be indexed needs further security
         if (!is_numeric($characterMonsterId) || sizeof($token) != 30) {
             return 0;
         }
@@ -41,14 +43,16 @@ class CharacterMonster {
         if (strlen($characterName) > 20 || strlen($characterName) < 5 || strlen($token) != 30) {
             return 0;
         }
-
         $tkn = new Token;
         $userId = $tkn->getUserIdByToken($token);
-
+        $char=new Character;
+        if(!$char->checkOwner($characterName, $userId)){
+            return "User ownership error";
+        }
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-
+        
         $dao = new CharacterMonsterDAO;
         return $dao->characterMonsterList($characterName);
     }
