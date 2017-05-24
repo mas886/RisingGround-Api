@@ -50,7 +50,7 @@ class CharacterMonsterDAO {
 
     function getCharacterMonster($characterMonsterId) {
         $connection = connect();
-        $sql = "SELECT `id`, `experience`, 
+        $sql = "SELECT `id`, `experience`, (SELECT `name` FROM `monster` WHERE `monster`.`id`=`character_monster`.`monsterId`) as `name`,
             ((SELECT `accuracy` FROM `monster_stats` WHERE `monster_stats`.`monsterId`=`character_monster`.`monsterId`)+`character_monster_stats`.`accuracy`)as `accuracy`, 
             ((SELECT `speed` FROM `monster_stats` WHERE `monster_stats`.`monsterId`=`character_monster`.`monsterId`)+`character_monster_stats`.`speed`) as `speed`, 
             ((SELECT `strength` FROM `monster_stats` WHERE `monster_stats`.`monsterId`=`character_monster`.`monsterId`)+`character_monster_stats`.`strength`) as `strength`,

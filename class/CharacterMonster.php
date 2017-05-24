@@ -62,6 +62,9 @@ class CharacterMonster {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
+        if (!$this->checkMonsterOwner($characterMonsterId, $userId)) {
+            return "Error monster owner";
+        }
         $dao = new CharacterMonsterDAO;
         return $dao->getCharacterMonster($characterMonsterId);
     }
