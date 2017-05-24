@@ -54,7 +54,7 @@ class CharacterMonster {
     }
 
     public function getCharacterMonster($characterMonsterId, $token) {
-        if (!is_numeric($characterMonsterId) || $token != 30) {
+        if (!is_numeric($characterMonsterId) || strlen($token) != 30) {
             return 0;
         }
         $tkn = new Token;
