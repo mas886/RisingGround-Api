@@ -114,6 +114,9 @@ class CharacterMonster {
         }
 
         $dao = new CharacterMonsterDAO;
+        if($buildId == -1){
+            $buildId = null;
+        }
         return $dao->changeBuild($characterMonsterId, $buildId);
     }
 

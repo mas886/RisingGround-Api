@@ -101,9 +101,6 @@ class CharacterMonsterDAO {
     
     public function changeBuild($characterMonsterId, $buildId){
         $connection = connect();
-        if($buildId == -1){
-            $buildId = null;
-        }
         $sql = "UPDATE `character_monster` SET `buildId` = :buildId WHERE `id` = :characterMonsterId";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':characterMonsterId' => $characterMonsterId, ':buildId' => $buildId));
