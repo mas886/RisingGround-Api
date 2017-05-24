@@ -137,6 +137,7 @@ class CharacterMonster {
             if ($this->monstersSlots($buildId) >= $this->maxBuildMonsterSlots) {
                 return "Build full";
             }
+            return "Acces";
         } else {
             return "Acces";
         }
