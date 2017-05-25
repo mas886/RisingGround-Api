@@ -8,6 +8,8 @@
 include_once("./db/DungeonDAO.php");
 include_once("./class/Reward.php");
 include_once("./class/Build.php");
+include_once("./class/GameMessage.php");
+include_once("./class/Character.php");
 include_once("./mechanics/objects/DungeonStageObj.php");
 include_once("./mechanics/objects/MonsterObjBase.php");
 include_once("./mechanics/objects/MonsterObjCharacter.php");
@@ -64,8 +66,12 @@ class DungeonSys {
                 //If there's no wait time we apply the reward directly.
                 $this->applyReward($characterName,$stage);
             }
+        }else{
+            $userId=Character::getUserId($characterName);
+            $mes=new GameMessage;
+            $mes->sendMessage("Battle System", "$characterName lost the battle.", $userId);
         }
-        return $battleWon;
+        return 1;
     }
     
     private function applyReward($characterName,$stage){
