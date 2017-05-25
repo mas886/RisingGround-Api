@@ -39,5 +39,10 @@ class GameMessage {
             return $dao->deleteMessageFromDb($tokenOwner, $messageId);
         }
     }
+    
+    public function sendMessage($sender,$message,$receiver) {
+        $dao=new GameMessageDAO;
+        return $dao->sendMessage($sender, $message,$receiver);
+    }
 
 }

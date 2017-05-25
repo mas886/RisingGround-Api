@@ -32,4 +32,12 @@ class GameMessageDAO {
         }
     }
     
+    public function sendMessage($sender, $message, $receiver) {
+        $connection = connect();
+        $sql = "INSERT INTO `user_game_inbox`(`userId`, `nameSender`, `content`) VALUES (:userId,:nameSender,:message)";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':userId' => $receiver, ':nameSender' => $sender, ':message' => $message));
+        return $sth;
+    }
+    
 }
