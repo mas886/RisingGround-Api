@@ -102,7 +102,12 @@ class Character {
             }
         }
     }
-
+    
+    public function getUserId($characterName){
+        $dao= new CharacterDAO;
+        return $dao->selectCharacter($characterName)['userId'];
+    }
+    
     public function addExp($battleExp, $characterName) {
         //After a battle, experience of character is increased with battleExp
         $dao = new CharacterDAO;
