@@ -172,7 +172,7 @@ $app->post('/character/updatebuild', function (Request $request, Response $respo
     $token = $request->getParam('token');
     $character = new Character;
     //Will return a 1 when succesfull
-    $response->getBody()->write(json_encode(array('Message' => $character->selectBuild($buildId, $characterName, $token))));
+    $response->getBody()->write(json_encode(array('Message' => $character->updateBuild($buildId, $characterName, $token))));
     return $response;
 });
 

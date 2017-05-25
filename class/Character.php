@@ -132,7 +132,10 @@ class Character {
         }
         if (!$this->checkOwner($characterName, $userId)) {
             return "Character Owner Error";
-        } 
+        }
+        if($this->getSelectedBuildId($characterName)==$buildId){
+            return "Build is already selected";
+        }
         $dao = new CharacterDAO;
         if($dao->updateBuild($buildId, $characterName)!=1){
             return "Build Owner Error";
