@@ -28,9 +28,9 @@ class Build {
             return "Build slots full";
         }
     }
-    
-    public function deleteBuild($buildId, $token){
-        if(!is_numeric($buildId) || strlen($token) != 30){
+
+    public function deleteBuild($buildId, $token) {
+        if (!is_numeric($buildId) || strlen($token) != 30) {
             return 0;
         }
         $tkn = new Token;
@@ -38,22 +38,17 @@ class Build {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        if(!$this->checkBuildBelongsToUser($buildId, $userId)){
+        if (!$this->checkBuildBelongsToUser($buildId, $userId)) {
             return "Owner Error";
-        }else{
-            $dao=new BuildDAO;
-            $res=$dao->deleteBuild($buildId);
-            if($res==0){
-                return "Error! Check if the build is empty.";
-            }else{
-                return $res;
-            }
+        } else {
+            $dao = new BuildDAO;
+            $dao->setMonstersOutBuild($buildId);
+            return $dao->deleteBuild($buildId);
         }
-        
     }
-    
-    public function changeName($buildId, $buildName, $token){
-         if(strlen($buildName) < 3 || strlen($buildName) > 15 || !is_numeric($buildId) || strlen($token) != 30){
+
+    public function changeName($buildId, $buildName, $token) {
+        if (strlen($buildName) < 3 || strlen($buildName) > 15 || !is_numeric($buildId) || strlen($token) != 30) {
             return 0;
         }
         $tkn = new Token;
@@ -61,28 +56,25 @@ class Build {
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        if(!$this->checkBuildBelongsToUser($buildId, $userId)){
+        if (!$this->checkBuildBelongsToUser($buildId, $userId)) {
             return "Owner Error";
         }
         $dao = new BuildDAO;
         return $dao->changeName($buildId, $buildName);
-        
-        
     }
-    
-    
-    public function getCharacterBuilds($characterName, $token){
+
+    public function getCharacterBuilds($characterName, $token) {
         //indexed function
-        if(strlen($characterName) < 3 || strlen($characterName) > 15 || strlen($token) != 30){
+        if (strlen($characterName) < 3 || strlen($characterName) > 15 || strlen($token) != 30) {
             return 0;
         }
-         $tkn = new Token;
+        $tkn = new Token;
         $userId = $tkn->getUserIdByToken($token);
         if ($userId == "Expired" || $userId == "Bad token") {
             return $userId;
         }
-        $char=new Character;
-        if(!$char->checkOwner($characterName, $userId)){
+        $char = new Character;
+        if (!$char->checkOwner($characterName, $userId)) {
             return "Character does not belong to the user.";
         }
         $dao = new BuildDAO;
@@ -90,10 +82,10 @@ class Build {
     }
 
     //Non indexed functions
-    
-    private function checkFreeBuildSlots($characterName){
-        $dao=new BuildDAO;
-        $buildSlots=$dao->getBuildSlots($characterName);
+
+    private function checkFreeBuildSlots($characterName) {
+        $dao = new BuildDAO;
+        $buildSlots = $dao->getBuildSlots($characterName);
         $slotsUsed = sizeof($dao->getBuilds($characterName));
         if ($buildSlots > $slotsUsed) {
             return true;
@@ -101,13 +93,13 @@ class Build {
             return false;
         }
     }
-    
-    private function checkBuildBelongsToUser($buildId, $userId){
+
+    private function checkBuildBelongsToUser($buildId, $userId) {
         //returns true if the build belongs to the user
         $dao = new BuildDAO;
         return $dao->checkBuildBelongsToUser($buildId, $userId);
     }
-    
+
     private function addBuildCheckValues($characterName, $token) {
         //Check token
         $tkn = new Token;
@@ -125,36 +117,35 @@ class Build {
         }
     }
 
-    public function getCharacterSelectedBuildMonsters($characterName){
-        $char=new Character;
-        $buildId=$char->getSelectedBuildId($characterName);
+    public function getCharacterSelectedBuildMonsters($characterName) {
+        $char = new Character;
+        $buildId = $char->getSelectedBuildId($characterName);
         $dao = new BuildDAO;
-        $sqlIdsArray= $dao->getBuildMonsterIds($buildId);
-        $idsArray=[];
-        foreach($sqlIdsArray as $monstID){
-            $idsArray[]=(int)$monstID['id'];
+        $sqlIdsArray = $dao->getBuildMonsterIds($buildId);
+        $idsArray = [];
+        foreach ($sqlIdsArray as $monstID) {
+            $idsArray[] = (int) $monstID['id'];
         }
         return $idsArray;
-    }    
-    
-    public function getBuilds($characterName){
+    }
+
+    public function getBuilds($characterName) {
         //not indexed
         //Return a bidimensional array of buildsId of character: $builds as $build -> $build['id'] = buildId
         $dao = new BuildDAO;
         return $dao->getBuilds($characterName);
     }
-    
-    public function checkCharacterBuildOwnership($characterMonsterId, $buildId){
+
+    public function checkCharacterBuildOwnership($characterMonsterId, $buildId) {
         //Will return true if the character_monster and the build belongs at the same character, if not false
         $dao = new BuildDAO;
         return $dao->checkCharacterBuildOwnership($characterMonsterId, $buildId);
     }
-    
-    public function getMonsters($buildId){
+
+    public function getMonsters($buildId) {
         //Return idArray with monsters of build
-         $dao = new BuildDAO;
-         return $dao->getBuildMonsterIds($buildId);
+        $dao = new BuildDAO;
+        return $dao->getBuildMonsterIds($buildId);
     }
-    
-    
+
 }
