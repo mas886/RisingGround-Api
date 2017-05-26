@@ -97,7 +97,12 @@ class BuildDAO {
         $connection = connect();
         $sql = "UPDATE `character_monster` SET `buildId` = NULL WHERE buildId = :buildId";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        $sth->execute(array(':buildId' => $buildId));
+        if($sth->execute(array(':buildId' => $buildId))){
+            return true;
+        }else{
+            return false;
+        }
+        
     }
 
     public function changeName($buildId, $buildName) {

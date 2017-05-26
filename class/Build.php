@@ -41,9 +41,12 @@ class Build {
         if (!$this->checkBuildBelongsToUser($buildId, $userId)) {
             return "Owner Error";
         } else {
-            $dao = new BuildDAO;
-            $dao->setMonstersOutBuild($buildId);
-            return $dao->deleteBuild($buildId);
+            if (!$this->setMonstersOutBuild($buildId)) {
+                return "Quit monsters error";
+            } else {
+                $dao = new BuildDAO;
+                return $dao->deleteBuild($buildId);
+            }
         }
     }
 
@@ -146,6 +149,11 @@ class Build {
         //Return idArray with monsters of build
         $dao = new BuildDAO;
         return $dao->getBuildMonsterIds($buildId);
+    }
+
+    public function setMonstersOutBuild($buildId) {
+        $dao = new BuildDAO;
+        return $dao->setMonstersOutBuild($buildId);
     }
 
 }
