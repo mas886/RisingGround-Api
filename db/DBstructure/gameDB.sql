@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 11, 2017 at 11:11 AM
+-- Generation Time: May 29, 2017 at 11:51 AM
 -- Server version: 10.1.22-MariaDB-
--- PHP Version: 7.0.15-1ubuntu4
+-- PHP Version: 7.0.18-0ubuntu0.17.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -117,7 +117,7 @@ CREATE TABLE `dungeon` (
 --
 
 INSERT INTO `dungeon` (`id`, `name`, `description`, `minLevel`) VALUES
-(1, 'dungeon1', 'First test dungeon.', 1),
+(1, 'dungeon1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere venenatis lacus, vel cursus erat laoreet sit amet. Morbi tincidunt urna odio, eget pharetra magna iaculis sed. Vestibulum semper, erat id gravida egestas, sem lorem facilisis orci, sed porta lorem augue a lacus. Nam elementum scelerisque tortor.', 1),
 (2, 'dungeon2', 'Second test dungeon.', 1),
 (3, 'dungeon3', 'Third test dungeon.', 3),
 (4, 'dungeon4', 'Fourth test dungeon.', 99);
@@ -192,12 +192,12 @@ CREATE TABLE `dungeon_level_stages` (
 --
 
 INSERT INTO `dungeon_level_stages` (`id`, `dungeonLevelId`, `typeId`, `position`, `content`, `reward`) VALUES
-(1, 3, 1, 0, 'picture:/url/picture.png|text:First level heyo!', 'gold:50|exp:10'),
-(2, 3, 2, 1, 'picture:/url/picture.png|text:This is a battle.|monsters:1;2;3|waitTime:10', 'exp:5'),
-(3, 3, 1, 2, 'picture:/url/picture.png|text:This is the third stage.', 'monsters:1;2;3'),
-(4, 5, 1, 0, 'asdfga', ''),
-(5, 5, 1, 1, 'asdfga', ''),
-(6, 3, 1, 3, 'asdfga', '');
+(1, 1, 1, 0, 'picture:/images/avatars/SystemAvatar.png|text:First level heyo!', 'gold:50|exp:10|monsters:1'),
+(2, 1, 2, 1, 'picture:/images/avatars/BattleAvatar.png|text:This is a battle.|monsters:1|waitTime:0', 'exp:5'),
+(3, 1, 1, 2, 'picture:/images/avatars/SystemAvatar.png|text:This is the third stage.', 'monsters:1;2;3'),
+(6, 1, 1, 3, 'picture:/images/avatars/SystemAvatar.png|text:This is the fourth stage.', ''),
+(7, 1, 2, 4, 'picture:/images/avatars/BattleAvatar.png|text:This is a battle.|monsters:1;2;3|waitTime:1', 'gold:50|exp:10'),
+(8, 1, 1, 5, 'picture:/images/avatars/SystemAvatar.png|text: You reached the level end.', 'gold:500');
 
 -- --------------------------------------------------------
 
@@ -238,7 +238,13 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`id`, `name`, `description`, `properties`, `category`, `sprite`) VALUES
-(1, 'itemProva1', 'desc1', '', '', '');
+(1, 'Cheese', 'This is a tasty cheese.', '', '', '/images/items/item_1.png'),
+(2, 'Wood', 'Some wood pieces that would make a good fire.', '', '', '/images/items/item_21.png'),
+(3, 'Potion', 'This is a potion, or is it poison?', '', '', '/images/items/item_15.png'),
+(4, 'Shiny Ruby', 'A very shiny gem, looks expensive.', '', '', '/images/items/item_22.png'),
+(5, 'Shiny Saphire', 'A very shiny gem, look expensive.', '', '', '/images/items/item_23.png'),
+(6, 'Spell Book', 'This book holds knowledge of unknown eras.', '', '', '/images/items/item_28.png'),
+(7, 'Enchanted Brew', 'It\'s effects are unknown, brewed by a long dead alchemist.', '', '', '/images/items/item_17.png');
 
 -- --------------------------------------------------------
 
@@ -306,7 +312,10 @@ CREATE TABLE `shop_gems` (
 --
 
 INSERT INTO `shop_gems` (`id`, `itemId`, `discount`, `amount`, `sprite`, `value`) VALUES
-(2, 1, 0, 2, '', 1);
+(2, 4, 0, 2, '/images/items/item_22.png', 1),
+(3, 5, 0, 1, '/images/items/item_23.png', 1),
+(4, 7, 0, 1, '/images/items/item_17.png', 3),
+(5, 6, 0, 1, '/images/items/item_28.png', 2);
 
 -- --------------------------------------------------------
 
@@ -328,7 +337,9 @@ CREATE TABLE `shop_gold` (
 --
 
 INSERT INTO `shop_gold` (`id`, `itemId`, `discount`, `amount`, `sprite`, `value`) VALUES
-(1, 1, 0, 2, '', 5);
+(1, 1, 0, 1, '/images/items/item_1.png', 10),
+(2, 2, 0, 1, '/images/items/item_21.png', 15),
+(3, 3, 0, 1, '/images/items/item_15.png', 20);
 
 -- --------------------------------------------------------
 
@@ -605,7 +616,7 @@ ALTER TABLE `dungeon_level`
 -- AUTO_INCREMENT for table `dungeon_level_stages`
 --
 ALTER TABLE `dungeon_level_stages`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `dungeon_level_stages_type`
 --
@@ -615,7 +626,7 @@ ALTER TABLE `dungeon_level_stages_type`
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `monster`
 --
@@ -625,12 +636,12 @@ ALTER TABLE `monster`
 -- AUTO_INCREMENT for table `shop_gems`
 --
 ALTER TABLE `shop_gems`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `shop_gold`
 --
 ALTER TABLE `shop_gold`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `user`
 --
