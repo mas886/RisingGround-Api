@@ -11,7 +11,7 @@ class ShopDAO {
 
     public function getShopGems() {
         $connection = connect();
-        $sql = "SELECT (SELECT `name` FROM `item` WHERE `id` = `itemId`) AS 'name', `discount`, `value`, `sprite` FROM `shop_gems` WHERE 1";
+        $sql = "SELECT `id`, (SELECT `name` FROM `item` WHERE `id` = `itemId`) AS 'name', `discount`, `value`, `sprite` FROM `shop_gems` WHERE 1";
         $sth = $connection->query($sql);
         $shop = $sth->fetchAll(PDO::FETCH_ASSOC);
         if ($shop != false) {
@@ -23,7 +23,7 @@ class ShopDAO {
 
     public function getShopGold() {
         $connection = connect();
-        $sql = "SELECT (SELECT `name` FROM `item` WHERE `id` = `itemId`) AS 'name', `discount`, `value`, `sprite` FROM `shop_gold` WHERE 1";
+        $sql = "SELECT `id`, (SELECT `name` FROM `item` WHERE `id` = `itemId`) AS 'name', `discount`, `value`, `sprite` FROM `shop_gold` WHERE 1";
         $sth = $connection->query($sql);
         $shop = $sth->fetchAll(PDO::FETCH_ASSOC);
         if ($shop != false) {
