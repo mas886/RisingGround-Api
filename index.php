@@ -166,6 +166,17 @@ $app->post('/character/getcharacter', function (Request $request, Response $resp
     $response->getBody()->write(json_encode(array('Message' => $character->getCharacter($characterName, $token))));
     return $response;
 });
+
+$app->post('/character/getcharacteritems', function (Request $request, Response $response, $args = []) {
+    //Returns character items, with it's id, name, description, ammount and sprite path.
+    $characterName = $request->getParam('characterName');
+    $token = $request->getParam('token');
+    $character = new Character;
+    //Will return array of character's information when succesfull
+    $response->getBody()->write(json_encode(array('Message' => $character->getCharacterItems($characterName, $token))));
+    return $response;
+});
+
 $app->post('/character/updatebuild', function (Request $request, Response $response, $args = []) {
     $buildId = $request->getParam('buildId');
     $characterName = $request->getParam('characterName');

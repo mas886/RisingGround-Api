@@ -103,6 +103,25 @@ class Character {
         }
     }
     
+    public function getCharacterItems($characterName, $token) {
+        //Returns the character items information when successfull.
+        if (strlen($characterName) > 20 || strlen($characterName) < 3 || strlen($token) != 30) {
+            return 0;
+        } else {
+            $tkn = new Token;
+            $userId = $tkn->getUserIdByToken($token);
+            if ($userId == "Expired" || $userId == "Bad token") {
+                return $userId;
+            } 
+            if($this->checkOwner($characterName, $userId)){
+                $dao = new CharacterDAO;
+                return $dao->getCharacterItems($characterName);
+            }else{
+                return "Character ownership error";
+            }
+        }
+    }
+    
     public function getUserId($characterName){
         $dao= new CharacterDAO;
         return $dao->selectCharacter($characterName)['userId'];

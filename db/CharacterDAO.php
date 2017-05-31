@@ -145,7 +145,17 @@ class CharacterDAO {
         $res=$sth->execute(array(':characterName' => $characterName));
         return $res;
     }
-
+    
+    public function getCharacterItems($characterName){
+        //Returns items belonging to a user with it's names, descriptions and sprite path
+        $connection = connect();
+        $sql="SELECT `itemId`, (SELECT `name`FROM `item` where `id`= `itemId`) as `name`, (SELECT `description`FROM `item` where `id`= `itemId`) as `description`, (SELECT `sprite`FROM `item` where `id`= `itemId`) as `sprite`, `amount` FROM `character_item` WHERE `characterId` = (SELECT `id` FROM `user_character` WHERE `name`= :characterName)";
+        $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $sth->execute(array(':characterName' => $characterName));
+        $items=$sth->fetchAll(PDO::FETCH_ASSOC);
+        return $items;
+    }
+    
     public function updateCharacterWaitTime($characterName,$waitTime){
         $connection = connect();
         $sql="UPDATE `battle_status` SET `restUntil` = (CURRENT_TIMESTAMP + INTERVAL :minutes MINUTE) WHERE `battle_status`.`characterId` = (SELECT `id`FROM `user_character` WHERE `name` = :characterName)";
