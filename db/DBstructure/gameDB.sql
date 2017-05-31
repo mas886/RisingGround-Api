@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 29, 2017 at 11:51 AM
+-- Generation Time: Jun 01, 2017 at 01:11 AM
 -- Server version: 10.1.22-MariaDB-
 -- PHP Version: 7.0.18-0ubuntu0.17.04.1
 
@@ -192,12 +192,12 @@ CREATE TABLE `dungeon_level_stages` (
 --
 
 INSERT INTO `dungeon_level_stages` (`id`, `dungeonLevelId`, `typeId`, `position`, `content`, `reward`) VALUES
-(1, 1, 1, 0, 'picture:/images/avatars/SystemAvatar.png|text:First level heyo!', 'gold:50|exp:10|monsters:1'),
-(2, 1, 2, 1, 'picture:/images/avatars/BattleAvatar.png|text:This is a battle.|monsters:1|waitTime:0', 'exp:5'),
-(3, 1, 1, 2, 'picture:/images/avatars/SystemAvatar.png|text:This is the third stage.', 'monsters:1;2;3'),
-(6, 1, 1, 3, 'picture:/images/avatars/SystemAvatar.png|text:This is the fourth stage.', ''),
-(7, 1, 2, 4, 'picture:/images/avatars/BattleAvatar.png|text:This is a battle.|monsters:1;2;3|waitTime:1', 'gold:50|exp:10'),
-(8, 1, 1, 5, 'picture:/images/avatars/SystemAvatar.png|text: You reached the level end.', 'gold:500');
+(1, 1, 1, 0, 'picture:/images/avatars/system/SystemAvatar.png|text:First level heyo!', 'gold:50|exp:10|monsters:1'),
+(2, 1, 2, 1, 'picture:/images/avatars/system/BattleAvatar.png|text:This is a battle.|monsters:1|waitTime:0', 'exp:5'),
+(3, 1, 1, 2, 'picture:/images/avatars/system/SystemAvatar.png|text:This is the third stage.', 'monsters:1;2;3'),
+(6, 1, 1, 3, 'picture:/images/avatars/system/SystemAvatar.png|text:This is the fourth stage.', ''),
+(7, 1, 2, 4, 'picture:/images/avatars/system/BattleAvatar.png|text:This is a battle.|monsters:1;2|waitTime:1', 'gold:50|exp:10'),
+(8, 1, 1, 5, 'picture:/images/avatars/system/SystemAvatar.png|text: You reached the level end.', 'gold:500');
 
 -- --------------------------------------------------------
 
@@ -264,9 +264,9 @@ CREATE TABLE `monster` (
 --
 
 INSERT INTO `monster` (`id`, `name`, `description`, `sprite`) VALUES
-(1, 'Lucio', 'This is a sample monster, say hi to him, he\'s willing to cooperate with the development.', '/anywhere.png'),
-(2, 'Udong', 'The second test subject, he wants to be as helpfull as the first.', '/nothingv2.jpg'),
-(3, 'Fierro', 'Third monster to help with.', '/unespecified.png');
+(1, 'Lucio', 'Even if it doesn\'t look tough, this monster is one of the most equilibrated ones. Loyal to it\'s master.', '/images/avatars/monsters/lucio.jpg'),
+(2, 'Udong', 'The bad look of this one make justice to it\'s humour, better not stay on it\'s way when it\'s hungry.', '/images/avatars/monsters/udong.jpg'),
+(3, 'Fierro', 'Fierro prefers to go it\'s own way, not very attached to anyone or anything, reliable as any other.', '/images/avatars/monsters/fierro.jpg');
 
 -- --------------------------------------------------------
 
@@ -414,10 +414,6 @@ CREATE TABLE `user_login_tokens` (
   `token` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `expireDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Contains user login tokens.';
-
---
--- Dumping data for table `user_login_tokens`
---
 
 --
 -- Indexes for dumped tables
