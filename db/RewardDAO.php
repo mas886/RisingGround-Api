@@ -19,7 +19,7 @@ class RewardDAO {
     public function listAvailableRewards($characterName){
         //Returns the available rewards from a character.
         $connection = connect();
-        $sql="SELECT `id`, `stageCompletedId`, `reward` FROM `character_reward` WHERE `characterId`= (SELECT `id`FROM `user_character` WHERE `name` = :characterName) AND `visibleAfter`<= CURRENT_TIMESTAMP";
+        $sql="SELECT `id`, `stageCompletedId`, `reward`, `visibleAfter` as `date` FROM `character_reward` WHERE `characterId`= (SELECT `id`FROM `user_character` WHERE `name` = :characterName) AND `visibleAfter`<= CURRENT_TIMESTAMP";
         $sth = $connection->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $sth->execute(array(':characterName' => $characterName));
         $rewards=$sth->fetchAll(PDO::FETCH_ASSOC);
