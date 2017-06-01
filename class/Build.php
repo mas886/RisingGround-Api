@@ -87,7 +87,7 @@ class Build {
 
     public function getCharacterBuilds($characterName, $token) {
         //indexed function
-        if (strlen($characterName) < 3 || strlen($characterName) > 15 || strlen($token) != 30) {
+        if (strlen($characterName) < 3 || strlen($characterName) > 20 || strlen($token) != 30) {
             return 0;
         }
         $tkn = new Token;
