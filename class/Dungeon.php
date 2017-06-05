@@ -12,7 +12,7 @@ include_once("./mechanics/DungeonSys.php");
 class Dungeon {
 
     public function getCharacterAvailableDungeons($characterName, $token) {
-        if (strlen($characterName) > 20 || strlen($characterName) < 5 || strlen($token) != 30) {
+        if (strlen($characterName) > 20 || strlen($characterName) < 3 || strlen($token) != 30) {
             return 0;
         } else {
             $tkn = new Token;
@@ -35,7 +35,7 @@ class Dungeon {
 
     public function listDungeonLevels($characterName, $token, $dungeonId) {
         //Returns the list of dungeon lvls plus a field indicating it's availability towards the player
-        if (strlen($characterName) > 20 || strlen($characterName) < 5 || strlen($token) != 30 || !is_numeric($dungeonId)) {
+        if (strlen($characterName) > 20 || strlen($characterName) < 3 || strlen($token) != 30 || !is_numeric($dungeonId)) {
             return 0;
         } else {
             $tkn = new Token;
@@ -81,7 +81,7 @@ class Dungeon {
         
     public function getCharacterDungeonLevelStages($characterName, $token, $levelId){
         //Returns the list of dungeon stages that can be accessed by a player
-        if (strlen($characterName) > 20 || strlen($characterName) < 5 || strlen($token) != 30 || !is_numeric($levelId)) {
+        if (strlen($characterName) > 20 || strlen($characterName) < 3 || strlen($token) != 30 || !is_numeric($levelId)) {
             return 0;
         } else {
             $tkn = new Token;
@@ -107,7 +107,7 @@ class Dungeon {
     }
     
     public function proceedLevel($characterName, $token, $stageId){
-        if (strlen($characterName) > 20 || strlen($characterName) < 5 || strlen($token) != 30 || !is_numeric($stageId)) {
+        if (strlen($characterName) > 20 || strlen($characterName) < 3 || strlen($token) != 30 || !is_numeric($stageId)) {
             return 0;
         } else {
             $tkn = new Token;
